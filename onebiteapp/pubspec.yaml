@@ -1,0 +1,34 @@
+name: Shrine
+description: Learn how to use Material for structure and layout.
+
+
+dependencies:
+  charts_flutter: ^0.4.0
+  flutter:
+    sdk: flutter
+  intl: ^0.15.6
+  flutter_localizations:
+    sdk: flutter
+  device_info: ^0.2.1
+
+
+  cupertino_icons: ^0.1.0
+  shrine_images: 1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/0-0.jpeg
+    - images/1-0.jpeg
+    - images/2-0.jpeg
+    - images/3-0.jpeg
+    - images/4-0.jpeg
+    - images/5-0.jpeg
+    - images/6-0.jpeg
+    - images/7-0.jpeg
+    - assets/locale/localization_en.json
+    - assets/locale/localization_kr.json
