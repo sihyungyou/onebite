@@ -40,7 +40,7 @@ class _NoticeListPageState extends State<NoticeListPage> {
       ),
       body: Container(
         child: FutureBuilder(
-            //  future: getPosts(),
+            //  future: getPosts(), 에서 future : _data로!
             future: _data,
             builder: (_, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

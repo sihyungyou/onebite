@@ -3,14 +3,14 @@ description: Learn how to use Material for structure and layout.
 
 
 dependencies:
-  charts_flutter: ^0.4.0
   flutter:
     sdk: flutter
   cloud_firestore: ^0.8.2
+  google_sign_in: ^3.2.2
+  firebase_auth: ^0.6.2+1
   intl: ^0.15.6
   flutter_localizations:
     sdk: flutter
-  device_info: ^0.2.1
 
 
   cupertino_icons: ^0.1.0

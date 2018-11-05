@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'rest_detail.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
-import 'favorite.dart';
 
 //hero animation class
 class PhotoHero extends StatelessWidget {
@@ -230,15 +229,17 @@ class HomePage extends StatelessWidget {
               title: Text('로그아웃'),
               onTap: () {
                 print('log out, go to login page');
-                // Navigator.pushNamed(context, '/login');
+                Navigator.pushNamed(context, '/login');
               },
             ),
 
           ],
         ),
       ),
+
       appBar: AppBar(
         leading: IconButton(
+          // 이게 햄버거 버튼
           icon: Icon(
             Icons.menu,
             semanticLabel: 'menu',
@@ -250,32 +251,11 @@ class HomePage extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        title: Text('Main'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              semanticLabel: 'search',
-            ),
-            onPressed: () {
-              print('Search button');
-              // navigate to SearchPage
-              Navigator.pushNamed(context, '/search');
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.tune,
-              semanticLabel: 'filter',
-            ),
-            onPressed: () {
-              print('Filter button');
-              Navigator.pushNamed(context, '/lang');
-            },
-          ),
-        ],
+        title: Text('한입만'),
       ),
+
       // orientationbuilder used for turning screen
+      // 이거 빼도 될듯?
       body: OrientationBuilder(
         builder: (context, orientation) {
           return GridView.count(
@@ -286,6 +266,7 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
+
     );
   }
 }
