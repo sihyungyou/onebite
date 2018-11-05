@@ -216,34 +216,6 @@ class HomePage extends StatelessWidget {
                 // _pushSaved();
               },
             ),
-            ListTile(
-              leading: const Icon(
-                Icons.insert_chart,
-                color: Colors.lightBlue,
-              ),
-              title: Text('Ranking'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                print('drawer-rank');
-                Navigator.pushNamed(context, '/ranking');
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.person,
-                color: Colors.lightBlue,
-              ),
-              title: Text('My Page'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                print('drawer-page');
-                Navigator.pushNamed(context, '/my');
-              },
-            ),
           ],
         ),
       ),

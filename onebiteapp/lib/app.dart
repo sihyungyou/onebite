@@ -19,11 +19,6 @@ import 'login.dart';
 import 'search.dart';
 import 'detail.dart';
 import 'favorite.dart';
-import 'ranking.dart';
-import 'mypage.dart';
-import 'language_selector_page.dart';
-import 'application.dart';
-import 'app_translations_delegate.dart';
 
 class ShrineApp extends StatefulWidget {
   @override
@@ -33,13 +28,11 @@ class ShrineApp extends StatefulWidget {
 }
 
 class ShrineAppState extends State<ShrineApp> {
-  AppTranslationsDelegate _newLocaleDelegate;
+
 
   @override
   void initState() {
     super.initState();
-    _newLocaleDelegate = AppTranslationsDelegate(newLocale: null);
-    application.onLocaleChanged = onLocaleChange;
   }
 
   @override
@@ -47,16 +40,6 @@ class ShrineAppState extends State<ShrineApp> {
     return MaterialApp(
       title: 'Shrine',
       home: HomePage(),
-      localizationsDelegates: [
-        _newLocaleDelegate,
-        const AppTranslationsDelegate(),
-        //provides localised strings
-        GlobalMaterialLocalizations.delegate,
-        //provides RTL support
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      // supportedLocales: application.supportedLocales(),
-      supportedLocales: application.supportedLocales(),
 
       initialRoute: '/home',
       routes: {
@@ -65,18 +48,9 @@ class ShrineAppState extends State<ShrineApp> {
         '/search': (context) => SearchPage(),
         '/detail': (context) => DetailPage(),
         '/favorite': (context) => FavoritePage(),
-        '/ranking': (context) => RankingPage(),
-        '/my': (context) => MyPage(),
-        '/lang': (context) => LanguageSelectorPage(),
       },
       onGenerateRoute: _getRoute,
     );
-  }
-
-  void onLocaleChange(Locale locale) {
-    setState(() {
-      _newLocaleDelegate = AppTranslationsDelegate(newLocale: locale);
-    });
   }
 
   Route<dynamic> _getRoute(RouteSettings settings) {
