@@ -5,5 +5,5 @@ import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 
 void main(){
   // debugPaintSizeEnabled = true;
-  runApp(ShrineApp());
+  runApp(OnebiteApp());
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'detail.dart';
+import 'rest_detail.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
 import 'favorite.dart';
@@ -156,7 +156,7 @@ class HomePage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Pages',
+                        'Username 님 안녕하세요',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -174,48 +174,66 @@ class HomePage extends StatelessWidget {
               ),
               title: Text('Home'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                print('drawer-home');
+                print('home, go to home page');
                 Navigator.pushNamed(context, '/home');
               },
             ),
             ListTile(
               leading: const Icon(
-                Icons.search,
+                Icons.calendar_today,
                 color: Colors.lightBlue,
               ),
-              title: Text('Search'),
+              title: Text('이벤트'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                print('drawer-search');
-                Navigator.pushNamed(context, '/search');
+                print('event, go to event_list page');
+                // Navigator.pushNamed(context, '/event_list');
               },
             ),
             ListTile(
               leading: const Icon(
-                Icons.location_city,
+                Icons.notifications,
                 color: Colors.lightBlue,
               ),
-              title: Text('Favorite Hotel'),
+              title: Text('공지사항'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                print('drawer-fav');
-                //send list of product
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FavoritePage(favhotels: products),
-                    ),
-                  );
-                // _pushSaved();
+                print('notice, go to nocie_list page');
+                Navigator.pushNamed(context, '/notice_list');
               },
             ),
+            ListTile(
+              leading: const Icon(
+                Icons.chat,
+                color: Colors.lightBlue,
+              ),
+              title: Text('건의사항'),
+              onTap: () {
+                print('suggestion, go to suggestion page');
+                Navigator.pushNamed(context, '/suggestion');
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.bug_report,
+                color: Colors.lightBlue,
+              ),
+              title: Text('버그신고'),
+              onTap: () {
+                print('bug report, go to bug_report page');
+                Navigator.pushNamed(context, '/bug_report');
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.exit_to_app,
+                color: Colors.lightBlue,
+              ),
+              title: Text('로그아웃'),
+              onTap: () {
+                print('log out, go to login page');
+                // Navigator.pushNamed(context, '/login');
+              },
+            ),
+
           ],
         ),
       ),

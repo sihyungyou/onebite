@@ -1,33 +1,29 @@
-// Copyright 2018-present the Flutter authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'home.dart';
 import 'login.dart';
 import 'search.dart';
-import 'detail.dart';
+import 'rest_detail.dart';
 import 'favorite.dart';
+import 'bug_report.dart';
+import 'suggestion.dart';
+import 'sign_inup.dart';
+import 'sign_up.dart';
+import 'notice_list.dart';
+import 'notice_detail.dart';
+import 'event_list.dart';
+import 'event_detail.dart';
+import 'history.dart';
+import 'rest_all.dart';
+import 'rest_detail.dart';
 
-class ShrineApp extends StatefulWidget {
+class OnebiteApp extends StatefulWidget {
   @override
-  ShrineAppState createState() {
-    return new ShrineAppState();
+  OnebiteAppState createState() {
+    return new OnebiteAppState();
   }
 }
 
-class ShrineAppState extends State<ShrineApp> {
+class OnebiteAppState extends State<OnebiteApp> {
 
 
   @override
@@ -38,30 +34,51 @@ class ShrineAppState extends State<ShrineApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shrine',
-      home: HomePage(),
+      // theme color 적용
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[800],
+        accentColor: Colors.cyan[600],
+      ),
 
+      // title: 'Shrine',
+      
+      // 앱 켰을 시, 루트 페이지 설정
+      home: HomePage(),
       initialRoute: '/home',
+
+      // 각 페이지별 루트 설정
       routes: {
-        // When we navigate to the "/home" route, build the HomePage Widget
         '/home': (context) => HomePage(),
         '/search': (context) => SearchPage(),
         '/detail': (context) => DetailPage(),
         '/favorite': (context) => FavoritePage(),
+        '/login': (context) => LoginPage(),
+        '/bug_report' : (context) => BugReportPage(),
+        // '/event_list' : (context) =>
+        // '/event_detail' : (context) =>
+        // '/history' : (context) =>
+        // '/notice_detail' : (context) =>
+        '/notice_list' : (context) => NoticeListPage(),
+        // '/rest_all' : (context) =>
+        // '/rest_detail' : (context) =>
+        '/suggestion' : (context) => SuggestionPage(),
+        // '/sign_inup' : (context) =>
+        // '/sign_up' : (context) =>
       },
-      onGenerateRoute: _getRoute,
+      // onGenerateRoute: _getRoute,  필요없을듯
     );
   }
+  // 얘도 필요없을 듯
+  // Route<dynamic> _getRoute(RouteSettings settings) {
+  //   if (settings.name != '/login') {
+  //     return null;
+  //   }
 
-  Route<dynamic> _getRoute(RouteSettings settings) {
-    if (settings.name != '/login') {
-      return null;
-    }
-
-    return MaterialPageRoute<void>(
-      settings: settings,
-      builder: (BuildContext context) => LoginPage(),
-      fullscreenDialog: true,
-    );
-  }
+  //   return MaterialPageRoute<void>(
+  //     settings: settings,
+  //     builder: (BuildContext context) => LoginPage(),
+  //     fullscreenDialog: true,
+  //   );
+  // }
 }
