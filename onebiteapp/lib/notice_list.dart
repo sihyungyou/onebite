@@ -1,85 +1,67 @@
 // 공지사항 리스트업
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'notice_detail.dart';
 
 class NoticeListPage extends StatefulWidget {
- @override
- _NoticeListPageState createState() {
-   return _NoticeListPageState();
- }
+  @override
+  _NoticeListPageState createState() => _NoticeListPageState();
 }
 
 class _NoticeListPageState extends State<NoticeListPage> {
- @override
- Widget build(BuildContext context) {
-   return Scaffold(
-     appBar: AppBar(title: Text('건의 사항')),
-     body: _buildBody(context),
-   );
- }
+  @override
+  Future _data;
 
-  // 지금 name, votes 두 필드로 이루어져있는데 여기서 
-  // name 이 공지사항제목
-  // votes -> date 으로 바꿔준 후, subtitle로 공지사항 업데이트 날짜
- Widget _buildBody(BuildContext context) {
-   return StreamBuilder<QuerySnapshot>(
-     stream: Firestore.instance.collection('dummys').snapshots(),
-     builder: (context, snapshot) {
-       if (!snapshot.hasData) return LinearProgressIndicator();
+  Future getPosts() async {
+    // instantiate my cloud firestore first
+    var firestore = Firestore.instance;
+    QuerySnapshot qn = await firestore.collection("notice").getDocuments();
+    return qn.documents;
+  }
 
-       return _buildList(context, snapshot.data.documents);
-     },
-   );
- }
+  navigateToDetail(DocumentSnapshot post) {
+    Navigator.push(context,MaterialPageRoute(builder: (context) => NoticeDetailPage(post: post,)));
+  }
 
- Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-   return ListView(
-     padding: const EdgeInsets.only(top: 20.0),
-     children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-   );
- }
+  @override
+  void initState() {
+    // future: getPosts() 로 하면 매번 notice detail 에서 돌아올 때에도 계속 execute함. 그걸 해결하기 위해서
+    super.initState();
+    _data = getPosts(); // now, instead of call getpost every time, the future can simply use _data! no more re-render
+  }
 
- Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-   final record = Record.fromSnapshot(data);
+  @override
+  Widget build(BuildContext context) {
 
-   return Padding(
-     key: ValueKey(record.name),
-     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-     child: Container(
-       decoration: BoxDecoration(
-         border: Border.all(color: Colors.grey),
-         borderRadius: BorderRadius.circular(5.0),
-       ),
-       child: ListTile(
-         title: Text(record.name),
-         trailing: Text(record.votes.toString()),
-         onTap: () => Firestore.instance.runTransaction((transaction) async {
-               final freshSnapshot = await transaction.get(record.reference);
-               final fresh = Record.fromSnapshot(freshSnapshot);
-
-               await transaction
-                   .update(record.reference, {'votes': fresh.votes + 1});
-             }),
-       ),
-     ),
-   );
- }
-}
-
-class Record {
- final String name;
- final int votes;
- final DocumentReference reference;
-
- Record.fromMap(Map<String, dynamic> map, {this.reference})
-     : assert(map['name'] != null),
-       assert(map['votes'] != null),
-       name = map['name'],
-       votes = map['votes'];
-
- Record.fromSnapshot(DocumentSnapshot snapshot)
-     : this.fromMap(snapshot.data, reference: snapshot.reference);
-
- @override
- String toString() => "Record<$name:$votes>";
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("공지사항"),
+      ),
+      body: Container(
+        child: FutureBuilder(
+            //  future: getPosts(),
+            future: _data,
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Text("Loading..."),
+                );
+              } else {
+                return ListView.builder(
+                  // 추가할 부분 : DB에서 가장 최근에 추가된 내용이 top으로 오도록 sorting
+                  itemCount: snapshot.data.length, // actual length of returned data from future
+                  itemBuilder: (_, index) {
+                    return ListTile(
+                      title: Text(snapshot.data[index].data["title"]),
+                      subtitle: Text(snapshot.data[index].data["date"]),
+                      onTap: () => navigateToDetail(snapshot.data[index]),
+                    );
+                  },
+                );
+              }
+            }),
+      ),
+    );
+  }
 }

@@ -58,7 +58,7 @@ class OnebiteAppState extends State<OnebiteApp> {
         // '/event_list' : (context) =>
         // '/event_detail' : (context) =>
         // '/history' : (context) =>
-        // '/notice_detail' : (context) =>
+        // '/notice_detail' : 이거는 notice_list에서 navigatetodetail 함수로 parameter 전달!
         '/notice_list' : (context) => NoticeListPage(),
         // '/rest_all' : (context) =>
         // '/rest_detail' : (context) =>
@@ -66,19 +66,7 @@ class OnebiteAppState extends State<OnebiteApp> {
         // '/sign_inup' : (context) =>
         // '/sign_up' : (context) =>
       },
-      // onGenerateRoute: _getRoute,  필요없을듯
     );
   }
-  // 얘도 필요없을 듯
-  // Route<dynamic> _getRoute(RouteSettings settings) {
-  //   if (settings.name != '/login') {
-  //     return null;
-  //   }
 
-  //   return MaterialPageRoute<void>(
-  //     settings: settings,
-  //     builder: (BuildContext context) => LoginPage(),
-  //     fullscreenDialog: true,
-  //   );
-  // }
 }
