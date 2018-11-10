@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'rest_detail.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 //hero animation class
 class PhotoHero extends StatelessWidget {
@@ -27,7 +29,11 @@ class PhotoHero extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  // anonymous login user object를 건네받기 위한 변수 선언
+  final FirebaseUser user;
 
+  // 전달받는 constructor
+  HomePage({this.user});
   List<Product> products = ProductsRepository.loadProducts(Category.all);
   
   //this is scaffoldkey for drawer openenr
@@ -154,8 +160,14 @@ class HomePage extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Container(
-                      child: Text(
-                        'Username 님 안녕하세요',
+                      child: 
+                      user.displayName == null ?                // 익명로그인의 경우
+                      Text(
+                        '안녕하세요',
+                        style: TextStyle(color: Colors.white),                        
+                      ) :
+                      Text(                                     // 구글/페이스북 로그인의 경우
+                        '${user.displayName} 님 안녕하세요',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

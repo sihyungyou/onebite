@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
-import 'search.dart';
 import 'rest_detail.dart';
 import 'favorite.dart';
 import 'bug_report.dart';
@@ -44,15 +43,15 @@ class OnebiteAppState extends State<OnebiteApp> {
       // title: 'Shrine',
       
       // 앱 켰을 시, 루트 페이지 설정
-      home: HomePage(),
-      initialRoute: '/home',
+      home: LoginPage(),
+      initialRoute: '/login',
 
       // 각 페이지별 루트 설정
       routes: {
         '/home': (context) => HomePage(),
-        '/search': (context) => SearchPage(),
-        '/detail': (context) => DetailPage(),
-        '/favorite': (context) => FavoritePage(),
+        // '/search': (context) => SearchPage(),
+        // '/detail': (context) => DetailPage(),
+        // '/favorite': (context) => FavoritePage(),
         '/login': (context) => LoginPage(),
         '/bug_report' : (context) => BugReportPage(),
         // '/event_list' : (context) =>
@@ -60,7 +59,7 @@ class OnebiteAppState extends State<OnebiteApp> {
         // '/history' : (context) =>
         // '/notice_detail' : 이거는 notice_list에서 navigatetodetail 함수로 parameter 전달!
         '/notice_list' : (context) => NoticeListPage(),
-        // '/rest_all' : (context) =>
+        '/rest_all' : (context) => RestAllPage(),
         // '/rest_detail' : (context) =>
         '/suggestion' : (context) => SuggestionPage(),
         // '/sign_inup' : (context) =>
