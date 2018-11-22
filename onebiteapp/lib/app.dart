@@ -34,12 +34,6 @@ class OnebiteAppState extends State<OnebiteApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       // theme color 적용
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
-      ),
-
       // title: 'Shrine',
       
       // 앱 켰을 시, 루트 페이지 설정
