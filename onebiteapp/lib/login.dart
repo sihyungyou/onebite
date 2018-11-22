@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Icon(Icons.camera, color: Colors.white),
                 Container(
-                  width: 200.0,
+//                  width: 200.0,
                   alignment: Alignment.center,
                   child: Text("Facebook계정으로 로그인", style: TextStyle(color: Colors.white)),
                 )
