@@ -22,6 +22,23 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  fonts:
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Regular.ttf
+        - asset: fonts/NotoSansCJKkr-Black.ttf
+          weight: 700
+        - asset: fonts/NotoSansCJKkr-DemiLight.ttf
+          weight: 300
+        - asset: fonts/NotoSansCJKkr-Light.ttf
+          weight: 200
+        - asset: fonts/NotoSansCJKkr-Medium.ttf
+          weight: 400
+        - asset: fonts/NotoSansCJKkr-Bold.ttf
+          weight: 600
+        - asset: fonts/NotoSansCJKkr-Thin.ttf
+          weight: 100
+
   uses-material-design: true
   assets:
     - images/0-0.jpeg

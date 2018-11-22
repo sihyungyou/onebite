@@ -39,7 +39,7 @@ class OnebiteAppState extends State<OnebiteApp> {
       // 앱 켰을 시, 루트 페이지 설정
       home: LoginPage(),
       initialRoute: '/login',
-
+      theme: ThemeData(fontFamily: 'NotoSans'),
       // 각 페이지별 루트 설정
       routes: {
         '/home': (context) => HomePage(),

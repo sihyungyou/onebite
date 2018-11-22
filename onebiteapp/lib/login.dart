@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final String backgroundImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%202.png?alt=media&token=bc6f5970-8b98-48cd-93d8-fd5b3a5de0dc';
   final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
   final Color facebookButton = Color.fromRGBO(63, 83, 139, 1);
+  final Color googleText = Color.fromRGBO(241, 67, 54, 1);
   final Color googleButton = Colors.white;
   Future<FirebaseUser> _testSignInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -52,10 +53,6 @@ class _LoginPageState extends State<LoginPage> {
     FirebaseUser user = await firebaseAuth.signInAnonymously();
     print("Signed in ${user.uid}");
     return user;
-  }
-  void signOut() {
-    firebaseAuth.signOut();
-    print("Signed Out!");
   }
 
 
@@ -97,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("Facebook계정으로 로그인", style: TextStyle(color: Colors.white)),
+                            child: Text("Facebook 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -128,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("Google 계정으로 로그인", style: TextStyle(color: Color.fromRGBO(255, 112, 74, 1))),
+                            child: Text("Google 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: googleText)),
                           )
                         ],
                       ),
@@ -138,7 +135,12 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
-
+                        _testSignInWithGoogle().then((FirebaseUser user){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(user: user,)))
+                              .catchError((e) => print(e));
+                        });
+                        
                       }
                   ),
                 ),
@@ -158,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("한입만 계정으로 로그인", style: TextStyle(color: Colors.white)),
+                            child: Text("한입만 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -187,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("로그인 없이 주문하기", style: TextStyle(color: Colors.white)),
+                            child: Text("로그인 없이 주문하기", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -197,7 +199,11 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
-
+                        signinAnon().then((FirebaseUser user){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(user: user, )))
+                              .catchError((e) => print(e));
+                        });
                       }
                   ),
                 ),
