@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
   final Color facebookButton = Color.fromRGBO(63, 83, 139, 1);
   final Color googleButton = Colors.white;
+  final Color googleText = Color.fromRGBO(241, 67, 54, 1);
   Future<FirebaseUser> _testSignInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       idToken: googleAuth.idToken,
     );
     print('User Name : ${user.displayName}');
-  
+
     assert(user.email != null);
     assert(user.displayName != null);
     assert(!user.isAnonymous);
@@ -67,11 +68,11 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Container(
             decoration: new BoxDecoration(
-              image: DecorationImage(
+                image: DecorationImage(
                   image: NetworkImage(backgroundImage),
                   fit: BoxFit.cover,
 
-              )
+                )
             ),
           ),
           ListView(
@@ -97,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("Facebook계정으로 로그인", style: TextStyle(color: Colors.white)),
+                            child: Text("Facebook 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("Google 계정으로 로그인", style: TextStyle(color: Color.fromRGBO(255, 112, 74, 1))),
+                            child: Text("Google 계정으로 로그인", style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w800, color: googleText)),
                           )
                         ],
                       ),
@@ -138,6 +139,11 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
+                        _testSignInWithGoogle().then((FirebaseUser user){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(user:user)))
+                              .catchError((e) => print(e));
+                        });
 
                       }
                   ),
@@ -158,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("한입만 계정으로 로그인", style: TextStyle(color: Colors.white)),
+                            child: Text("한입만 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -187,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                           Container(
                             width: 200.0,
                             alignment: Alignment.center,
-                            child: Text("로그인 없이 주문하기", style: TextStyle(color: Colors.white)),
+                            child: Text("로그인 없이 주문하기", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
                           )
                         ],
                       ),
@@ -197,7 +203,11 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
-
+                        signinAnon().then((FirebaseUser user){
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(user:user)))
+                              .catchError((e) => print(e));
+                        });
                       }
                   ),
                 ),
@@ -210,3 +220,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
