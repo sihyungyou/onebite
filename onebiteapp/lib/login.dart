@@ -140,11 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
-                        // _testSignInWithGoogle().then((FirebaseUser user){
-                        //   Navigator.of(context).push(MaterialPageRoute(
-                        //       builder: (BuildContext context) => HomePage(user:user)))
-                        //       .catchError((e) => print(e));
-                        // });
                         _testSignInWithGoogle().then((FirebaseUser user){
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => RestAllPage(user:user)))
@@ -210,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         signinAnon().then((FirebaseUser user){
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(user:user)))
+                              builder: (BuildContext context) => RestAllPage(user:user)))
                               .catchError((e) => print(e));
                         });
                       }

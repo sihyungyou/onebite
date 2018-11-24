@@ -24,7 +24,15 @@ class _RestAllPageState extends State<RestAllPage> {
       appBar: AppBar(
         title: Text("전체 식당")
       ),
-      body: new RestList(),
+      // body: new RestList(),
+      body: new Column(
+        children: <Widget>[
+          Text('${user.displayName}, 리스트에 공간확보 테스팅'),
+          Expanded(
+            child: RestList(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -39,8 +47,17 @@ class RestList extends StatelessWidget {
         return new ListView(
           children: snapshot.data.documents.map((document) {
             return new ListTile(
+              // 사진
+              // 업체명
+              // 영업시간
+              // 배달비 여부
+              // favorite icon
               title: new Text(document['name']),
               subtitle: new Text(document['time']),
+              onTap: () {
+                // go to rest-detail page
+
+              },
             );
           }).toList()
         );
