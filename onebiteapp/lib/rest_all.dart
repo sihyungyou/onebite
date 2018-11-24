@@ -18,21 +18,52 @@ class _RestAllPageState extends State<RestAllPage> {
 
 
 
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("전체 식당")
+  //     ),
+  //     // body: new RestList(),
+  //     body: new Column(
+  //       children: <Widget>[
+  //         Text('${user.displayName}, 리스트에 공간확보 테스팅'),
+  //         Expanded(
+  //           child: RestList(),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("전체 식당")
-      ),
-      // body: new RestList(),
-      body: new Column(
-        children: <Widget>[
-          Text('${user.displayName}, 리스트에 공간확보 테스팅'),
-          Expanded(
-            child: RestList(),
+    return MaterialApp(
+      home : DefaultTabController(
+        length: 5,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(text: '패스트푸드'),
+                Tab(text: '한식'),
+                Tab(text: '중식'),
+                Tab(text: '일식'),
+                Tab(text: '분식'),
+              ],
+            ),
+            title: Text('전체 식당'),
           ),
-        ],
-      ),
+          body: TabBarView(
+            children: <Widget>[
+              RestList(),
+              Icon(Icons.directions_car),
+              Icon(Icons.directions_transit),
+              Icon(Icons.directions_bike),
+              Icon(Icons.directions_boat),
+            ],
+          ),
+        ),
+      )
     );
   }
 }
@@ -46,6 +77,8 @@ class RestList extends StatelessWidget {
         if(!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.documents.map((document) {
+            print(document['type']);
+            if (document['type'] == 'korean') print('true'); else print('false');
             return new ListTile(
               // 사진
               // 업체명
@@ -56,7 +89,6 @@ class RestList extends StatelessWidget {
               subtitle: new Text(document['time']),
               onTap: () {
                 // go to rest-detail page
-
               },
             );
           }).toList()
@@ -65,3 +97,31 @@ class RestList extends StatelessWidget {
     );
   }
 }
+
+// class KoreanList extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context){
+//     return new StreamBuilder(
+//       stream: Firestore.instance.collection('restaurants').snapshots(),
+//       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//         if(!snapshot.hasData) return new Text('Loading...');
+//         return new ListView(
+//           children: snapshot.data.documents.map((document) {
+//             return new ListTile(
+//               // 사진
+//               // 업체명
+//               // 영업시간
+//               // 배달비 여부
+//               // favorite icon
+//               title: new Text(document['name']),
+//               subtitle: new Text(document['time']),
+//               onTap: () {
+//                 // go to rest-detail page
+//               },
+//             );
+//           }).toList()
+//         );
+//       },
+//     );
+//   }
+// }
