@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'home.dart';
+import 'rest_all.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -139,12 +140,16 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(20.0)
                       ),
                       onPressed: () {
+                        // _testSignInWithGoogle().then((FirebaseUser user){
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (BuildContext context) => HomePage(user:user)))
+                        //       .catchError((e) => print(e));
+                        // });
                         _testSignInWithGoogle().then((FirebaseUser user){
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(user:user)))
+                              builder: (BuildContext context) => RestAllPage(user:user)))
                               .catchError((e) => print(e));
                         });
-
                       }
                   ),
                 ),
