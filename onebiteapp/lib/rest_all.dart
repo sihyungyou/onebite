@@ -55,8 +55,8 @@ class _RestAllPageState extends State<RestAllPage> {
           ),
           body: TabBarView(
             children: <Widget>[
-              RestList(),
-              Icon(Icons.directions_car),
+              FastList(),
+              KoreanList(),
               Icon(Icons.directions_transit),
               Icon(Icons.directions_bike),
               Icon(Icons.directions_boat),
@@ -68,7 +68,7 @@ class _RestAllPageState extends State<RestAllPage> {
   }
 }
 
-class RestList extends StatelessWidget {
+class KoreanList extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return new StreamBuilder(
@@ -78,8 +78,8 @@ class RestList extends StatelessWidget {
         return new ListView(
           children: snapshot.data.documents.map((document) {
             print(document['type']);
-            if (document['type'] == 'korean') print('true'); else print('false');
-            return new ListTile(
+            if (document['type'] == 'korean') {
+              return new ListTile(
               // 사진
               // 업체명
               // 영업시간
@@ -91,6 +91,12 @@ class RestList extends StatelessWidget {
                 // go to rest-detail page
               },
             );
+            } else {
+              return ListTile(
+                title: new Text('not korean'),
+                subtitle: new Text('how to get this out of listview..'),
+              );
+            }
           }).toList()
         );
       },
@@ -98,30 +104,38 @@ class RestList extends StatelessWidget {
   }
 }
 
-// class KoreanList extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context){
-//     return new StreamBuilder(
-//       stream: Firestore.instance.collection('restaurants').snapshots(),
-//       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//         if(!snapshot.hasData) return new Text('Loading...');
-//         return new ListView(
-//           children: snapshot.data.documents.map((document) {
-//             return new ListTile(
-//               // 사진
-//               // 업체명
-//               // 영업시간
-//               // 배달비 여부
-//               // favorite icon
-//               title: new Text(document['name']),
-//               subtitle: new Text(document['time']),
-//               onTap: () {
-//                 // go to rest-detail page
-//               },
-//             );
-//           }).toList()
-//         );
-//       },
-//     );
-//   }
-// }
+class FastList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    return new StreamBuilder(
+      stream: Firestore.instance.collection('restaurants').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if(!snapshot.hasData) return new Text('Loading...');
+        return new ListView(
+          children: snapshot.data.documents.map((document) {
+            print(document['type']);
+            if (document['type'] == 'fastfood') {
+              return new ListTile(
+              // 사진
+              // 업체명
+              // 영업시간
+              // 배달비 여부
+              // favorite icon
+              title: new Text(document['name']),
+              subtitle: new Text(document['time']),
+              onTap: () {
+                // go to rest-detail page
+              },
+            );
+            } else {
+              return ListTile(
+                title: new Text('not fastfood'),
+                subtitle: new Text('how to get this out of listview..'),
+              );
+            }
+          }).toList()
+        );
+      },
+    );
+  }
+}
