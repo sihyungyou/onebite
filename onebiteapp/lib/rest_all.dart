@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'rest_detail.dart';
 
 
 class RestAllPage extends StatefulWidget {
@@ -13,28 +14,9 @@ class RestAllPage extends StatefulWidget {
 
 class _RestAllPageState extends State<RestAllPage> {
   final FirebaseUser user;
-
   _RestAllPageState({Key key, this.user});
 
 
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text("전체 식당")
-  //     ),
-  //     // body: new RestList(),
-  //     body: new Column(
-  //       children: <Widget>[
-  //         Text('${user.displayName}, 리스트에 공간확보 테스팅'),
-  //         Expanded(
-  //           child: RestList(),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,6 +51,8 @@ class _RestAllPageState extends State<RestAllPage> {
 }
 
 class KoreanList extends StatelessWidget {
+  final FirebaseUser user;
+  KoreanList({Key key, this.user});
   @override
   Widget build(BuildContext context){
     return new StreamBuilder(
@@ -77,7 +61,6 @@ class KoreanList extends StatelessWidget {
         if(!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.documents.map((document) {
-            print(document['type']);
             if (document['type'] == 'korean') {
               return new ListTile(
               // 사진
@@ -88,7 +71,12 @@ class KoreanList extends StatelessWidget {
               title: new Text(document['name']),
               subtitle: new Text(document['time']),
               onTap: () {
-                // go to rest-detail page
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => DetailPage(user : user),
+                //   )
+                // );
               },
             );
             } else {
@@ -113,7 +101,6 @@ class FastList extends StatelessWidget {
         if(!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.documents.map((document) {
-            print(document['type']);
             if (document['type'] == 'fastfood') {
               return new ListTile(
               // 사진
@@ -124,7 +111,7 @@ class FastList extends StatelessWidget {
               title: new Text(document['name']),
               subtitle: new Text(document['time']),
               onTap: () {
-                // go to rest-detail page
+                
               },
             );
             } else {

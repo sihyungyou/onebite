@@ -58,14 +58,14 @@ class HomePage extends StatelessWidget {
               child: PhotoHero(
                 width: 300.0,
                 photo: 'images/' + product.assetName,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailPage(hotels: product),
-                    ),
-                  );
-                },
+                // onTap: () {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => DetailPage(hotels: product),
+                //     ),
+                //   );
+                // },
               ),
             ),
             Expanded(
@@ -109,19 +109,19 @@ class HomePage extends StatelessWidget {
                             textColor: Colors.lightBlue,
                             //more을 누르면 hero 라면 이 flatbutton에서는 onpressed 에 히어로 액션걸어줘야함
                             child: Text('more'),
-                            onPressed: () {
-                              print('flatbutton-more');
-                              print(product.assetName);
-                              print(product.assetPackage);
-                              print(product.id);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailPage(hotels: product),
-                                ),
-                              );
-                            },
+                            // onPressed: () {
+                            //   print('flatbutton-more');
+                            //   print(product.assetName);
+                            //   print(product.assetPackage);
+                            //   print(product.id);
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) =>
+                            //           DetailPage(hotels: product),
+                            //     ),
+                            //   );
+                            // },
                           ),
                         )
                       ],
@@ -240,7 +240,7 @@ class HomePage extends StatelessWidget {
               ),
               title: Text('로그아웃'),
               onTap: () {
-                print('log out, go to login page');
+                // print('log out, go to login page');
                 Navigator.pushNamed(context, '/login');
               },
             ),

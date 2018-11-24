@@ -13,7 +13,6 @@ import 'event_list.dart';
 import 'event_detail.dart';
 import 'history.dart';
 import 'rest_all.dart';
-import 'rest_detail.dart';
 
 class OnebiteApp extends StatefulWidget {
   @override
@@ -44,7 +43,7 @@ class OnebiteAppState extends State<OnebiteApp> {
       routes: {
         '/home': (context) => HomePage(),
         // '/search': (context) => SearchPage(),
-        // '/detail': (context) => DetailPage(),
+        '/detail': (context) => DetailPage(),
         // '/favorite': (context) => FavoritePage(),
         '/login': (context) => LoginPage(),
         '/bug_report' : (context) => BugReportPage(),
