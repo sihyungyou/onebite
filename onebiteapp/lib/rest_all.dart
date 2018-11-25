@@ -61,6 +61,7 @@ class _RestAllPageState extends State<RestAllPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        theme: ThemeData(fontFamily: 'NotoSans', primaryColor: Color.fromRGBO(255, 112, 74, 1)),
         home : DefaultTabController(
           length: 5,
           child: Scaffold(
