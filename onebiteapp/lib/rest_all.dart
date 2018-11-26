@@ -24,7 +24,7 @@ class _RestAllPageState extends State<RestAllPage> {
 
 
 
-  void _buildList() async {
+  Future _buildList() async {
     print("buildlist in");
     QuerySnapshot querySnapshot = await Firestore.instance.collection(
         "restaurants").getDocuments();
@@ -33,15 +33,18 @@ class _RestAllPageState extends State<RestAllPage> {
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
       print(restaurant.name);
-      if (restaurant.type == 'korean')
-        korean.add(restaurant);
-      else if (restaurant.type == 'chinese')
-        chinese.add(restaurant);
-      else if (restaurant.type == 'japanese')
-        japanese.add(restaurant);
-      else if (restaurant.type == 'bookSick')
-        boonSick.add(restaurant);
-      else if (restaurant.type == 'fastFood') fastFood.add(restaurant);
+      setState(() {
+        if (restaurant.type == 'korean')
+          korean.add(restaurant);
+        else if (restaurant.type == 'chinese')
+          chinese.add(restaurant);
+        else if (restaurant.type == 'japanese')
+          japanese.add(restaurant);
+        else if (restaurant.type == 'bookSick')
+          boonSick.add(restaurant);
+        else if (restaurant.type == 'fastFood') fastFood.add(restaurant);
+      });
+
     }
   }
 
@@ -53,6 +56,7 @@ class _RestAllPageState extends State<RestAllPage> {
     super.initState();
     print("init state yes");
     _buildList();
+
     print("init state over");
 
   }
