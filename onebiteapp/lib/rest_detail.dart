@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Shrine/rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 
 class DetailPage extends StatefulWidget {
@@ -16,29 +17,43 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
    final FirebaseUser user;
    final Restaurant restaurant;
    List<Menu> menu = List<Menu>();
+   List<Review> review = List<Review>();
    bool favorited = false;
    final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
+   final Color writeFloatingButton = Color.fromRGBO(21, 170, 210, 1);
+   final String iconWrite = "https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/detailPage%2Ficon_write.png?alt=media&token=770d2c62-362e-4ec4-af72-51b1e318dade";
+   var rating = 0.0;
+   TabController _controller;
 
    TextStyle _titleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0);
    TextStyle _bodyStyle = TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0);
    TextStyle _tabTitleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black87);
-
    TextStyle _orderButtonStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
    DetailPageState({Key key, this.user, this.restaurant});
 
    void _buildList() async {
-     QuerySnapshot querySnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('menu').getDocuments();
-     var list = querySnapshot.documents;
-     print(list.length);
-     for (var i = 0; i < list.length; i++) {
-       menu.add(Menu.fromSnapshot(list[i]));
-
+     QuerySnapshot menuSnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('menu').getDocuments();
+     var menuList = menuSnapshot.documents;
+     print(menuList.length);
+     for (var i = 0; i < menuList.length; i++) {
+       menu.add(Menu.fromSnapshot(menuList[i]));
        print(menu[i].name);
        print(menu[i].price);
 
      }
+
+     QuerySnapshot reviewSnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('review').getDocuments();
+     var reviewList = reviewSnapshot.documents;
+     print(reviewList.length);
+     for (var i = 0; i < reviewList.length; i++) {
+       review.add(Review.fromSnapshot(reviewList[i]));
+       print(review[i].author);
+       print(review[i].date);
+       print(review[i].rate);
+       print(review[i].context);
+
+     }
    }
-   TabController _controller;
 
    @override
   void initState() {
@@ -60,6 +75,14 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Image.network(iconWrite),
+        backgroundColor: writeFloatingButton,
+        onPressed: (){
+
+        },
+
+      ),
       bottomNavigationBar: BottomAppBar(
         color: onebiteButton,
         child: FlatButton(
@@ -96,7 +119,24 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 SizedBox(height: 20.0),
                 Text(restaurant.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w800)),
                 SizedBox(height: 5.0),
-                Text(restaurant.rate, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SmoothStarRating(
+                      rating: double.parse(restaurant.rate),
+                      size: 25,
+                      starCount: 5,
+                      color: Colors.yellow,
+                      borderColor: Colors.orange,
+
+                    ),
+                    SizedBox(width: 5.0),
+                    Text(restaurant.rate, textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
+
+                  ],
+                ),
+
+
                 Container(
                   height: 35.0,
                   child:  Row(
@@ -226,9 +266,49 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                     SizedBox(height: 15.0),
                   ],
                 ),
-                ListView(
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
+                  child: ListView.builder(
+                      itemCount: review.length,
+                      itemBuilder: (context, index){
+                        return ListTile(
+                          title: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(review[index].author, style: _tabTitleStyle),
+                                  SizedBox(width: 10.0),
+                                  Text(review[index].date, style: _bodyStyle),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  SmoothStarRating(
+                                    rating: double.parse(review[index].rate),
+                                    size: 25,
+                                    starCount: 5,
+                                    color: Colors.orange,
+                                    borderColor: Colors.orange,
 
-                ),
+                                  ),
+                                  SizedBox(width: 5.0),
+                                  Text(review[index].rate, style: _bodyStyle),
+
+                                ],
+                              ),
+                              SizedBox(height: 20.0)
+                            ],
+                          ),
+                          subtitle: SizedBox(
+                            height: 60.0,
+                            child: Text(review[index].context, style: _bodyStyle),
+                          ),
+                        );
+                      }
+
+                  ),
+                )
+
 
               ],
             ),
@@ -261,3 +341,30 @@ class Menu {
 
 
 }
+
+class Review {
+  final String author;
+  final String date;
+  final String rate;
+  final String context;
+  final DocumentReference reference;
+
+  Review(this.author, this.date, this.rate, this.context, this.reference);
+
+  Review.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['author'] != null),
+        assert(map['date'] != null),
+        assert(map['rate'] != null),
+        assert(map['context'] != null),
+        author = map['author'],
+        date = map['date'],
+        rate = map['rate'],
+        context = map['context'];
+
+
+  Review.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+
+}
+

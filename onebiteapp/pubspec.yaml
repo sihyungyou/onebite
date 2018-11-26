@@ -13,6 +13,8 @@ dependencies:
   url_launcher: ^4.0.1
   cupertino_icons: ^0.1.0
   shrine_images: 1.0.0
+  smooth_star_rating: 1.0.1
+
 
 dev_dependencies:
   flutter_test:
