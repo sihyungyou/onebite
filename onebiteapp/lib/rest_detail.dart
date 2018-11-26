@@ -6,7 +6,6 @@ import 'package:Shrine/rest_all.dart';
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
   final Restaurant restaurant;
-  // final DocumentSnapshot restaurant;
   DetailPage({Key key, this.user, this.restaurant});
   DetailPageState createState() => DetailPageState(user: this.user, restaurant: this.restaurant);
 }
@@ -14,7 +13,6 @@ class DetailPage extends StatefulWidget {
 class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin{
    final FirebaseUser user;
    final Restaurant restaurant;
-  // final DocumentSnapshot restaurant;
    List<Menu> menu = List<Menu>();
    bool favorited = false;
    final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
