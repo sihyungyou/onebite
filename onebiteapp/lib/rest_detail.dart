@@ -5,15 +5,17 @@ import 'package:Shrine/rest_all.dart';
 
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
-  final Restaurant restaurant;
+  // final Restaurant restaurant;
+  final DocumentSnapshot restaurant;
   DetailPage({Key key, this.user, this.restaurant});
   DetailPageState createState() => DetailPageState(user: this.user, restaurant: this.restaurant);
 }
 
 class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin{
    final FirebaseUser user;
-   final Restaurant restaurant;
-   List<Menu> menu = List<Menu>();
+  //  final Restaurant restaurant;
+  final DocumentSnapshot restaurant;
+  //  List<Menu> menu = List<Menu>();
    bool favorited = false;
    final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
 
@@ -24,23 +26,23 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
    TextStyle _orderButtonStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
    DetailPageState({Key key, this.user, this.restaurant});
 
-   void _buildList() async {
-     QuerySnapshot querySnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('menu').getDocuments();
-     var list = querySnapshot.documents;
-     print(list.length);
-     for (var i = 0; i < list.length; i++) {
-       menu.add(Menu.fromSnapshot(list[i]));
-       print(menu[i].name);
-       print(menu[i].price);
+  //  void _buildList() async {
+  //    QuerySnapshot querySnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('menu').getDocuments();
+  //    var list = querySnapshot.documents;
+  //    print(list.length);
+  //    for (var i = 0; i < list.length; i++) {
+  //      menu.add(Menu.fromSnapshot(list[i]));
+  //      print(menu[i].name);
+  //      print(menu[i].price);
 
-     }
-   }
+  //    }
+  //  }
    TabController _controller;
 
    @override
   void initState() {
-    // TODO: implement initState
-    _buildList();
+
+    // _buildList();
     _controller = new TabController(length: 2, vsync: this);
 
     super.initState();
@@ -71,6 +73,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             alignment: Alignment.topLeft,
             child: IconButton(
               icon: Icon(Icons.arrow_back, color: onebiteButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ),
           Padding(
@@ -78,9 +83,11 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0),
-                Text(restaurant.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w800)),
+                // Text(restaurant.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w800)),
+                Text(restaurant["name"], textAlign: TextAlign.center, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w800)),
                 SizedBox(height: 5.0),
-                Text(restaurant.rate, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500)),
+                // Text(restaurant.rate, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500)),
+                Text(restaurant["rate"], textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500)),
                 Container(
                   height: 35.0,
                   child:  Row(
@@ -110,7 +117,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                       width: 100.0,
                       child: Text("배달시간", style: _titleStyle),
                     ),
-                    Text(restaurant.time, style: _bodyStyle),
+                    // Text(restaurant.time, style: _bodyStyle),
+                    Text(restaurant["time"], style: _bodyStyle),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -120,7 +128,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                       width: 100.0,
                       child: Text("배달비", style: _titleStyle),
                     ),
-                    Text(restaurant.deliveryFee + "원", style: _bodyStyle),
+                    // Text(restaurant.deliveryFee + "원", style: _bodyStyle),
+                    Text('${restaurant["delivery fee"]}' + "원", style: _bodyStyle),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -130,7 +139,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                       width: 100.0,
                       child: Text("최소주문금액", style: _titleStyle),
                     ),
-                    Text(restaurant.minimumOrder + "원", style: _bodyStyle),
+                    // Text(restaurant.minimumOrder + "원", style: _bodyStyle),
+                    Text('${restaurant["minimum order"]}' + "원", style: _bodyStyle),
                   ],
                 ),
                 SizedBox(height: 15.0),
@@ -161,16 +171,21 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[
+
+                // 메뉴
+                // 여기 menu(collection) -> random id(document) -> name(field) 로 접근 해야 함.
                 ListView.builder(
-                    itemCount: menu.length,
+                    // itemCount: restaurant
                     itemBuilder: (context, index){
                       return ListTile(
-                        title: Text(menu[index].name),
-                        subtitle: Text(menu[index].price + "원"),
+                        // title: Text(menu[index].name),
+                        // title: Text(restaurant["menu"].data["yZzR0SXi8UefIWb8ITzF"].data["name"]),
+                        // subtitle: Text(menu[index].price + "원"),
                       );
                     }
-
                 ),
+
+                // 영업 정보
                 ListView(
                   padding : EdgeInsets.symmetric(horizontal: 20.0),
                   children: <Widget>[
@@ -184,7 +199,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                           width: 100.0,
                           child: Text("배달시간", style: _titleStyle),
                         ),
-                        Text(restaurant.time, style: _bodyStyle),
+                        // Text(restaurant.time, style: _bodyStyle),
+                        Text(restaurant["time"], style: _bodyStyle),
                       ],
                     ),
                     SizedBox(height: 10.0),
@@ -194,7 +210,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                           width: 100.0,
                           child: Text("휴무일", style: _titleStyle),
                         ),
-                        Text(restaurant.closed, style: _bodyStyle),
+                        // Text(restaurant.closed, style: _bodyStyle),
+                        Text(restaurant["closed"], style: _bodyStyle),
                       ],
                     ),
                     SizedBox(height: 10.0),
@@ -204,12 +221,15 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                           width: 100.0,
                           child: Text("전화번호", style: _titleStyle),
                         ),
-                        Text(restaurant.phone, style: _bodyStyle),
+                        // Text(restaurant.phone, style: _bodyStyle),
+                        Text(restaurant["phone"], style: _bodyStyle),
                       ],
                     ),
                     SizedBox(height: 15.0),
                   ],
                 ),
+
+                // 리뷰
                 ListView(
 
                 ),
@@ -226,22 +246,22 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   }
 }
 
-class Menu {
-  final String name;
-  final String price;
-  final DocumentReference reference;
+// class Menu {
+//   final String name;
+//   final String price;
+//   final DocumentReference reference;
 
-  Menu(this.name, this.price, this.reference);
+//   Menu(this.name, this.price, this.reference);
 
-  Menu.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        assert(map['price'] != null),
-        name = map['name'],
-        price = map['price'];
-
-
-  Menu.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+//   Menu.fromMap(Map<String, dynamic> map, {this.reference})
+//       : assert(map['name'] != null),
+//         assert(map['price'] != null),
+//         name = map['name'],
+//         price = map['price'];
 
 
-}
+//   Menu.fromSnapshot(DocumentSnapshot snapshot)
+//       : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+
+// }
