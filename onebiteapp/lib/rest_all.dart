@@ -1,4 +1,12 @@
 // 전체식당
+// search
+// tab controller 내리기
+// reload 문제 해결
+// 사진 == logo
+// 배달비 여부 아이콘
+// favorite 여부 아이콘
+// future builder 
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,35 +32,40 @@ class _RestAllPageState extends State<RestAllPage> {
 
 
 
-  void _buildList() async {
-    print("buildlist in");
-    QuerySnapshot querySnapshot = await Firestore.instance.collection(
-        "restaurants").getDocuments();
-    var list = querySnapshot.documents;
-    print(list.length);
-    for (var i = 0; i < list.length; i++) {
-      final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
-      print(restaurant.name);
-      if (restaurant.type == 'korean')
-        korean.add(restaurant);
-      else if (restaurant.type == 'chinese')
-        chinese.add(restaurant);
-      else if (restaurant.type == 'japanese')
-        japanese.add(restaurant);
-      else if (restaurant.type == 'bookSick')
-        boonSick.add(restaurant);
-      else if (restaurant.type == 'fastFood') fastFood.add(restaurant);
-    }
-  }
+  // void _buildList() async {
+  //   print("buildlist in");
+  //   QuerySnapshot querySnapshot = await Firestore.instance.collection(
+  //       "restaurants").getDocuments();
+  //   var list = querySnapshot.documents;
+  //   print(list.length);
+  //   for (var i = 0; i < list.length; i++) {
+  //     final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
+  //     print(restaurant.name);
+  //     if (restaurant.type == 'korean')
+  //       korean.add(restaurant);
+  //     else if (restaurant.type == 'chinese')
+  //       chinese.add(restaurant);
+  //     else if (restaurant.type == 'japanese')
+  //       japanese.add(restaurant);
+  //     else if (restaurant.type == 'bookSick')
+  //       boonSick.add(restaurant);
+  //     else if (restaurant.type == 'fastFood') fastFood.add(restaurant);
+  //   }
+  // }
 
+  Future getPosts() async {
+    print("getpost");
+    var firestore = Firestore.instance;
+    QuerySnapshot qn = await firestore.collection("restaurants").getDocuments();
+    return qn.documents;
+  }
 
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print("init state yes");
-    _buildList();
+    // _buildList();
     print("init state over");
 
   }
@@ -76,6 +89,15 @@ class _RestAllPageState extends State<RestAllPage> {
                 ],
               ),
               title: Text('전체 식당'),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    // go to add data
+                    Navigator.pushNamed(context, '/add');
+                  },
+                  ),
+              ],
             ),
             body: TabBarView(
               children: <Widget>[
