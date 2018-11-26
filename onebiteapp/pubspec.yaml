@@ -10,10 +10,7 @@ dependencies:
   google_sign_in: ^3.2.2
   firebase_auth: ^0.6.2+1
   intl: ^0.15.6
-  # flutter_localizations:
-  #   sdk: flutter
-
-
+  url_launcher: ^4.0.1
   cupertino_icons: ^0.1.0
   shrine_images: 1.0.0
 
