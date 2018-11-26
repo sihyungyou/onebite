@@ -74,6 +74,12 @@ class AddPageState extends State<AddPage> {
               .setData(({
                 'name' : '${this.name}',
                 'closed' : '${this.closed}',
+                'delivery fee': '${this.deliveryFee}',
+                'minimum order': '${this.minimumOrder}',
+                'type' : '${this.type}',
+                'phone' : '${this.phone}',
+                'rate' : '${this.rate}',
+                'time' : '${this.time}'
                 }));
               Firestore.instance.collection('restaurant').document(wordPair.toString()).collection('menu').document(wordPair2.toString())
               .setData(({
@@ -104,45 +110,87 @@ class AddPageState extends State<AddPage> {
                       children: <Widget>[
                         TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'name',
+                              labelText: 'name ex) 달인의 찜닭',
                             ),
-                            onSaved: (String newName) {
-                              this.name = newName;
+                            onSaved: (String str) {
+                              this.name = str;
                             }),
                         TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'closed',
+                              labelText: 'closed ex) 첫째, 셋째 주 월요일',
                             ),
-                            onSaved: (String newClosed) {
-                              this.closed = newClosed;
+                            onSaved: (String str) {
+                              this.closed = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top menu1',
+                              labelText: 'delivery fee ex) 2,000',
                             ),
-                            onSaved: (String newTopmenu) {
-                              this.topmenu1 = newTopmenu;
+                            onSaved: (String str) {
+                              this.deliveryFee = str;
+                            }),
+                             TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'phone ex) 054-234-9344',
+                            ),
+                            onSaved: (String str) {
+                              this.phone = str;
+                            }),
+                             TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'rate ex) 4.5',
+                            ),
+                            onSaved: (String str) {
+                              this.rate = str;
+                            }),
+                             TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'time ex) 17:00 ~ 22:00',
+                            ),
+                            onSaved: (String str) {
+                              this.time = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top price1',
+                              labelText: 'minimum order ex) 15,000',
                             ),
-                            onSaved: (String newTopprice) {
-                              this.topprice1 = newTopprice;
+                            onSaved: (String str) {
+                              this.minimumOrder = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'menu1',
+                              labelText: 'type ex) fastfood, korean, chinese, japanese, boonsik',
                             ),
-                            onSaved: (String newMenu) {
-                              this.menu1 = newMenu;
+                            onSaved: (String str) {
+                              this.type = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'menu price1',
+                              labelText: 'top menu1 ex) 허브순살치킨',
                             ),
-                            onSaved: (String newMenuprice) {
-                              this.price1 = newMenuprice;
+                            onSaved: (String str) {
+                              this.topmenu1 = str;
+                            }),
+                            TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'top price1 ex) 15,000',
+                            ),
+                            onSaved: (String str) {
+                              this.topprice1 = str;
+                            }),
+                            TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'menu1 ex) 양념 치킨',
+                            ),
+                            onSaved: (String str) {
+                              this.menu1 = str;
+                            }),
+                            TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'menu price1 ex) 15,000',
+                            ),
+                            onSaved: (String str) {
+                              this.price1 = str;
                             }),
                       ],
                     )),
