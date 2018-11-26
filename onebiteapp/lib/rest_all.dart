@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'rest_detail.dart';
+import 'app.dart';
 
 
 class RestAllPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class RestAllPage extends StatefulWidget {
 }
 
 class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStateMixin {
+
   TextStyle _tabTitleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black87);
   TextStyle _titleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0);
   TabController _controller;
@@ -80,6 +82,7 @@ class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold (
       appBar: AppBar(
         title: Text('전체 식당', 
@@ -98,6 +101,10 @@ class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStat
         children: <Widget>[
           new Container(
           child: new TabBar(
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(width: 2.0, color: theme.primaryColor ),
+              // insets: EdgeInsets.symmetric(horizontal: 16.0)
+            ),
             controller: _controller,
             tabs: <Widget>[
               new Tab(
@@ -141,11 +148,16 @@ class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStat
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (_, index) {
+                          print('패스트푸드 index');
+                          print('${index}');
                           if (snapshot.data[index].data["type"] == "fastfood") {
                             return ListTile(
                               title: Text(snapshot.data[index].data["name"]),
                               subtitle: Text(snapshot.data[index].data["time"]),
                           );
+                          } else {
+                            index++;
+                            print('else ${index}');
                           }
                         },
                       );
@@ -164,7 +176,10 @@ class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStat
                       return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (_, index) {
+                          print('한식 index');
+                          print('${index}');
                           if (snapshot.data[index].data["type"] == "korean") {
+                            print(snapshot.data[index].data["name"]);
                             return ListTile(
                               title: Text(snapshot.data[index].data["name"]),
                               subtitle: Text(snapshot.data[index].data["time"]),
@@ -174,6 +189,9 @@ class _RestAllPageState extends State<RestAllPage> with SingleTickerProviderStat
                                   Navigator.of(context).push(MaterialPageRoute(
                                     builder: (BuildContext context) => DetailPage(user:user, restaurant: snapshot.data[index]))).catchError((e) => print(e));}
                           );
+                          } else {
+                            print('else ${index}');
+                            print(snapshot.data[index].data["name"]);
                           }
                         },
                       );

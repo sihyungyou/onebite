@@ -110,84 +110,84 @@ class AddPageState extends State<AddPage> {
                       children: <Widget>[
                         TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'name ex) 달인의 찜닭',
+                              labelText: 'name : 달인의 찜닭',
                             ),
                             onSaved: (String str) {
                               this.name = str;
                             }),
                         TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'closed ex) 첫째, 셋째 주 월요일',
+                              labelText: 'closed : 첫째, 셋째 주 월요일',
                             ),
                             onSaved: (String str) {
                               this.closed = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'delivery fee ex) 2,000',
+                              labelText: 'delivery fee : 2,000',
                             ),
                             onSaved: (String str) {
                               this.deliveryFee = str;
                             }),
                              TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'phone ex) 054-234-9344',
+                              labelText: 'phone : 054-234-9344',
                             ),
                             onSaved: (String str) {
                               this.phone = str;
                             }),
                              TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'rate ex) 4.5',
+                              labelText: 'rate : 4.5',
                             ),
                             onSaved: (String str) {
                               this.rate = str;
                             }),
                              TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'time ex) 17:00 ~ 22:00',
+                              labelText: 'time : 17:00 ~ 22:00',
                             ),
                             onSaved: (String str) {
                               this.time = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'minimum order ex) 15,000',
+                              labelText: 'minimum order : 15,000',
                             ),
                             onSaved: (String str) {
                               this.minimumOrder = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'type ex) fastfood, korean, chinese, japanese, boonsik',
+                              labelText: 'type : fastfood, korean, chinese, japanese, boonsik',
                             ),
                             onSaved: (String str) {
                               this.type = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top menu1 ex) 허브순살치킨',
+                              labelText: 'top menu1 : 허브순살치킨',
                             ),
                             onSaved: (String str) {
                               this.topmenu1 = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top price1 ex) 15,000',
+                              labelText: 'top price1 : 15,000',
                             ),
                             onSaved: (String str) {
                               this.topprice1 = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'menu1 ex) 양념 치킨',
+                              labelText: 'menu1 : 양념 치킨',
                             ),
                             onSaved: (String str) {
                               this.menu1 = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'menu price1 ex) 15,000',
+                              labelText: 'menu price1 : 15,000',
                             ),
                             onSaved: (String str) {
                               this.price1 = str;
