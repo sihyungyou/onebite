@@ -159,7 +159,7 @@ class AddPageState extends State<AddPage> {
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'type : fastfood, korean, chinese, japanese, boonsik',
+                              labelText: 'type : fastfood, korean, chinese, japanese, boonsick',
                             ),
                             onSaved: (String str) {
                               this.type = str;

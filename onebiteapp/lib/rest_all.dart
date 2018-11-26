@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'rest_detail.dart';
 
+
 class RestAllPage extends StatefulWidget {
   @override
   final FirebaseUser user;
@@ -40,7 +41,7 @@ class _RestAllPageState extends State<RestAllPage>
           chinese.add(restaurant);
         else if (restaurant.type == 'japanese')
           japanese.add(restaurant);
-        else if (restaurant.type == 'bookSick')
+        else if (restaurant.type == 'boonsick')
           boonSick.add(restaurant);
         else if (restaurant.type == 'fastfood') fastFood.add(restaurant);
       });
@@ -49,7 +50,6 @@ class _RestAllPageState extends State<RestAllPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print("init state yes");
     _buildList();
@@ -62,6 +62,11 @@ class _RestAllPageState extends State<RestAllPage>
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios),
+        onPressed: () {
+          // Navigator.pop(context); // detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
+          Navigator.pushNamed(context, '/login'); //그래서 일단은 푸시네임으로!
+        },),
         title: Text('전체 식당'),
         actions: <Widget>[
           IconButton(
@@ -201,104 +206,6 @@ class _RestAllPageState extends State<RestAllPage>
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //       theme: ThemeData(fontFamily: 'NotoSans', primaryColor: Color.fromRGBO(255, 112, 74, 1)),
-  //       home : DefaultTabController(
-  //         length: 5,
-  //         child: Scaffold(
-  //           appBar: AppBar(
-  //             bottom: TabBar(
-  //               tabs: <Widget>[
-  //                 Tab(text: '패스트푸드'),
-  //                 Tab(text: '한식'),
-  //                 Tab(text: '중식'),
-  //                 Tab(text: '일식'),
-  //                 Tab(text: '분식'),
-  //               ],
-  //             ),
-
-  //             title: Text('전체 식당'),
-  //             actions: <Widget>[
-  //               IconButton(
-  //                 icon: Icon(Icons.add),
-  //                 onPressed: () {
-  //                   Navigator.pushNamed(context, '/add');
-  //                 },
-  //               )
-  //             ],
-  //           ),
-  //           body: TabBarView(
-  //             children: <Widget>[
-
-  //               ListView.builder(
-  //                   itemCount: fastFood.length,
-  //                   itemBuilder: (context, index){
-  //                     return ListTile(
-  //                       title: Text(fastFood[index].name),
-  //                       subtitle: Text("영업시간: " + fastFood[index].time),
-
-  //                     );
-  //                   }
-
-  //               ),
-  //               ListView.builder(
-  //                   itemCount: korean.length,
-  //                   itemBuilder: (context, index){
-  //                     return ListTile(
-  //                       title: Text(korean[index].name),
-  //                       subtitle: Text("영업시간: " + korean[index].time),
-  //                       onTap: (){
-  //                         Navigator.of(context).push(MaterialPageRoute(
-  //                             builder: (BuildContext context) => DetailPage(user:user, restaurant: korean[index])))
-  //                             .catchError((e) => print(e));
-  //                       }
-
-  //                     );
-
-  //                   }
-
-  //               ),
-  //               ListView.builder(
-  //                   itemCount: chinese.length,
-  //                   itemBuilder: (context, index){
-  //                     return ListTile(
-  //                       title: Text(chinese[index].name),
-  //                       subtitle: Text("영업시간: " + chinese[index].time),
-
-  //                     );
-  //                   }
-
-  //               ),
-  //               ListView.builder(
-  //                   itemCount: japanese.length,
-  //                   itemBuilder: (context, index){
-  //                     return ListTile(
-  //                       title: Text(japanese[index].name),
-  //                       subtitle: Text("영업시간: " + japanese[index].time),
-
-  //                     );
-  //                   }
-  //               ),
-  //               ListView.builder(
-  //                   itemCount: boonSick.length,
-  //                   itemBuilder: (context, index){
-  //                     return ListTile(
-  //                       title: Text(boonSick[index].name),
-  //                       subtitle: Text("영업시간: " + boonSick[index].time),
-
-  //                     );
-  //                   }
-
-  //               ),
-
-  //             ],
-  //           ),
-  //         ),
-  //       )
-  //   );
-  // }
 }
 
 class Restaurant {
