@@ -185,6 +185,7 @@ class HomePage extends StatelessWidget {
                          ),
                          onPressed:() {}
                      ),
+
                      FlatButton(
                          child: Row(
                            children: <Widget>[
