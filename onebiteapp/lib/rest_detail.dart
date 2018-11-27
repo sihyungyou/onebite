@@ -12,12 +12,14 @@ class DetailPage extends StatefulWidget {
   final Restaurant restaurant;
   // final DocumentSnapshot restaurant;
   DetailPage({Key key, this.user, this.restaurant});
-  DetailPageState createState() => DetailPageState(user: this.user, restaurant: this.restaurant);
+  DetailPageState createState() =>
+      DetailPageState(user: this.user, restaurant: this.restaurant);
 }
 
-class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin{
+class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
   final FirebaseUser user;
   final Restaurant restaurant;
+  List<DocumentSnapshot> favList = List<DocumentSnapshot>();
   List<Menu> menu = List<Menu>();
   List<Review> review = List<Review>();
   List<TopMenu> topMenu = List<TopMenu>();
@@ -25,56 +27,78 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   bool favorited = false;
   final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
   final Color writeFloatingButton = Color.fromRGBO(21, 170, 210, 1);
-  final String iconWrite = "https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/detailPage%2Ficon_write.png?alt=media&token=770d2c62-362e-4ec4-af72-51b1e318dade";
-  final String onebiteIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
+  final String iconWrite =
+      "https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/detailPage%2Ficon_write.png?alt=media&token=770d2c62-362e-4ec4-af72-51b1e318dade";
+  final String onebiteIcon =
+      'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
   bool isExpanded1 = false;
   bool isExpanded2 = false;
   bool isExpanded3 = false;
 
-
   var rating = 0.0;
   TabController _controller;
 
-  TextStyle _titleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0);
+  TextStyle _titleStyle =
+      TextStyle(fontWeight: FontWeight.w600, fontSize: 15.0);
   TextStyle _bodyStyle = TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0);
-  TextStyle _tabTitleStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black87);
-  TextStyle _orderButtonStyle = TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
+  TextStyle _tabTitleStyle = TextStyle(
+      fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black87);
+  TextStyle _orderButtonStyle = TextStyle(
+      fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
   DetailPageState({Key key, this.user, this.restaurant});
 
   Future<void> _buildList() async {
+    QuerySnapshot favSnapshot = await Firestore.instance.collection('users').document('${user.uid}').collection('favorite').getDocuments();
+    favList = favSnapshot.documents;
+    // print('test console');
+    // print(favList[0].data['name']);
+    for (var i = 0; i < favList.length; i++){
+      if(favList[i].data['name'] == restaurant.name) {
+        favorited = true;
+        break;
+      }
+    }
+
     QuerySnapshot menuSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('menu').getDocuments();
     var menuList = menuSnapshot.documents;
+
     print("menu length = " + menuList.length.toString());
     for (var i = 0; i < menuList.length; i++) {
       setState(() {
         menu.add(Menu.fromSnapshot(menuList[i]));
       });
 
-      print(menu[i].name);
-      print(menu[i].price);
-
+      // print(menu[i].name);
+      // print(menu[i].price);
     }
 
-    QuerySnapshot reviewSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('review').getDocuments();
+    QuerySnapshot reviewSnapshot = await Firestore.instance
+        .collection("restaurant")
+        .document(restaurant.reference.documentID)
+        .collection('review')
+        .getDocuments();
     var reviewList = reviewSnapshot.documents;
     print(reviewList.length);
     print("review length = " + reviewList.length.toString());
 
+
     for (var i = 0; i < reviewList.length; i++) {
       setState(() {
         review.add(Review.fromSnapshot(reviewList[i]));
-
       });
       print(review[i].author);
       print(review[i].date);
       print(review[i].rate);
       print(review[i].context);
       rating += double.parse(review[i].rate);
-
     }
-    rating = rating/reviewList.length;
+    rating = rating / reviewList.length;
 
-    QuerySnapshot topMenuSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('topmenu').getDocuments();
+    QuerySnapshot topMenuSnapshot = await Firestore.instance
+        .collection("restaurant")
+        .document(restaurant.reference.documentID)
+        .collection('topmenu')
+        .getDocuments();
 
     var topMenuList = topMenuSnapshot.documents;
     print(topMenuList.length);
@@ -83,7 +107,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
     for (var i = 0; i < topMenuList.length; i++) {
       setState(() {
         topMenu.add(TopMenu.fromSnapshot(topMenuList[i]));
-
       });
       print(topMenu[i].name);
       print(topMenu[i].price);
@@ -93,7 +116,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
 
   @override
   void initState() {
-    // TODO: implement initState
     setState(() {
       _buildList();
     });
@@ -103,7 +125,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   }
 
   List<Card> _buildGridCards(BuildContext context) {
-
     if (topMenu == null || topMenu.isEmpty) {
       return const <Card>[];
     }
@@ -112,9 +133,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
 
     return topMenu.map((product) {
       return Card(
-        // TODO: Adjust card heights (103)
         child: Column(
-          // TODO: Center items on the card (103)
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
 
@@ -132,28 +151,25 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               maxLines: 1,
             ),
             SizedBox(height: 8.0),
-            // TODO(larche): Make subtitle2 when available
             Text(
               product.price,
               style: theme.textTheme.body2,
             ),
           ],
         ),
-
-
-
       );
     }).toList();
   }
 
   _launchURL() async {
-    String url = 'tel:'+restaurant.phone;
+    String url = 'tel:' + restaurant.phone;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,10 +183,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 Text("전화주문", style: _orderButtonStyle),
               ],
             ),
-            onPressed: (){
+            onPressed: () {
               _launchURL();
-            }
-        ),
+            }),
       ),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -180,20 +195,23 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 alignment: Alignment.topLeft,
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
-                    onPressed: (){
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => RestAllPage(user:user)))
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  RestAllPage(user: user)))
                           .catchError((e) => print(e));
-                    }
-
-                ),
+                    }),
               ),
               Padding(
-                  padding : EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0),
-                      Text(restaurant.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w800)),
+                      Text(restaurant.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 30.0, fontWeight: FontWeight.w800)),
                       SizedBox(height: 5.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -204,49 +222,53 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                             starCount: 5,
                             color: Colors.orange,
                             borderColor: Colors.orange,
-
                           ),
                           SizedBox(width: 5.0),
-                          Text(rating.toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
-
+                          Text(rating.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20.0, fontWeight: FontWeight.w500)),
                         ],
                       ),
-
-
                       Container(
                         height: 35.0,
-                        child:  Row(
+                        child: Row(
                           children: <Widget>[
-                            SizedBox(width : 280.0),
+                            SizedBox(width: 280.0),
                             IconButton(
                                 iconSize: 20.0,
-                                icon: favorited ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border, color: Colors.red),
-                                onPressed: (){
-                                  if (!favorited){
+                                // db 들어가서 현재 rest name을 가진 favorite document가 있으면 color fill
+                                // 아니면 border
+                                icon: favorited
+                                    ? Icon(Icons.favorite, color: Colors.red)
+                                    : Icon(Icons.favorite_border,
+                                        color: Colors.red),
+                                onPressed: () {
                                   // favorited => db에 user collection -> user.uid document생성 -> favorite collection -> random generate document -> name field : this restaurant's name
-                                  print('user.uid');
-                                  print(user.uid);
-                                  print('restaurant name');
-                                  print(restaurant.name);
-                                  final favDocument = WordPair.random();
-                                  Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document(favDocument.toString()).
-                                  setData(({
-                                    'name' : '${restaurant.name}',
-                                  }));
+                                  // anonymous 는 favorite 막는 기능 추가하기
+                                  if (!favorited) {
+                                    // if it wasn't favorite, add to firebase 
+                                    Firestore.instance
+                                        .collection('users')
+                                        .document('${user.uid}')
+                                        .collection('favorite')
+                                        .document('${restaurant.name}')
+                                        .setData(({
+                                          'name': '${restaurant.name}',
+                                        }));
+                                        print('${restaurant.name} added!');
+                                  }
+                                  if (favorited) {
+                                    Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
                                   }
                                   setState(() {
                                     favorited = !favorited;
                                   });
-
-                                }
-                            ),
-
+                                }),
                           ],
                         ),
                       ),
                       Divider(),
-
-
                       SizedBox(height: 5.0),
                       Row(
                         children: <Widget>[
@@ -274,16 +296,14 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                             width: 100.0,
                             child: Text("최소주문금액", style: _titleStyle),
                           ),
-                          Text(restaurant.minimumOrder + "원", style: _bodyStyle),
+                          Text(restaurant.minimumOrder + "원",
+                              style: _bodyStyle),
                         ],
                       ),
                       SizedBox(height: 15.0),
                     ],
-                  )
-              ),
-
+                  )),
               Container(height: 15.0, color: onebiteButton),
-
               new Container(
                 child: new TabBar(
                   controller: _controller,
@@ -308,68 +328,67 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                     CustomScrollView(
                       slivers: <Widget>[
                         SliverGrid(
-
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 10.0,
                             crossAxisSpacing: 10.0,
-                            childAspectRatio: 8.0/9.0,
+                            childAspectRatio: 8.0 / 9.0,
                           ),
-                          delegate:
-                          SliverChildBuilderDelegate((BuildContext context, int index) {
+                          delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
                             return topMenuCard[index];
-
                           }, childCount: topMenu.length),
                         ),
                         SliverList(
-                          delegate: SliverChildListDelegate(
-                              [
-                                ExpansionPanelList(
-                                  expansionCallback: (int a, bool b) {
-                                    setState(() {
-                                      if (a == 0)
-                                        isExpanded1 = !isExpanded1;
-                                      else if (a == 1)
-                                        isExpanded2 = !isExpanded2;
-                                      else if (a == 2)
-                                        isExpanded3 = !isExpanded3;
-                                    });
+                          delegate: SliverChildListDelegate([
+                            ExpansionPanelList(
+                              expansionCallback: (int a, bool b) {
+                                setState(() {
+                                  if (a == 0)
+                                    isExpanded1 = !isExpanded1;
+                                  else if (a == 1)
+                                    isExpanded2 = !isExpanded2;
+                                  else if (a == 2) isExpanded3 = !isExpanded3;
+                                });
+                              },
+                              children: [
+                                ExpansionPanel(
+                                  headerBuilder:
+                                      (BuildContext context, bool isExpanded) {
+                                    return Row(
+                                      children: <Widget>[
+                                        SizedBox(width: 20.0),
+                                        Text(
+                                          "메뉴소개",
+                                          style: _tabTitleStyle,
+                                        ),
+                                      ],
+                                    );
                                   },
-                                  children: [
-                                    ExpansionPanel(
-                                      headerBuilder: (BuildContext context, bool isExpanded) {
-                                        return Row(
-                                          children: <Widget>[
-                                            SizedBox(width: 20.0),
-                                            Text("메뉴소개", style: _tabTitleStyle,),
-                                          ],
+                                  isExpanded: isExpanded1,
+                                  body: ColumnBuilder(
+                                      itemCount: menu.length,
+                                      itemBuilder: (context, index) {
+                                        print("메뉴 : " + index.toString());
+
+                                        return ListTile(
+                                          title: Text(menu[index].name),
+                                          subtitle:
+                                              Text(menu[index].price + "원"),
                                         );
-                                      },
-                                      isExpanded: isExpanded1,
-                                      body:  ColumnBuilder(
-                                          itemCount: menu.length,
-                                          itemBuilder: (context, index){
-                                            print("메뉴 : " + index.toString());
-
-                                            return ListTile(
-                                              title: Text(menu[index].name),
-                                              subtitle: Text(menu[index].price + "원"),
-                                            );
-                                          }
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                              ]),
+                                      }),
+                                )
+                              ],
+                            ),
+                          ]),
                         )
                       ],
                     ),
 
-
                     // 영업 정보
                     ListView(
-                      padding : EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
                       children: <Widget>[
                         SizedBox(height: 30.0),
                         Text("영업정보", style: _tabTitleStyle),
@@ -413,31 +432,33 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                           children: <Widget>[
                             ListView.builder(
                                 itemCount: review.length,
-                                itemBuilder: (context, index){
+                                itemBuilder: (context, index) {
                                   return ListTile(
                                     title: Column(
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
-                                            Text(review[index].author, style: _tabTitleStyle),
+                                            Text(review[index].author,
+                                                style: _tabTitleStyle),
                                             SizedBox(width: 10.0),
-                                            Text(review[index].date, style: _bodyStyle),
+                                            Text(review[index].date,
+                                                style: _bodyStyle),
                                           ],
                                         ),
                                         Row(
                                           children: <Widget>[
                                             SmoothStarRating(
-                                              rating: double.parse(review[index].rate),
+                                              rating: double.parse(
+                                                  review[index].rate),
                                               size: 25,
                                               starCount: 5,
                                               color: Colors.orange,
                                               borderColor: Colors.orange,
                                               allowHalfRating: true,
-
                                             ),
                                             SizedBox(width: 5.0),
-                                            Text(review[index].rate, style: _bodyStyle),
-
+                                            Text(review[index].rate,
+                                                style: _bodyStyle),
                                           ],
                                         ),
                                         SizedBox(height: 20.0)
@@ -445,32 +466,30 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                     ),
                                     subtitle: SizedBox(
                                       height: 60.0,
-                                      child: Text(review[index].context, style: _bodyStyle),
+                                      child: Text(review[index].context,
+                                          style: _bodyStyle),
                                     ),
                                   );
-                                }
-
-                            ),
+                                }),
                             Positioned(
                               right: 10.0,
                               bottom: 50.0,
                               child: FloatingActionButton(
                                   child: Image.network(iconWrite),
                                   backgroundColor: writeFloatingButton,
-                                  onPressed: (){
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (BuildContext context) => WriteReviewPage(user:user, restaurant: restaurant,)))
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                WriteReviewPage(
+                                                  user: user,
+                                                  restaurant: restaurant,
+                                                )))
                                         .catchError((e) => print(e));
-                                  }
-                              ),
+                                  }),
                             )
-
-
                           ],
-                        )
-                    )
-
-
+                        ))
                   ],
                 ),
               ),
@@ -478,9 +497,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
           )
         ],
       ),
-
-
-
     );
   }
 }
@@ -498,11 +514,8 @@ class Menu {
         name = map['name'],
         price = map['price'];
 
-
   Menu.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-
 }
 
 class Review {
@@ -571,8 +584,8 @@ class ColumnBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Column(
-      children: new List.generate(this.itemCount,
-              (index) => this.itemBuilder(context, index)).toList(),
+      children: new List.generate(
+          this.itemCount, (index) => this.itemBuilder(context, index)).toList(),
     );
   }
 }

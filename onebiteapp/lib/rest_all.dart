@@ -292,8 +292,8 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     String temp;
-    Restaurant searched_rest;
-    print('build results console');
+    Restaurant searchedRest;
+    // print('build results console');
     // allnames의 리스트에서 query로 시작하는 완전한 풀 네임을 찾아서 temp 에 넣음
     for(var i = 0; i < allnames.length; i++){
       if (allnames[i].startsWith(query)) {
@@ -305,13 +305,13 @@ class DataSearch extends SearchDelegate<String> {
     }
     // 그리고 그 temp와 allrest[i].name과 하나하나 비교해가면서 rest자체를 찾고 그걸 searched_rest에 넣음
     for(var i = 0; i < allRests.length; i++){
-      print('name!');
-      print(allRests[i]);
-      print(allRests[i].name);
+      // print('name!');
+      // print(allRests[i]);
+      // print(allRests[i].name);
       if (allRests[i].name == temp) {
-        searched_rest = allRests[i];
-        print('found!');
-        print(searched_rest.name);
+        searchedRest = allRests[i];
+        // print('found!');
+        // print(searched_rest.name);
         break;
       }
     }
@@ -319,15 +319,15 @@ class DataSearch extends SearchDelegate<String> {
     return ListView(
             children: <Widget>[
               ListTile(
-                title: Text(searched_rest.name),
-                subtitle: Text(searched_rest.time),
+                title: Text(searchedRest.name),
+                subtitle: Text(searchedRest.time),
                 onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             // user: user,
-                                            restaurant: searched_rest)))
+                                            restaurant: searchedRest)))
                                 .catchError((e) => print(e));
                           }),
             ],
