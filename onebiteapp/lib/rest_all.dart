@@ -289,6 +289,8 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    print('buildresults console');
+    print(context);
     return Center(
       child: Container(
         height: 100.0,
