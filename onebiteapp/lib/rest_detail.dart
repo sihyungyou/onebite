@@ -5,6 +5,7 @@ import 'package:Shrine/rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:Shrine/write_review.dart';
+import 'package:english_words/english_words.dart';
 
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
@@ -221,6 +222,18 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                 iconSize: 20.0,
                                 icon: favorited ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border, color: Colors.red),
                                 onPressed: (){
+                                  if (!favorited){
+                                  // favorited => db에 user collection -> user.uid document생성 -> favorite collection -> random generate document -> name field : this restaurant's name
+                                  print('user.uid');
+                                  print(user.uid);
+                                  print('restaurant name');
+                                  print(restaurant.name);
+                                  final favDocument = WordPair.random();
+                                  Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document(favDocument.toString()).
+                                  setData(({
+                                    'name' : '${restaurant.name}',
+                                  }));
+                                  }
                                   setState(() {
                                     favorited = !favorited;
                                   });
@@ -340,7 +353,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
 
                                             return ListTile(
                                               title: Text(menu[index].name),
-                                              // title: Text(restaurant["menu"].data["yZzR0SXi8UefIWb8ITzF"].data["name"]),
                                               subtitle: Text(menu[index].price + "원"),
                                             );
                                           }
@@ -370,7 +382,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                               child: Text("배달시간", style: _titleStyle),
                             ),
                             Text(restaurant.time, style: _bodyStyle),
-                            // Text(restaurant["time"], style: _bodyStyle),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -381,7 +392,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                               child: Text("휴무일", style: _titleStyle),
                             ),
                             Text(restaurant.closed, style: _bodyStyle),
-                            // Text(restaurant["closed"], style: _bodyStyle),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -392,7 +402,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                               child: Text("전화번호", style: _titleStyle),
                             ),
                             Text(restaurant.phone, style: _bodyStyle),
-                            // Text(restaurant["phone"], style: _bodyStyle),
                           ],
                         ),
                         SizedBox(height: 15.0),
