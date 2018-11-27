@@ -296,6 +296,7 @@ class DataSearch extends SearchDelegate<String> {
           color: Colors.red,
           child: Center(
             child: Text(query),
+            // query find in rests list.. and display them!!
           ),
         ),
       ),
