@@ -20,9 +20,7 @@ class _RestAllPageState extends State<RestAllPage>
   List<Restaurant> japanese = new List<Restaurant>();
   List<Restaurant> boonSick = new List<Restaurant>();
   List<Restaurant> fastFood = new List<Restaurant>();
-  // List<Restaurant> all = new List<Restaurant>();
   List<String> allnames = new List<String>();
-  // List<Restaurant> recents = new List<Restaurant>();
 
   TabController _controller;
 
@@ -31,7 +29,6 @@ class _RestAllPageState extends State<RestAllPage>
     QuerySnapshot querySnapshot =
         await Firestore.instance.collection("restaurant").getDocuments();
     var list = querySnapshot.documents;
-    // print(list.length);
     // build init 할 때 user collection -> uid document -> search_history collection -> index 돌면서 추가!
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
