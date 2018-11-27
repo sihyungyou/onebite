@@ -1,6 +1,7 @@
 // // 구글, 페이스북, 한입만 계정으로 로그인하기 / 로그인 없이 주문하기
 
 import 'package:flutter/material.dart';
+import 'home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         _testSignInWithGoogle().then((FirebaseUser user){
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => RestAllPage(user:user)))
+                              builder: (BuildContext context) => HomePage(user:user)))
                               .catchError((e) => print(e));
                         });
                       }

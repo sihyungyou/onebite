@@ -125,16 +125,17 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 fit: BoxFit.fitWidth,
               ),
             ),
+            SizedBox(height: 8.0),
             Text(
               product.name,
-              style: theme.textTheme.title,
+              style: _tabTitleStyle,
               maxLines: 1,
             ),
             SizedBox(height: 8.0),
             // TODO(larche): Make subtitle2 when available
             Text(
               product.price,
-              style: theme.textTheme.body2,
+              style: _bodyStyle,
             ),
           ],
         ),
