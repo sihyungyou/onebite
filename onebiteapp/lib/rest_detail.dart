@@ -33,9 +33,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   DetailPageState({Key key, this.user, this.restaurant});
 
   Future<void> _buildList() async {
-    QuerySnapshot menuSnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('menu').getDocuments();
+    QuerySnapshot menuSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('menu').getDocuments();
     var menuList = menuSnapshot.documents;
-    print(menuList.length);
+    print("menu length = " + menuList.length.toString());
     for (var i = 0; i < menuList.length; i++) {
       setState(() {
         menu.add(Menu.fromSnapshot(menuList[i]));
@@ -46,9 +46,11 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
 
     }
 
-    QuerySnapshot reviewSnapshot = await Firestore.instance.collection("restaurants").document(restaurant.reference.documentID).collection('review').getDocuments();
+    QuerySnapshot reviewSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('review').getDocuments();
     var reviewList = reviewSnapshot.documents;
     print(reviewList.length);
+    print("review length = " + reviewList.length.toString());
+
     for (var i = 0; i < reviewList.length; i++) {
       setState(() {
         review.add(Review.fromSnapshot(reviewList[i]));
@@ -68,7 +70,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   void initState() {
     // TODO: implement initState
     setState(() {
-      _buildList().asStream();
+      _buildList();
     });
     _controller = new TabController(length: 3, vsync: this);
 
@@ -235,11 +237,13 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 // 여기 menu(collection) -> random id(document) -> name(field) 로 접근 해야 함.
                 ListView.builder(
                     // itemCount: restaurant
+                    itemCount: menu.length,
                     itemBuilder: (context, index){
+                      print("메뉴 : " + index.toString());
                       return ListTile(
-                        // title: Text(menu[index].name),
+                         title: Text(menu[index].name),
                         // title: Text(restaurant["menu"].data["yZzR0SXi8UefIWb8ITzF"].data["name"]),
-                        // subtitle: Text(menu[index].price + "원"),
+                         subtitle: Text(menu[index].price + "원"),
                       );
                     }
                 ),
@@ -383,11 +387,8 @@ class Review {
         rate = map['rate'],
         context = map['context'];
 
-
   Review.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-
 }
 
 

@@ -14,6 +14,7 @@
 
 import 'dart:io';
 
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,12 +48,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
   File cameraFile;
   final TextEditingController _nameControl = new TextEditingController();
   final TextEditingController _reviewControl = new TextEditingController();
-  final TextEditingController _descriptionControl = new TextEditingController();
   var rating = 0.0;
   String _name = '';
   String _review = '';
-  String _description ='';
-  String _image1 = 'https://firebasestorage.googleapis.com/v0/b/final-6c7e1.appspot.com/o/6-0.jpg?alt=media&token=c8d5e36f-c3d1-456f-8d08-79540e196fa5';
   String _path = '';
   final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
   File sampleImage;
@@ -95,12 +93,16 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   _path = url.toString();
                   print(_path);
                 }
+                final wordPair = WordPair.random();
                 var now = DateTime.now();
                 String createTime = now.year.toString() + '.' + now.month.toString() + '.' + now.day.toString();
                 store.runTransaction((transaction) async {
-                  store.collection("restaurants").document(restaurant.name).collection("review").document(user.uid).setData({"author": _name, "rate": rating, "context": _review, "date": createTime});
+                  store.collection("restaurant").document(restaurant.reference.documentID).collection("review").document(wordPair.toString()).setData({"author": _name, "rate": rating.toString(), "context": _review, "date": createTime});
                 });
-                Navigator.pop(context);
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant,)))
+                    .catchError((e) => print(e));
 
               },
 
