@@ -159,7 +159,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                           title: Text(korean[index].name),
-                          subtitle: Text("영업시간: " + korean[index].time),
+                          subtitle: Text("영업: " + korean[index].time),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
