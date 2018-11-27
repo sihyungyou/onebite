@@ -158,6 +158,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: korean.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                          leading: new CircleAvatar(
+                            backgroundImage: new Image.network('http://frozor.io/up/Xartkzk.png').image,
+                          ),
                           title: Text(korean[index].name),
                           subtitle: Text("영업: " + korean[index].time),
                           onTap: () {
