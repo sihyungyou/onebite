@@ -5,140 +5,25 @@ import 'model/product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-//hero animation class
-class PhotoHero extends StatelessWidget {
-  PhotoHero({Key key, this.photo, this.onTap, this.width}) : super(key: key);
-  final double width;
-  final String photo;
-  final VoidCallback onTap;
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new SizedBox(
-      width: width,
-      child: new Hero(
-        tag: photo,
-        child: Material(
-            child: InkWell(
-              onTap: onTap,
-          child: Image.asset(photo),
-        )),
-      ),
-    );
-  }
-}
+
 
 class HomePage extends StatelessWidget {
   // anonymous login user object를 건네받기 위한 변수 선언
   final FirebaseUser user;
+  final String logoImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%204.png?alt=media&token=fbeb4805-eea5-418d-a63a-f92fc76cb270';
 
   // 전달받는 constructor
   HomePage({this.user});
-  List<Product> products = ProductsRepository.loadProducts(Category.all);
-  
+
   //this is scaffoldkey for drawer openenr
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   // HomePage({Key key, @required this.products}) : super(key: key);
 
-  List<Card> _buildGridCards(BuildContext context) {
-    if (products == null || products.isEmpty) {
-      return const <Card>[];
-    }
-
-    final ThemeData theme = Theme.of(context);
-
-    return products.map((product) {
-      return Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            //hero goes here. image를 감싸야함.
-            AspectRatio(
-              aspectRatio: 18 / 11,
-              child: PhotoHero(
-                width: 300.0,
-                photo: 'images/' + product.assetName,
-                // onTap: () {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => DetailPage(hotels: product),
-                //     ),
-                //   );
-                // },
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 200.0,
-                      child: Text(
-                        product.name,
-                        style: theme.textTheme.title,
-                        maxLines: 1,
-                      ),
-                    ),
-                    // Text(
-                    //   product.name,
-                    //   style: theme.textTheme.title,
-                    //   maxLines: 1,
-                    // ),
-                    SizedBox(height: 3.0),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.lightBlue,
-                        ),
-                        SizedBox(
-                          width: 58.0,
-                          // height:
-                          child: Text(
-                            product.location,
-                            style: theme.textTheme.body2,
-                          ),
-                        ),
-                        Container(
-                          width: 69.0,
-                          // height: 10.0,
-                          child: FlatButton(
-                            textColor: Colors.lightBlue,
-                            //more을 누르면 hero 라면 이 flatbutton에서는 onpressed 에 히어로 액션걸어줘야함
-                            child: Text('more'),
-                            // onPressed: () {
-                            //   print('flatbutton-more');
-                            //   print(product.assetName);
-                            //   print(product.assetPackage);
-                            //   print(product.id);
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           DetailPage(hotels: product),
-                            //     ),
-                            //   );
-                            // },
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }).toList();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(227, 220, 212, 1),
       // declare key for draw openener
       key: _scaffoldKey,
       // create new drawer
@@ -263,21 +148,63 @@ class HomePage extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        title: Text('한입만'),
+        title: Image.network(logoImage, scale: 3.0),
       ),
 
-      // orientationbuilder used for turning screen
       // 이거 빼도 될듯?
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return GridView.count(
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-            padding: EdgeInsets.all(16.0),
-            childAspectRatio: 8.0 / 9.0,
-            children: _buildGridCards(context),
-          );
-        },
-      ),
+      body:
+
+      Column(
+
+        children: <Widget>[
+          Container(height: 90.0, color: Colors.grey),
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 10.0),
+                Container(
+                  height: 60.0,
+                  color: Colors.white,
+                  child: ButtonBar(
+                  alignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                     FlatButton(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.restaurant),
+                            ],
+                          ),
+                          onPressed:() {}
+                    ),
+                     FlatButton(
+                         child: Row(
+                           children: <Widget>[
+                             Icon(Icons.restaurant),
+                           ],
+                         ),
+                         onPressed:() {}
+                     ),
+
+                     FlatButton(
+                         child: Row(
+                           children: <Widget>[
+                             Icon(Icons.restaurant),
+                           ],
+                         ),
+                         onPressed:() {}
+                     ),
+                  ],
+                )
+                ),
+
+              ],
+            )
+          )
+
+        ],
+      )
+
 
     );
   }
