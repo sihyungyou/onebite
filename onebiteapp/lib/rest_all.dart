@@ -20,6 +20,7 @@ class _RestAllPageState extends State<RestAllPage>
   List<Restaurant> japanese = new List<Restaurant>();
   List<Restaurant> boonSick = new List<Restaurant>();
   List<Restaurant> fastFood = new List<Restaurant>();
+  List<Restaurant> allRests = new List<Restaurant>();
   List<String> allnames = new List<String>();
 
   TabController _controller;
@@ -34,6 +35,7 @@ class _RestAllPageState extends State<RestAllPage>
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
       print(restaurant.name);
       setState(() {
+        allRests.add(restaurant);
         allnames.add(restaurant.name);
         if (restaurant.type == 'korean')
           korean.add(restaurant);
@@ -71,6 +73,7 @@ class _RestAllPageState extends State<RestAllPage>
           },
         ),
         title: Text('전체 식당'),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -81,7 +84,7 @@ class _RestAllPageState extends State<RestAllPage>
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch(allnames: allnames, recentnames: allnames));
+              showSearch(context: context, delegate: DataSearch(allnames: allnames, recentnames: allnames, allRests: allRests, user: user));
             },
           ),
         ],
@@ -228,11 +231,12 @@ class _RestAllPageState extends State<RestAllPage>
 }
 
 class DataSearch extends SearchDelegate<String> {
-
+  final FirebaseUser user;
+  final List<Restaurant> allRests;
   final List<String> allnames;
   final List<String> recentnames;
-  DataSearch({Key key, this.allnames, this.recentnames});
-
+  DataSearch({Key key, this.allnames, this.recentnames, this.allRests, this.user});
+  
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
@@ -286,20 +290,46 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    print('buildresults console');
-    print(context);
-    return Center(
-      child: Container(
-        height: 100.0,
-        width: 100.0,
-        child: Card(
-          color: Colors.red,
-          child: Center(
-            child: Text(query),
-            // query find in rests list.. and display them!!
-          ),
-        ),
-      ),
+    String temp;
+    Restaurant searched_rest;
+    print('build results console');
+    // allnames의 리스트에서 query로 시작하는 완전한 풀 네임을 찾아서 temp 에 넣음
+    for(var i = 0; i < allnames.length; i++){
+      if (allnames[i].startsWith(query)) {
+        // print('allnames[i]: ');
+        // print(allnames[i]);
+        temp = allnames[i];
+        break;
+      }
+    }
+    // 그리고 그 temp와 allrest[i].name과 하나하나 비교해가면서 rest자체를 찾고 그걸 searched_rest에 넣음
+    for(var i = 0; i < allRests.length; i++){
+      print('name!');
+      print(allRests[i]);
+      print(allRests[i].name);
+      if (allRests[i].name == temp) {
+        searched_rest = allRests[i];
+        print('found!');
+        print(searched_rest.name);
+        break;
+      }
+    }
+
+    return ListView(
+            children: <Widget>[
+              ListTile(
+                title: Text(searched_rest.name),
+                subtitle: Text(searched_rest.time),
+                onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        DetailPage(
+                                            // user: user,
+                                            restaurant: searched_rest)))
+                                .catchError((e) => print(e));
+                          }),
+            ],
     );
   }
 }
