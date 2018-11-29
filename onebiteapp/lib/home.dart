@@ -44,14 +44,14 @@ class HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future _buildList() async {
-    print("buildlist in");
+    // print("buildlist in");
     QuerySnapshot querySnapshot =
     await Firestore.instance.collection("restaurant").getDocuments();
     var list = querySnapshot.documents;
     // build init 할 때 user collection -> uid document -> search_history collection -> index 돌면서 추가!
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
-      print(restaurant.name);
+      // print(restaurant.name);
       setState(() {
         allRests.add(restaurant);
         allNames.add(restaurant.name);
@@ -78,7 +78,6 @@ class HomePageState extends State<HomePage> {
         for(var j = 0; j< allRests.length; j ++){
           if(allRests[j].name == favorite.name){
             print("favorite : " + favorite.name);
-
             favoriteList.add(allRests[j]);
           }
         }
@@ -91,7 +90,6 @@ class HomePageState extends State<HomePage> {
       final History history = History.fromSnapshot(list2[i]);
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
-
           if(allRests[j].name == history.name) {
             print("history : " + history.name);
             historyList.add(allRests[j]);
@@ -100,17 +98,22 @@ class HomePageState extends State<HomePage> {
       });
     }
 
-
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     _buildList();
+  }
+
+  void signOut() async{
+    // currentuser로 진짜 signout 되는지 testing 더 필요..
+    FirebaseAuth.instance.signOut();
+    print('${FirebaseAuth.instance.currentUser()} Signed Out!');
   }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Color.fromRGBO(227, 220, 212, 1),
       // declare key for draw openener
@@ -125,7 +128,8 @@ class HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Column(children: <Widget>[
+              child: Column(
+                children: <Widget>[
                 Row(
                   children: <Widget>[
                     Container(height: 100.0),
@@ -134,8 +138,9 @@ class HomePageState extends State<HomePage> {
                 Row(
                   children: <Widget>[
                     Container(
+                      color: theme.primaryColor,
                       child:
-                      widget.user.displayName == null ?                // 익명로그인의 경우
+                      widget.user.isAnonymous == true ?                // 익명로그인의 경우
                       Text(
                         '안녕하세요',
                         style: TextStyle(color: Colors.white),
@@ -149,72 +154,69 @@ class HomePageState extends State<HomePage> {
                 ),
               ]),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: theme.primaryColor
               ),
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.home,
-                color: Colors.lightBlue,
+                color: theme.primaryColor,
               ),
               title: Text('Home'),
               onTap: () {
-                print('home, go to home page');
-                Navigator.pushNamed(context, '/home');
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  HomePage( user: user,)))
+            .catchError((e) => print(e));
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.calendar_today,
-                color: Colors.lightBlue,
+                color : theme.primaryColor,
               ),
               title: Text('이벤트'),
               onTap: () {
-                print('event, go to event_list page');
                 // Navigator.pushNamed(context, '/event_list');
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.notifications,
-                color: Colors.lightBlue,
+                color : theme.primaryColor,
               ),
               title: Text('공지사항'),
               onTap: () {
-                print('notice, go to nocie_list page');
                 Navigator.pushNamed(context, '/notice_list');
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.chat,
-                color: Colors.lightBlue,
+                color : theme.primaryColor,
               ),
               title: Text('건의사항'),
               onTap: () {
-                print('suggestion, go to suggestion page');
-                Navigator.pushNamed(context, '/suggestion');
+                // Navigator.pushNamed(context, '/suggestion');
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.bug_report,
-                color: Colors.lightBlue,
+                color : theme.primaryColor,
               ),
               title: Text('버그신고'),
               onTap: () {
-                print('bug report, go to bug_report page');
-                Navigator.pushNamed(context, '/bug_report');
+                // Navigator.pushNamed(context, '/bug_report');
               },
             ),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.exit_to_app,
-                color: Colors.lightBlue,
+                color : theme.primaryColor,
               ),
               title: Text('로그아웃'),
               onTap: () {
-                // print('log out, go to login page');
+                signOut();
                 Navigator.pushNamed(context, '/login');
               },
             ),
@@ -231,7 +233,6 @@ class HomePageState extends State<HomePage> {
             semanticLabel: 'menu',
           ),
           onPressed: () {
-            print('Menu button');
             // open drawer here
             return _scaffoldKey.currentState.openDrawer();
           },
@@ -240,11 +241,7 @@ class HomePageState extends State<HomePage> {
         title: Image.network(logoImage, scale: 3.0),
       ),
 
-      // 이거 빼도 될듯?
-      body:
-
-      Column(
-
+      body: Column(
         children: <Widget>[
           Container(height: 90.0, color: Colors.grey),
           Padding(

@@ -33,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    print('User is.annonymous : ${user.isAnonymous}');
     print('User Name : ${user.displayName}');
     print('User uid : ${user.uid}');
 
@@ -44,8 +45,6 @@ class _LoginPageState extends State<LoginPage> {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-
-    // return 'signInWithGoogle succeeded: $user';
     return user;
 
   }
@@ -54,8 +53,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<FirebaseUser> signinAnon() async {
     FirebaseUser user = await firebaseAuth.signInAnonymously();
-    // user.uid = 'annon ${user.uid}';
-    print("Signed in ${user.uid}");
+    print('User is.annonymous : ${user.isAnonymous}');
+    print("User uid :  ${user.uid}");
     return user;
   }
   void signOut() {
@@ -208,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         signinAnon().then((FirebaseUser user){
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => RestAllPage(user:user)))
+                              builder: (BuildContext context) => HomePage(user:user)))
                               .catchError((e) => print(e));
                         });
                       }
