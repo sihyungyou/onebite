@@ -142,6 +142,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: fastFood.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: Image.network('${fastFood[index].logo}').image,
+                        ),
                           title: Text(fastFood[index].name),
                           subtitle: Text("영업시간: " + fastFood[index].time),
                           onTap: () {
@@ -159,6 +162,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: korean.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: Image.network('${korean[index].logo}').image,
+                        ),
                           title: Text(korean[index].name),
                           subtitle: Text("영업시간: " + korean[index].time),
                           onTap: () {
@@ -176,6 +182,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: chinese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: Image.network('${chinese[index].logo}').image,
+                        ),
                           title: Text(chinese[index].name),
                           subtitle: Text("영업시간: " + chinese[index].time),
                           onTap: () {
@@ -193,6 +202,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: japanese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: Image.network('${japanese[index].logo}').image,
+                        ),
                           title: Text(japanese[index].name),
                           subtitle: Text("영업시간: " + japanese[index].time),
                           onTap: () {
@@ -210,6 +222,9 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: boonSick.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: Image.network('${boonSick[index].logo}').image,
+                        ),
                           title: Text(boonSick[index].name),
                           subtitle: Text("영업시간: " + boonSick[index].time),
                           onTap: () {
@@ -345,8 +360,9 @@ class Restaurant {
   final String rate;
   final String time;
   final String type;
+  final String logo;
   Restaurant(this.closed, this.deliveryFee, this.minimumOrder, this.name,
-      this.reference, this.phone, this.rate, this.time, this.type);
+      this.reference, this.phone, this.rate, this.time, this.type, this.logo);
 
   Restaurant.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['closed'] != null),
@@ -364,7 +380,8 @@ class Restaurant {
         phone = map['phone'],
         rate = map['rate'],
         time = map['time'],
-        type = map['type'];
+        type = map['type'],
+        logo = map['logo'];
 
   Restaurant.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
