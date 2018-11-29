@@ -197,11 +197,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  RestAllPage(user: user)))
-                          .catchError((e) => print(e));
+                      Navigator
+                          .pop(context);
                     }),
               ),
               Padding(

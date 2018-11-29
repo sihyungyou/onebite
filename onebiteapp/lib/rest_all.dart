@@ -8,55 +8,36 @@ import 'rest_detail.dart';
 class RestAllPage extends StatefulWidget {
   @override
   final FirebaseUser user;
-  RestAllPage({Key key, this.user});
-  _RestAllPageState createState() => _RestAllPageState(user: user);
+  final List<Restaurant> korean;
+  final List<Restaurant> chinese;
+  final List<Restaurant> japanese;
+  final List<Restaurant> boonSick;
+  final List<Restaurant> fastFood;
+  final List<Restaurant> allRests;
+  final List<String> allNames; 
+  RestAllPage({Key key, this.user, this.korean, this.chinese, this.japanese, this.boonSick, this.fastFood, this.allRests, this.allNames});
+  _RestAllPageState createState() => _RestAllPageState(korean, chinese, japanese, boonSick, fastFood, allRests, allNames, user);
 }
 
 class _RestAllPageState extends State<RestAllPage>
     with SingleTickerProviderStateMixin {
   final FirebaseUser user;
-  _RestAllPageState({Key key, this.user});
-  List<Restaurant> korean = new List<Restaurant>();
-  List<Restaurant> chinese = new List<Restaurant>();
-  List<Restaurant> japanese = new List<Restaurant>();
-  List<Restaurant> boonSick = new List<Restaurant>();
-  List<Restaurant> fastFood = new List<Restaurant>();
-  List<Restaurant> allRests = new List<Restaurant>();
-  List<String> allnames = new List<String>();
+  final List<Restaurant> korean;
+  final List<Restaurant> chinese;
+  final List<Restaurant> japanese;
+  final List<Restaurant> boonSick;
+  final List<Restaurant> fastFood;
+  final List<Restaurant> allRests;
+  final List<String> allNames;
+  _RestAllPageState(this.korean, this.chinese, this.japanese, this.boonSick, this.fastFood, this.allRests, this.allNames, this.user);
 
   TabController _controller;
 
-  Future _buildList() async {
-    print("buildlist in");
-    QuerySnapshot querySnapshot =
-        await Firestore.instance.collection("restaurant").getDocuments();
-    var list = querySnapshot.documents;
-    // build init 할 때 user collection -> uid document -> search_history collection -> index 돌면서 추가!
-    for (var i = 0; i < list.length; i++) {
-      final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
-      print(restaurant.name);
-      setState(() {
-        allRests.add(restaurant);
-        allnames.add(restaurant.name);
-        if (restaurant.type == 'korean')
-          korean.add(restaurant);
-        else if (restaurant.type == 'chinese')
-          chinese.add(restaurant);
-        else if (restaurant.type == 'japanese')
-          japanese.add(restaurant);
-        else if (restaurant.type == 'boonsick')
-          boonSick.add(restaurant);
-        else if (restaurant.type == 'fastfood')
-          fastFood.add(restaurant);
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
     print("init state yes");
-    _buildList();
     _controller = new TabController(length: 5, vsync: this);
     print("init state over");
   }
@@ -70,7 +51,7 @@ class _RestAllPageState extends State<RestAllPage>
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             // Navigator.pop(context); // detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
-            Navigator.pushNamed(context, '/login'); //그래서 일단은 푸시네임으로!
+            Navigator.pop(context);//그래서 일단은 푸시네임으로!
           },
         ),
         title: Text('전체 식당'),
@@ -85,7 +66,7 @@ class _RestAllPageState extends State<RestAllPage>
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch(allnames: allnames, recentnames: allnames, allRests: allRests, user: user));
+              showSearch(context: context, delegate: DataSearch(allnames: allNames, recentnames: allNames, allRests: allRests, user: user));
             },
           ),
         ],
@@ -367,5 +348,36 @@ class Restaurant {
         type = map['type'];
 
   Restaurant.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+}
+
+
+class Favorite {
+  final String name;
+  final DocumentReference reference;
+  Favorite(this.name, this.reference);
+
+  Favorite.fromMap(Map<String, dynamic> map, {this.reference})
+      :
+        assert(map['name'] != null),
+
+        name = map['name'];
+
+  Favorite.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+}
+
+class History {
+  final String name;
+  final DocumentReference reference;
+  History(this.name, this.reference);
+
+  History.fromMap(Map<String, dynamic> map, {this.reference})
+      :
+        assert(map['name'] != null),
+
+        name = map['name'];
+
+  History.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 }
