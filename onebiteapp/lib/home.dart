@@ -1,3 +1,4 @@
+import 'package:Shrine/rest_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Shrine/rest_all.dart';
@@ -294,22 +295,166 @@ class HomePageState extends State<HomePage> {
                   ],
                 )
                 ),
+                SizedBox(height: 10.0),
                 Container(
-                  height: 150.0,
+                  height: 165.0,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 10.0, 10.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-                          child: Row(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          child: Column(
                             children: <Widget>[
-                              Text("내가 좋아하는 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                              Row(
+                                children: <Widget>[
+                                  Text("내가 좋아하는 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                                  Divider(),
+                                ],
+                              ),
                               Divider(),
+                              Container(
+                                height: 80.0,
+                                width: 300.0,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: favoriteList.map((restaurant){
+                                    return Container(
+                                      height: 100.0,
+                                      width: 75.0,
+                                      child: ListTile(
+
+                                          title: Column(
+                                            children: <Widget>[
+                                              CircleAvatar(
+
+                                                backgroundImage: Image.network('${restaurant.logo}').image,
+                                              ),
+                                              Text(
+                                                  restaurant.name,
+                                                  maxLines: 2,
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                              ),
+
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    DetailPage(
+                                                        user: user,
+                                                        restaurant: restaurant)))
+                                                .catchError((e) => print(e));
+                                          }
+                                      ),
+                                    );
+
+                                  }).toList(),
+                                ),
+                              ),
+                              Container(
+                                height: 20.0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      child: Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+                                    )
+                                  ],
+                                ),
+                              )
 
 
                             ],
                           ),
+
+
+                        )
+
+                      ],
+                    ),
+                  ),
+                  color: Colors.white,
+                ),
+
+                SizedBox(height: 10.0),
+                Container(
+                  height: 165.0,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text("내가 이용한 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                                ],
+                              ),
+                              Divider(),
+
+                              Container(
+                                height: 80.0,
+                                width: 300.0,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: historyList.map((restaurant){
+                                    return Container(
+                                      height: 100.0,
+                                      width: 75.0,
+                                      child: ListTile(
+
+                                          title: Column(
+                                            children: <Widget>[
+                                              CircleAvatar(
+
+                                                backgroundImage: Image.network('${restaurant.logo}').image,
+                                              ),
+                                              Text(
+                                                  restaurant.name,
+                                                  maxLines: 2,
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                              ),
+
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    DetailPage(
+                                                        user: user,
+                                                        restaurant: restaurant)))
+                                                .catchError((e) => print(e));
+                                          }
+                                      ),
+                                    );
+
+                                  }).toList(),
+                                ),
+                              ),
+                              Container(
+                                height: 20.0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      child: Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+                                    )
+                                  ],
+                                ),
+                              )
+
+
+                            ],
+                          ),
+
+
                         )
 
                       ],
@@ -317,6 +462,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   color: Colors.white,
                 )
+
               ],
             )
           )

@@ -48,7 +48,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                 user: user,
                                 restaurant: favorite[index])))
                     .catchError((e) => print(e));
-              });
+              }
+              );
         }),
     );
   }
