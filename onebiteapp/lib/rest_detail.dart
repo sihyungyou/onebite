@@ -5,7 +5,7 @@ import 'package:Shrine/rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:Shrine/write_review.dart';
-import 'package:english_words/english_words.dart';
+// import 'package:english_words/english_words.dart';
 
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;

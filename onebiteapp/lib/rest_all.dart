@@ -1,9 +1,10 @@
 // 전체식당
-// backup
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'rest_detail.dart';
+import 'favorite.dart';
+import 'history.dart';
 
 class RestAllPage extends StatefulWidget {
   @override
@@ -76,6 +77,22 @@ class _RestAllPageState extends State<RestAllPage>
         title: Text('전체 식당'),
         centerTitle: true,
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite_border),
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  FavoritePage( user: user, favorite: korean,)))
+            .catchError((e) => print(e));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  HistoryPage( user: user, favorite: korean,)))
+            .catchError((e) => print(e));
+            },
+          ),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {

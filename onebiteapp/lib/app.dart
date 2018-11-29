@@ -45,7 +45,7 @@ class OnebiteAppState extends State<OnebiteApp> {
         '/home': (context) => HomePage(),
         // '/search': (context) => SearchPage(),
         // '/detail': (context) => DetailPage(),
-        // '/favorite': (context) => FavoritePage(),
+        '/favorite': (context) => FavoritePage(),
         '/login': (context) => LoginPage(),
         '/bug_report' : (context) => BugReportPage(),
         // '/event_list' : (context) =>

@@ -1,83 +1,55 @@
-import 'package:flutter/foundation.dart';
+// 전체식당
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'model/product.dart';
+import 'rest_detail.dart';
+import 'rest_all.dart';
 
-// MyApp is a StatefulWidget. This allows us to update the state of the
-// Widget whenever an item is removed.
 class FavoritePage extends StatefulWidget {
-  final List<Product> favhotels;
-  Set<int> favoriteIds = new Set<int>();
-
-  FavoritePage({Key key, @required this.favhotels, this.favoriteIds}) : super(key: key);
-
   @override
-  FavoritePageState createState() {
-    return FavoritePageState();
-    // return FavoritePageState(favstatehotels: favhotels);
-  }
+  final FirebaseUser user;
+  List<Restaurant> favorite = new List<Restaurant>();
+  FavoritePage({Key key, this.user, this.favorite});
+  _FavoritePageState createState() => _FavoritePageState(user: user, favorite: favorite);
 }
 
-class FavoritePageState extends State<FavoritePage> {
-  // final items = List<String>.generate(3, (i) => "Item ${i + 1}");
-  // final List<Product> favstatehotels;
-  // FavoritePageState({Key key, @required this.favstatehotels});
+class _FavoritePageState extends State<FavoritePage> {
+  final FirebaseUser user;
+  List<Restaurant> favorite;
+  _FavoritePageState({Key key, this.user, this.favorite});
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final title = 'Favorite Hotels';
-
-    return MaterialApp(
-      title: title,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final ThemeData theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Favorite'),
+        centerTitle: true,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+      body: ListView.builder(
+        itemCount: favorite.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: Image.network('${favorite[index].logo}').image,
             ),
-          title: Text(title),
-        ),
-        body: ListView.builder(
-            // itemCount: favstatehotels.length,
-            itemCount: widget.favhotels.length,
-            itemBuilder: (context, index) {
-              // index = favstatehotels[index].id;
-              // final item = favstatehotels[index];
-              final item = widget.favhotels[index];
-
-              if (item.favorite == true) {
-                return Dismissible(
-                  // Each Dismissible must contain a Key. Keys allow Flutter to
-                  // uniquely identify Widgets.
-
-                  key: Key(item.name),
-
-                  // We also need to provide a function that tells our app
-                  // what to do after an item has been swiped away.
-                  onDismissed: (direction) {
-                    // Remove the item from our data source.
-                    setState(() {
-                      item.favorite = false;
-                      // favstatehotels.removeAt(index);
-                      widget.favhotels.removeAt(index);
-                    });
-
-                    // Then show a snackbar!
-                    // Scaffold.of(context).showSnackBar(
-                    //     SnackBar(content: Text("$item dismissed")));
-                  },
-                  // Show a red background as the item is swiped away
-                  background: Container(color: Colors.red),
-                  child: ListTile(title: Text('${item.name}')),
-                );
-              }
-            } 
-          ),
-      ),
+              title: Text(favorite[index].name),
+              subtitle: Text("영업시간: " + favorite[index].time),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            DetailPage(
+                                user: user,
+                                restaurant: favorite[index])))
+                    .catchError((e) => print(e));
+              });
+        }),
     );
   }
 }
