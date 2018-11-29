@@ -34,6 +34,8 @@ class _LoginPageState extends State<LoginPage> {
       idToken: googleAuth.idToken,
     );
     print('User Name : ${user.displayName}');
+    print('User uid : ${user.uid}');
+
 
     assert(user.email != null);
     assert(user.displayName != null);

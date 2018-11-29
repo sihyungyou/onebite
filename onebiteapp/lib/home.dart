@@ -1,24 +1,113 @@
 import 'package:flutter/material.dart';
-import 'rest_detail.dart';
-import 'model/products_repository.dart';
-import 'model/product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:Shrine/rest_all.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
-
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // anonymous login user object를 건네받기 위한 변수 선언
   final FirebaseUser user;
-  final String logoImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%204.png?alt=media&token=fbeb4805-eea5-418d-a63a-f92fc76cb270';
 
-  // 전달받는 constructor
   HomePage({this.user});
 
-  //this is scaffoldkey for drawer openenr
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  // HomePage({Key key, @required this.products}) : super(key: key);
+  @override
+  HomePageState createState() {
+    return new HomePageState(user: user);
+  }
+}
 
+class HomePageState extends State<HomePage> {
+  final FirebaseUser user;
+
+  HomePageState({this.user});
+
+  final String logoImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%204.png?alt=media&token=fbeb4805-eea5-418d-a63a-f92fc76cb270';
+
+  final Color googleText = Color.fromRGBO(241, 67, 54, 1);
+
+  List<Restaurant> korean = new List<Restaurant>();
+
+  List<Restaurant> chinese = new List<Restaurant>();
+
+  List<Restaurant> japanese = new List<Restaurant>();
+
+  List<Restaurant> boonSick = new List<Restaurant>();
+
+  List<Restaurant> fastFood = new List<Restaurant>();
+
+  List<Restaurant> allRests = new List<Restaurant>();
+
+  List<String> allNames = new List<String>();
+
+  List<Restaurant> favoriteList = List<Restaurant>();
+  List<Restaurant> historyList = List<Restaurant>();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  Future _buildList() async {
+    print("buildlist in");
+    QuerySnapshot querySnapshot =
+    await Firestore.instance.collection("restaurant").getDocuments();
+    var list = querySnapshot.documents;
+    // build init 할 때 user collection -> uid document -> search_history collection -> index 돌면서 추가!
+    for (var i = 0; i < list.length; i++) {
+      final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
+      print(restaurant.name);
+      setState(() {
+        allRests.add(restaurant);
+        allNames.add(restaurant.name);
+        if (restaurant.type == 'korean')
+          korean.add(restaurant);
+        else if (restaurant.type == 'chinese')
+          chinese.add(restaurant);
+        else if (restaurant.type == 'japanese')
+          japanese.add(restaurant);
+        else if (restaurant.type == 'boonsick')
+          boonSick.add(restaurant);
+        else if (restaurant.type == 'fastfood')
+          fastFood.add(restaurant);
+      });
+    }
+
+    QuerySnapshot favoriteSnapshot =
+    await Firestore.instance.collection("users").document(user.uid).collection("favorite").getDocuments();
+    var list1 = favoriteSnapshot.documents;
+    for(var i = 0 ; i< list1.length; i ++){
+      final Favorite favorite = Favorite.fromSnapshot(list1[i]);
+      print("hello");
+      setState(() {
+        for(var j = 0; j< allRests.length; j ++){
+          if(allRests[j].name == favorite.name){
+            print("favorite : " + favorite.name);
+
+            favoriteList.add(allRests[j]);
+          }
+        }
+      });
+    }
+    QuerySnapshot historySnapshot =
+    await Firestore.instance.collection("users").document(user.uid).collection("history").getDocuments();
+    var list2 = historySnapshot.documents;
+    for(var i = 0 ; i< list1.length; i ++){
+      final History history = History.fromSnapshot(list2[i]);
+      setState(() {
+        for(var j = 0; j< allRests.length; j ++){
+
+          if(allRests[j].name == history.name) {
+            print("history : " + history.name);
+            historyList.add(allRests[j]);
+          }
+        }
+      });
+    }
+
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _buildList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +134,14 @@ class HomePage extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Container(
-                      child: 
-                      user.displayName == null ?                // 익명로그인의 경우
+                      child:
+                      widget.user.displayName == null ?                // 익명로그인의 경우
                       Text(
                         '안녕하세요',
-                        style: TextStyle(color: Colors.white),                        
+                        style: TextStyle(color: Colors.white),
                       ) :
                       Text(                                     // 구글/페이스북 로그인의 경우
-                        '${user.displayName} 님 안녕하세요',
+                        '${widget.user.displayName} 님 안녕하세요',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -166,22 +255,31 @@ class HomePage extends StatelessWidget {
                 Container(
                   height: 60.0,
                   color: Colors.white,
-                  child: ButtonBar(
-                  alignment: MainAxisAlignment.center,
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                      FlatButton(
                           child: Row(
                             children: <Widget>[
                               Icon(Icons.restaurant),
+                              Text("전체식당", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                             ],
                           ),
-                          onPressed:() {}
-                    ),
+                         onPressed: () {
+                           Navigator.of(context)
+                               .push(MaterialPageRoute(
+                               builder: (BuildContext context) =>
+                                    RestAllPage(korean: korean, chinese : chinese, japanese: japanese, boonSick: boonSick, fastFood : fastFood, allRests : allRests, allNames : allNames, user: user)))
+                               .catchError((e) => print(e));
+                         }
+                     ),
                      FlatButton(
                          child: Row(
                            children: <Widget>[
-                             Icon(Icons.restaurant),
+                             Icon(Icons.favorite_border),
+                             Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
+
                          ),
                          onPressed:() {}
                      ),
@@ -189,7 +287,8 @@ class HomePage extends StatelessWidget {
                      FlatButton(
                          child: Row(
                            children: <Widget>[
-                             Icon(Icons.restaurant),
+                             Icon(Icons.local_pizza),
+                             Text("못 골라?", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
                          ),
                          onPressed:() {}
@@ -197,7 +296,29 @@ class HomePage extends StatelessWidget {
                   ],
                 )
                 ),
+                Container(
+                  height: 150.0,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 10.0, 10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                          child: Row(
+                            children: <Widget>[
+                              Text("내가 좋아하는 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                              Divider(),
 
+
+                            ],
+                          ),
+                        )
+
+                      ],
+                    ),
+                  ),
+                  color: Colors.white,
+                )
               ],
             )
           )
@@ -209,3 +330,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
