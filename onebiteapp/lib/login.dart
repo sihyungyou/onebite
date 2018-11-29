@@ -51,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<FirebaseUser> signinAnon() async {
     FirebaseUser user = await firebaseAuth.signInAnonymously();
+    // user.uid = 'annon ${user.uid}';
     print("Signed in ${user.uid}");
     return user;
   }
