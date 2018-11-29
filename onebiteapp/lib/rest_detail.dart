@@ -5,7 +5,7 @@ import 'package:Shrine/rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:Shrine/write_review.dart';
-import 'package:english_words/english_words.dart';
+// import 'package:english_words/english_words.dart';
 
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
@@ -185,6 +185,13 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               ],
             ),
             onPressed: () {
+              // 로그인 안하면 막아두기
+              // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
+              Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
+              .setData(({
+                'name' : '${restaurant.name}',
+              }));
+              print('history : ${restaurant.name} added!');
               _launchURL();
             }),
       ),
@@ -257,7 +264,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                         .setData(({
                                           'name': '${restaurant.name}',
                                         }));
-                                        print('${restaurant.name} added!');
+                                        print('favorite : ${restaurant.name} added!');
                                   }
                                   if (favorited) {
                                     Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
