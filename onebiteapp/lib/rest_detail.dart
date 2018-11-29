@@ -258,16 +258,24 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog (
-                                          title: Text('로그인 후에 이용 가능한 기능입니다'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text('닫기'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            )
-                                          ],
-                                        );
+                                            // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                            content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('로그인'),
+                                                onPressed: () {
+                                                  // 그 자리에서 바로 로그인 유도하기! go to login page
+                                                  Navigator.pushNamed(context, '/login');
+                                                },
+                                              ),
+                                              FlatButton(
+                                                child: Text('닫기'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              )
+                                            ],
+                                          );
                                       }
                                     );
                                   }
@@ -292,24 +300,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                     favorited = !favorited;
                                   });
                                   }
-                                  // if (!favorited) {
-                                  //   // if it wasn't favorite, add to firebase 
-                                  //   Firestore.instance
-                                  //       .collection('users')
-                                  //       .document('${user.uid}')
-                                  //       .collection('favorite')
-                                  //       .document('${restaurant.name}')
-                                  //       .setData(({
-                                  //         'name': '${restaurant.name}',
-                                  //       }));
-                                  //       print('favorite : ${restaurant.name} added!');
-                                  // }
-                                  // if (favorited) {
-                                  //   Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
-                                  // }
-                                  // setState(() {
-                                  //   favorited = !favorited;
-                                  // });
                                 }),
                           ],
                         ),
@@ -527,14 +517,43 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   child: Image.network(iconWrite),
                                   backgroundColor: writeFloatingButton,
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                WriteReviewPage(
-                                                  user: user,
-                                                  restaurant: restaurant,
-                                                )))
-                                        .catchError((e) => print(e));
+                                    if(user.isAnonymous){
+                                      // 익명 로그인일 경우 팝업 창 띄워주기
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog (
+                                            // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                            content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('로그인'),
+                                                onPressed: () {
+                                                  // 그 자리에서 바로 로그인 유도하기! go to login page
+                                                  Navigator.pushNamed(context, '/login');
+                                                },
+                                              ),
+                                              FlatButton(
+                                                child: Text('닫기'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        }
+                                      );                                      
+                                    }
+                                    else {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  WriteReviewPage(
+                                                    user: user,
+                                                    restaurant: restaurant,
+                                                  )))
+                                          .catchError((e) => print(e));
+                                    }
                                   }),
                             )
                           ],
