@@ -173,6 +173,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         color: onebiteButton,
@@ -185,8 +186,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               ],
             ),
             onPressed: () {
-              // 로그인 안하면 막아두기
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
+              // history 내역도 log in 안하면 setData 부분 막아두기
               Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
               .setData(({
                 'name' : '${restaurant.name}',
@@ -251,7 +252,28 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                 onPressed: () {
                                   // favorited => db에 user collection -> user.uid document생성 -> favorite collection -> random generate document -> name field : this restaurant's name
                                   // anonymous 는 favorite 막는 기능 추가하기
-                                  if (!favorited) {
+                                  if (user.isAnonymous) {
+                                    // 익명 로그인일 경우 팝업 창 띄워주기
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog (
+                                          title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('닫기'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                  else {
+                                    // 익명 로그인이 아닐 경우
+                                    if (!favorited) {
                                     // if it wasn't favorite, add to firebase 
                                     Firestore.instance
                                         .collection('users')
@@ -269,6 +291,25 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   setState(() {
                                     favorited = !favorited;
                                   });
+                                  }
+                                  // if (!favorited) {
+                                  //   // if it wasn't favorite, add to firebase 
+                                  //   Firestore.instance
+                                  //       .collection('users')
+                                  //       .document('${user.uid}')
+                                  //       .collection('favorite')
+                                  //       .document('${restaurant.name}')
+                                  //       .setData(({
+                                  //         'name': '${restaurant.name}',
+                                  //       }));
+                                  //       print('favorite : ${restaurant.name} added!');
+                                  // }
+                                  // if (favorited) {
+                                  //   Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
+                                  // }
+                                  // setState(() {
+                                  //   favorited = !favorited;
+                                  // });
                                 }),
                           ],
                         ),
@@ -311,6 +352,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               Container(height: 15.0, color: onebiteButton),
               new Container(
                 child: new TabBar(
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 2.0, color: theme.primaryColor),
+                  ),
                   controller: _controller,
                   tabs: [
                     new Tab(
