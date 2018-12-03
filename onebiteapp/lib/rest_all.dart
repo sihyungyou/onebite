@@ -60,22 +60,6 @@ class _RestAllPageState extends State<RestAllPage>
         title: Text('전체 식당'),
         centerTitle: true,
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(Icons.favorite_border),
-          //   onPressed: (){
-          //     Navigator.of(context).push(MaterialPageRoute(
-          //       builder: (BuildContext context) =>  FavoritePage( user: user, favorite: korean,)))
-          //   .catchError((e) => print(e));
-          //   },
-          // ),
-          // IconButton(
-          //   icon: Icon(Icons.history),
-          //   onPressed: (){
-          //     Navigator.of(context).push(MaterialPageRoute(
-          //       builder: (BuildContext context) =>  HistoryPage( user: user, favorite: korean,)))
-          //   .catchError((e) => print(e));
-          //   },
-          // ),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
@@ -94,40 +78,56 @@ class _RestAllPageState extends State<RestAllPage>
         children: <Widget>[
           new Container(
             child: new TabBar(
+              isScrollable: true,
               indicator: UnderlineTabIndicator(
                 borderSide: BorderSide(width: 2.0, color: theme.primaryColor),
               ),
               controller: _controller,
               tabs: <Widget>[
-                new Tab(
-                  child: Text('패스트푸드',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
+                SizedBox(
+                  width: 70.0,
+                  child: new Tab(
+                    child: Text('패스트푸드',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
-                new Tab(
-                  child: Text('한식',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
+                SizedBox(
+                  width: 41.0,
+                    child: new Tab(
+                    child: Text('한식',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
-                new Tab(
-                  child: Text('중식',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
+                SizedBox(
+                  width: 41.0,
+                    child: new Tab(
+                    child: Text('중식',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
-                new Tab(
-                  child: Text('일식',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
+                SizedBox(
+                  width: 41.0,
+                    child: new Tab(
+                    child: Text('일식',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
-                new Tab(
-                  child: Text('분식',
-                      style: TextStyle(
-                        color: Colors.black,
-                      )),
+                SizedBox(
+                  width: 41.0,
+                    child: new Tab(
+                    child: Text('분식',
+                        style: TextStyle(
+                          color: Colors.black,
+                        )),
+                  ),
                 ),
               ],
             ),

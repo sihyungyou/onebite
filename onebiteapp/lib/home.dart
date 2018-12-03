@@ -298,7 +298,6 @@ class HomePageState extends State<HomePage> {
                              SizedBox(width:5.0),
                              Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
-
                          ),
                          onPressed:() {
                            Navigator.of(context)
