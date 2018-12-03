@@ -49,13 +49,13 @@ class _NoticeListPageState extends State<NoticeListPage> {
                 );
               } else {
                 return ListView.builder(
-                  // 추가할 부분 : DB에서 가장 최근에 추가된 내용이 top으로 오도록 sorting
                   itemCount: snapshot.data.length, // actual length of returned data from future
                   itemBuilder: (_, index) {
                     return ListTile(
-                      title: Text(snapshot.data[index].data["title"]),
-                      subtitle: Text(snapshot.data[index].data["date"]),
-                      onTap: () => navigateToDetail(snapshot.data[index]),
+                      // length - index - 1 부터 display 한다는 것은 date 이 최근일 수록 list의 위로 오도록 sorting 함
+                      title: Text(snapshot.data[snapshot.data.length-index-1].data["title"]),
+                      subtitle: Text(snapshot.data[snapshot.data.length-index-1].data["date"]),
+                      onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
                     );
                   },
                 );
