@@ -49,6 +49,8 @@ class HomePageState extends State<HomePage> {
 
   List<Restaurant> historyList = List<Restaurant>();
 
+  List<Restaurant> sortedList = List<Restaurant>();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future _buildList() async {
@@ -59,7 +61,6 @@ class HomePageState extends State<HomePage> {
     // build init 할 때 user collection -> uid document -> search_history collection -> index 돌면서 추가!
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
-      // print(restaurant.name);
       setState(() {
         allRests.add(restaurant);
         allNames.add(restaurant.name);
@@ -74,6 +75,11 @@ class HomePageState extends State<HomePage> {
         else if (restaurant.type == 'fastfood')
           fastFood.add(restaurant);
       });
+    }
+
+    for (var i = 0; i < list.length; i++){
+      // sort by calls, and put them into sortedList, print only top three below
+      // try to user quick sort
     }
 
     QuerySnapshot favoriteSnapshot =
@@ -94,7 +100,8 @@ class HomePageState extends State<HomePage> {
     QuerySnapshot historySnapshot =
     await Firestore.instance.collection("users").document(user.uid).collection("history").getDocuments();
     var list2 = historySnapshot.documents;
-    for(var i = 0 ; i< list1.length; i ++){
+    // 여기 i < list1.length 로 되어있어서 history랑 firebase랑 틀리게 떴는데 고쳤음.
+    for(var i = 0 ; i< list2.length; i ++){
       final History history = History.fromSnapshot(list2[i]);
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
@@ -105,7 +112,6 @@ class HomePageState extends State<HomePage> {
         }
       });
     }
-
   }
 
   @override
@@ -250,7 +256,7 @@ class HomePageState extends State<HomePage> {
         title: Image.network(logoImage, scale: 3.0),
       ),
 
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(
               height: 100.0,
@@ -330,6 +336,7 @@ class HomePageState extends State<HomePage> {
                   ],
                 )
                 ),
+                // favorite
                 SizedBox(height: 10.0),
                 Container(
                   decoration: new BoxDecoration(
@@ -349,7 +356,7 @@ class HomePageState extends State<HomePage> {
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
-                                  Text("내가 좋아하는 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                                  Text("내가 좋아하는 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
                                 ],
                               ),
                               Divider(),
@@ -447,6 +454,7 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
 
+                // history
                 SizedBox(height: 10.0),
                 Container(
                   decoration: new BoxDecoration(
@@ -534,8 +542,6 @@ class HomePageState extends State<HomePage> {
 
                             ],
                           ),
-
-
                         ),
                         Container(
                           color: Colors.white,
@@ -565,9 +571,112 @@ class HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-
                 ),
+                // 식당 랭킹
+                SizedBox(height: 10.0),
+                Container(
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius:
+                    new BorderRadius.all(new Radius.circular(10.0)),
+                  ),
+                  height: 165.0,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text("한입만 식당 랭킹", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                                ],
+                              ),
+                              Divider(),
+                              user.isAnonymous ? Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 35.0,),
+                                    Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
+                                  ],
+                                ),
+                              ) : 
+                              // 여긴 로그인 했으면 무조건 뭔가 보임 (히스토리나 즐겨찾기가 아니고 전체 유저의 데이터를 축적 해놓은 것이기 때문에)
+                              Container(
+                                height: 80.0,
+                                width: 400.0,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: allRests.map((restaurant){
+                                    return Container(
+                                      height: 100.0,
+                                      width: 100.0,
+                                      child: ListTile(
+                                          title: Column(
+                                            children: <Widget>[
+                                              CircleAvatar(
+                                                radius: 30.0,
+                                                backgroundImage: Image.network('${restaurant.logo}').image,
+                                              ),
+                                              Text(
+                                                  restaurant.name,
+                                                  maxLines: 2,
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                              ),
 
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    DetailPage(
+                                                        user: user,
+                                                        restaurant: restaurant)))
+                                                .catchError((e) => print(e));
+                                          }
+                                      ),
+                                    );
+
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                      ),
+                        // Container(
+
+                        //   color: Colors.white,
+                        //   height: 40.0,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: <Widget>[
+                        //       FlatButton(
+
+                        //           child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+
+                        //           onPressed:() {
+                        //             if(favoriteList.length != 0)
+                        //               Navigator.of(context)
+                        //                   .push(MaterialPageRoute(
+                        //                   builder: (BuildContext context) =>
+                        //                       FavoritePage(
+                        //                           user: user,
+                        //                           favorite: favoriteList)))
+                        //                   .catchError((e) => print(e));
+                        //           }
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
 
               ],
             )
