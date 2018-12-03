@@ -353,6 +353,14 @@ class HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Divider(),
+                              user.isAnonymous ? Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 35.0,),
+                                    Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
+                                  ],
+                                ),
+                              ) : 
                               favoriteList.length == 0 ? Container(
                                 child: Column(
                                   children: <Widget>[
@@ -463,6 +471,14 @@ class HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Divider(),
+                              user.isAnonymous ? Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 35.0,),
+                                    Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
+                                  ],
+                                ),
+                              ) :
                               historyList.length == 0 ? Container(
                                   child: Column(
                                     children: <Widget>[
@@ -514,6 +530,8 @@ class HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
+
+
                             ],
                           ),
 
