@@ -346,7 +346,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   height: 175.0,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -369,7 +369,7 @@ class HomePageState extends State<HomePage> {
                                 )
                               ) : Container(
 
-                                height: 90.0,
+                                height: 100.0,
                                 width: 400.0,
                                 child: ListView(
                                   shrinkWrap: true,
@@ -377,15 +377,16 @@ class HomePageState extends State<HomePage> {
                                   children: favoriteList.map((restaurant){
                                     return Container(
                                       height: 130.0,
-                                      width: 100.0,
+                                      width: 70.0,
                                       child: ListTile(
-
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
                                             children: <Widget>[
                                               CircleAvatar(
                                                 radius: 30.0,
                                                 backgroundImage: Image.network('${restaurant.logo}').image,
                                               ),
+                                              SizedBox(height: 10.0),
                                               Text(
                                                   restaurant.name,
                                                   maxLines: 2,
@@ -410,33 +411,34 @@ class HomePageState extends State<HomePage> {
                                   }).toList(),
                                 ),
                               ),
-
-
-
                             ],
                           ),
                         ),
                         Container(
 
                           color: Colors.white,
-                          height: 40.0,
+                          height: 20.0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              FlatButton(
+                              ButtonTheme(
+                                  minWidth: 40.0,
+                                  child: FlatButton(
+                                      padding: EdgeInsets.symmetric(horizontal: 0.0),
 
-                                  child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+                                      child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
 
-                                  onPressed:() {
-                                    if(favoriteList.length != 0)
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              FavoritePage(
-                                                  user: user,
-                                                  favorite: favoriteList)))
-                                          .catchError((e) => print(e));
-                                  }
+                                      onPressed:() {
+                                        if(favoriteList.length != 0)
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  FavoritePage(
+                                                      user: user,
+                                                      favorite: favoriteList)))
+                                              .catchError((e) => print(e));
+                                      }
+                                  )
                               )
                             ],
                           ),
@@ -444,6 +446,7 @@ class HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
                 ),
 
                 SizedBox(height: 10.0),
@@ -480,7 +483,7 @@ class HomePageState extends State<HomePage> {
                                   )
                               ) : Container(
                                 child: Container(
-                                  height: 90.0,
+                                  height: 100.0,
                                   width: 400.0,
                                   child: ListView(
                                     shrinkWrap: true,
@@ -488,15 +491,17 @@ class HomePageState extends State<HomePage> {
                                     children: historyList.map((restaurant){
                                       return Container(
                                         height: 130.0,
-                                        width: 100.0,
-                                        child: ListTile(
+                                        width: 70.0,
 
+                                        child: ListTile(
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                             title: Column(
                                               children: <Widget>[
                                                 CircleAvatar(
                                                   radius: 30.0,
                                                   backgroundImage: Image.network('${restaurant.logo}').image,
                                                 ),
+                                                SizedBox(height: 10.0),
                                                 Text(
                                                     restaurant.name,
                                                     maxLines: 2,
@@ -529,25 +534,30 @@ class HomePageState extends State<HomePage> {
                         ),
                         Container(
                           color: Colors.white,
-                          height: 40.0,
+                          height: 20.0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              FlatButton(
-                                  child: historyList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
-                                  disabledColor: Colors.white,
+                              ButtonTheme(
+                                minWidth: 40.0,
+                                child: FlatButton(
+                                    child: historyList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+                                    padding: EdgeInsets.symmetric(horizontal: 0.0),
+                                    disabledColor: Colors.white,
 
-                                  onPressed:() {
-                                    if(historyList.length != 0)
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            HistoryPage(
-                                                user: user,
-                                                history: historyList)))
-                                        .catchError((e) => print(e));
-                                  }
+                                    onPressed:() {
+                                      if(historyList.length != 0)
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                HistoryPage(
+                                                    user: user,
+                                                    history: historyList)))
+                                            .catchError((e) => print(e));
+                                    }
+                                )
                               )
+
                             ],
                           ),
                         )
