@@ -13,6 +13,8 @@ class AddPage extends StatefulWidget {
 }
 
 class AddPageState extends State<AddPage> {
+  int calls = 0;
+  String testimage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
   String name;
   String closed;
   String deliveryFee;
@@ -65,12 +67,12 @@ class AddPageState extends State<AddPage> {
               Icons.save,
             ),
             onPressed: () {
-              final wordPair = WordPair.random();
-              final wordPair2 = WordPair.random();
-              final wordPair3 = WordPair.random();
+              // final wordPair = WordPair.random();
+              // final wordPair2 = WordPair.random();
+              // final wordPair3 = WordPair.random();
               final form = formKey.currentState;
               form.save();
-              Firestore.instance.collection('restaurant').document(wordPair.toString())
+              Firestore.instance.collection('restaurant').document('${this.name}')
               .setData(({
                 'name' : '${this.name}',
                 'closed' : '${this.closed}',
@@ -79,17 +81,20 @@ class AddPageState extends State<AddPage> {
                 'type' : '${this.type}',
                 'phone' : '${this.phone}',
                 'rate' : '${this.rate}',
-                'time' : '${this.time}'
+                'time' : '${this.time}',
+                'logo' : '${this.testimage}',
+                'calls' : this.calls,
                 }));
-              Firestore.instance.collection('restaurant').document(wordPair.toString()).collection('menu').document(wordPair2.toString())
+              Firestore.instance.collection('restaurant').document('${this.name}').collection('menu').document('${this.menu1}')
               .setData(({
                 'name' : '${this.menu1}',
                 'price' : '${this.price1}',
                 }));
-                Firestore.instance.collection('restaurant').document(wordPair.toString()).collection('topmenu').document(wordPair3.toString())
+                Firestore.instance.collection('restaurant').document('${this.name}').collection('topmenu').document('${this.topmenu1}')
               .setData(({
                 'name' : '${this.topmenu1}',
                 'price' : '${this.topprice1}',
+                'image' : '${this.testimage}'
                 }));
             },
           )

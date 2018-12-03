@@ -10,7 +10,6 @@ import 'package:Shrine/write_review.dart';
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
   final Restaurant restaurant;
-  // final DocumentSnapshot restaurant;
   DetailPage({Key key, this.user, this.restaurant});
   DetailPageState createState() =>
       DetailPageState(user: this.user, restaurant: this.restaurant);
@@ -189,10 +188,13 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
               // history 내역도 log in 안하면 setData 부분 막아두기
               // calls++; 
-              Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
-              .setData(({
-                'name' : '${restaurant.name}',
-              }));
+              // restaurant.reference.updateData({
+              //   'restaurant.calls' : restaurant.calls + 1,
+              // });
+
+              Firestore.instance.collection('restaurant').document('${restaurant}').updateData({
+                'calls' : restaurant.calls +1,
+              });
               // 누르면 calls 더해지도록
               // Firestore.instance.runTransaction((transaction) async {
               //   DocumentSnapshot freshSnap = 
@@ -201,9 +203,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               //       'calls' : freshSnap['calls']
               //     });
               // });
-              restaurant.reference.updateData({
-                'restaurant.calls' : restaurant.calls + 1,
-              });
               print(restaurant.calls);
               print('history : ${restaurant.name} added!');
               _launchURL();
