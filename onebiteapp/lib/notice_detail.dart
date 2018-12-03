@@ -20,10 +20,20 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
       ),
       body: Container(
         // 여기는 display 틀만 잡으면 끝!
-          child: ListTile(
-            title: Text(widget.post.data["title"]),
-            subtitle: Text(widget.post.data["content"]),
-          ),
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 0.0, 0.0),
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  title: Text(widget.post.data["title"]),
+                  subtitle: Text(widget.post.data["date"]),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(widget.post.data["content"]),
+                )
+              ],
+            )),
       ),
     );
   }

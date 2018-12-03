@@ -58,22 +58,6 @@ class _RestAllPageState extends State<RestAllPage>
         title: Text('전체 식당'),
         centerTitle: true,
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(Icons.favorite_border),
-          //   onPressed: (){
-          //     Navigator.of(context).push(MaterialPageRoute(
-          //       builder: (BuildContext context) =>  FavoritePage( user: user, favorite: korean,)))
-          //   .catchError((e) => print(e));
-          //   },
-          // ),
-          // IconButton(
-          //   icon: Icon(Icons.history),
-          //   onPressed: (){
-          //     Navigator.of(context).push(MaterialPageRoute(
-          //       builder: (BuildContext context) =>  HistoryPage( user: user, favorite: korean,)))
-          //   .catchError((e) => print(e));
-          //   },
-          // ),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {

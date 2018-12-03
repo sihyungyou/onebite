@@ -276,9 +276,8 @@ class HomePageState extends State<HomePage> {
                          child: Row(
                            children: <Widget>[
                              Icon(Icons.favorite_border),
-                             Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
+                             Text("겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
-
                          ),
                          onPressed:() {}
                      ),
