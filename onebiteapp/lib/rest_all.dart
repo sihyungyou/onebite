@@ -40,9 +40,9 @@ class _RestAllPageState extends State<RestAllPage>
   @override
   void initState() {
     super.initState();
-    print("init state yes");
+    // print("init state yes");
     _controller = new TabController(length: 5, vsync: this);
-    print("init state over");
+    // print("init state over");
   }
 
 
@@ -362,8 +362,9 @@ class Restaurant {
   final String time;
   final String type;
   final String logo;
+  int calls;
   Restaurant(this.closed, this.deliveryFee, this.minimumOrder, this.name,
-      this.reference, this.phone, this.rate, this.time, this.type, this.logo);
+      this.reference, this.phone, this.rate, this.time, this.type, this.logo, this.calls);
 
   Restaurant.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['closed'] != null),
@@ -382,7 +383,8 @@ class Restaurant {
         rate = map['rate'],
         time = map['time'],
         type = map['type'],
-        logo = map['logo'];
+        logo = map['logo'],
+        calls = map['calls'];
 
   Restaurant.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

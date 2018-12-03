@@ -31,7 +31,6 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
                 Divider(),
                 ListTile(
                   title: Text(widget.post.data["content"]),
-                  subtitle: Text('merge test'),
                 )
               ],
             )),
