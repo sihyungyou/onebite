@@ -62,7 +62,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
     QuerySnapshot menuSnapshot = await Firestore.instance.collection("restaurant").document(restaurant.reference.documentID).collection('menu').getDocuments();
     var menuList = menuSnapshot.documents;
 
-    print("menu length = " + menuList.length.toString());
+    // print("menu length = " + menuList.length.toString());
     for (var i = 0; i < menuList.length; i++) {
       setState(() {
         menu.add(Menu.fromSnapshot(menuList[i]));
@@ -78,18 +78,18 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
         .collection('review')
         .getDocuments();
     var reviewList = reviewSnapshot.documents;
-    print(reviewList.length);
-    print("review length = " + reviewList.length.toString());
+    // print(reviewList.length);
+    // print("review length = " + reviewList.length.toString());
 
 
     for (var i = 0; i < reviewList.length; i++) {
       setState(() {
         review.add(Review.fromSnapshot(reviewList[i]));
       });
-      print(review[i].author);
-      print(review[i].date);
-      print(review[i].rate);
-      print(review[i].context);
+      // print(review[i].author);
+      // print(review[i].date);
+      // print(review[i].rate);
+      // print(review[i].context);
       rating += double.parse(review[i].rate);
     }
     rating = rating / reviewList.length;
@@ -101,15 +101,15 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
         .getDocuments();
 
     var topMenuList = topMenuSnapshot.documents;
-    print(topMenuList.length);
-    print("topMenuList length = " + topMenuList.length.toString());
+    // print(topMenuList.length);
+    // print("topMenuList length = " + topMenuList.length.toString());
 
     for (var i = 0; i < topMenuList.length; i++) {
       setState(() {
         topMenu.add(TopMenu.fromSnapshot(topMenuList[i]));
       });
-      print(topMenu[i].name);
-      print(topMenu[i].price);
+      // print(topMenu[i].name);
+      // print(topMenu[i].price);
     }
     topMenuCard = _buildGridCards(context);
   }
@@ -188,10 +188,15 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             onPressed: () {
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
               // history 내역도 log in 안하면 setData 부분 막아두기
+              // calls++; 
               Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
               .setData(({
                 'name' : '${restaurant.name}',
               }));
+              setState(() {
+                restaurant.calls++;            
+              });
+              print(restaurant.calls);
               print('history : ${restaurant.name} added!');
               _launchURL();
             }),
@@ -409,7 +414,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   body: ColumnBuilder(
                                       itemCount: menu.length,
                                       itemBuilder: (context, index) {
-                                        print("메뉴 : " + index.toString());
+                                        // print("메뉴 : " + index.toString());
 
                                         return ListTile(
                                           title: Text(menu[index].name),

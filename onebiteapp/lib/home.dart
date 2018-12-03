@@ -77,21 +77,16 @@ class HomePageState extends State<HomePage> {
       });
     }
 
-    for (var i = 0; i < list.length; i++){
-      // sort by calls, and put them into sortedList, print only top three below
-      // try to user quick sort
-    }
-
     QuerySnapshot favoriteSnapshot =
     await Firestore.instance.collection("users").document(user.uid).collection("favorite").getDocuments();
     var list1 = favoriteSnapshot.documents;
     for(var i = 0 ; i< list1.length; i ++){
       final Favorite favorite = Favorite.fromSnapshot(list1[i]);
-      print("hello");
+      // print("hello");
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
           if(allRests[j].name == favorite.name){
-            print("favorite : " + favorite.name);
+            // print("favorite : " + favorite.name);
             favoriteList.add(allRests[j]);
           }
         }
@@ -106,11 +101,37 @@ class HomePageState extends State<HomePage> {
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
           if(allRests[j].name == history.name) {
-            print("history : " + history.name);
+            // print("history : " + history.name);
             historyList.add(allRests[j]);
           }
         }
       });
+    }
+
+  }
+
+  // sort by calls not names
+  void QuickSort(int left, int right, List<Restaurant> data){
+    int pivot = left;
+    int j = pivot;
+    int i = left+1;
+    if (left < right) {
+      for(; i <= right; i++){
+        if (data[i].calls < data[pivot].calls) {
+          j++;
+          Restaurant temp;
+          temp = data[i];
+          data[j] = data[i];
+          data[i] = temp;
+        }
+      }
+      Restaurant temp;
+      temp = data[left];
+      data[left] = data[i];
+      data[i] = temp;
+      pivot = j;
+      QuickSort(left, pivot-1, data);
+      QuickSort(pivot+1, right, data);
     }
   }
 
@@ -123,7 +144,7 @@ class HomePageState extends State<HomePage> {
     // currentuser로 진짜 signout 되는지 testing 더 필요..
     // signout 이 됐으면 다시 구글로그인 눌렀을 때 다시 구글 이메일 및 비밀번호 요구해야 하지 않나?
     FirebaseAuth.instance.signOut();
-    print('${FirebaseAuth.instance.currentUser()} Signed Out!');
+    // print('${FirebaseAuth.instance.currentUser()} Signed Out!');
   }
 
   @override
@@ -648,31 +669,6 @@ class HomePageState extends State<HomePage> {
                             ],
                           ),
                       ),
-                        // Container(
-
-                        //   color: Colors.white,
-                        //   height: 40.0,
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.end,
-                        //     children: <Widget>[
-                        //       FlatButton(
-
-                        //           child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
-
-                        //           onPressed:() {
-                        //             if(favoriteList.length != 0)
-                        //               Navigator.of(context)
-                        //                   .push(MaterialPageRoute(
-                        //                   builder: (BuildContext context) =>
-                        //                       FavoritePage(
-                        //                           user: user,
-                        //                           favorite: favoriteList)))
-                        //                   .catchError((e) => print(e));
-                        //           }
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
