@@ -25,6 +25,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  image_path: "assets/onebite_logo_white1.png"
+  android: true
+  ios: "launcher_icon"
+
 flutter:
   fonts:
       - family: NotoSans
