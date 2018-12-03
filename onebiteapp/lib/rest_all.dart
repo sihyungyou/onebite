@@ -1,4 +1,5 @@
 // 전체식당
+import 'package:Shrine/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,8 +53,9 @@ class _RestAllPageState extends State<RestAllPage>
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             // Navigator.pop(context); // detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
-            Navigator.pop(context);//그래서 일단은 푸시네임으로!
-          },
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  HomePage( user: user,)))
+                .catchError((e) => print(e));          },
         ),
         title: Text('전체 식당'),
         centerTitle: true,

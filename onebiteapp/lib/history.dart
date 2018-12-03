@@ -8,15 +8,15 @@ import 'rest_all.dart';
 class HistoryPage extends StatefulWidget {
   @override
   final FirebaseUser user;
-  List<Restaurant> favorite = new List<Restaurant>();
-  HistoryPage({Key key, this.user, this.favorite});
-  _HistoryPageState createState() => _HistoryPageState(user: user, favorite: favorite);
+  List<Restaurant> history = new List<Restaurant>();
+  HistoryPage({Key key, this.user, this.history});
+  _HistoryPageState createState() => _HistoryPageState(user: user, history: history);
 }
 
 class _HistoryPageState extends State<HistoryPage> {
   final FirebaseUser user;
-  List<Restaurant> favorite;
-  _HistoryPageState({Key key, this.user, this.favorite});
+  List<Restaurant> history;
+  _HistoryPageState({Key key, this.user, this.history});
 
 
   @override
@@ -33,21 +33,21 @@ class _HistoryPageState extends State<HistoryPage> {
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: favorite.length,
+        itemCount: history.length,
         itemBuilder: (context, index) {
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage: Image.network('${favorite[index].logo}').image,
+              backgroundImage: Image.network('${history[index].logo}').image,
             ),
-              title: Text(favorite[index].name),
-              subtitle: Text("영업시간: " + favorite[index].time),
+              title: Text(history[index].name),
+              subtitle: Text("영업시간: " + history[index].time),
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
                         builder: (BuildContext context) =>
                             DetailPage(
                                 user: user,
-                                restaurant: favorite[index])))
+                                restaurant: history[index])))
                     .catchError((e) => print(e));
               });
         }),

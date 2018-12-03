@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Shrine/rest_all.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:Shrine/favorite.dart';
+import 'package:Shrine/history.dart';
 
 class HomePage extends StatefulWidget {
   // anonymous login user object를 건네받기 위한 변수 선언
@@ -20,7 +22,11 @@ class HomePageState extends State<HomePage> {
   final FirebaseUser user;
 
   HomePageState({this.user});
+  final String allImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2Fall.png?alt=media&token=427a0b65-a5fb-4006-86aa-2b7217df0bda';
+  final String roulletImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2Froullet.png?alt=media&token=c11f3183-13cd-4100-b993-7195973cf155';
+  final String favImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2Ffavorite.png?alt=media&token=16c25dcd-a7c9-456e-b05b-79cf0163b698';
 
+  final String bannerImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%83%E1%85%A9%E1%86%AB%E1%84%81%E1%85%A1%E1%84%8A%E1%85%B3%E1%84%8B%E1%85%A3%E1%84%89%E1%85%B3.png?alt=media&token=4e62b911-79b5-41f5-b659-2febc2aad94c';
   final String logoImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%204.png?alt=media&token=fbeb4805-eea5-418d-a63a-f92fc76cb270';
 
   final Color googleText = Color.fromRGBO(241, 67, 54, 1);
@@ -40,6 +46,7 @@ class HomePageState extends State<HomePage> {
   List<String> allNames = new List<String>();
 
   List<Restaurant> favoriteList = List<Restaurant>();
+
   List<Restaurant> historyList = List<Restaurant>();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -245,22 +252,34 @@ class HomePageState extends State<HomePage> {
 
       body: Column(
         children: <Widget>[
-          Container(height: 90.0, color: Colors.grey),
+          Container(
+              height: 100.0,
+              width: 400.0,
+              color: Colors.grey,
+              child: Image.network(bannerImage),
+          ),
+
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Column(
               children: <Widget>[
-                SizedBox(height: 10.0),
                 Container(
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius:
+                    new BorderRadius.all(new Radius.circular(10.0)),
+                  ),
                   height: 60.0,
-                  color: Colors.white,
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                      FlatButton(
                           child: Row(
                             children: <Widget>[
-                              Icon(Icons.restaurant),
+                              Image.network(allImage, width: 20.0),
+                              SizedBox(width:5.0),
+
                               Text("전체식당", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                             ],
                           ),
@@ -275,60 +294,91 @@ class HomePageState extends State<HomePage> {
                      FlatButton(
                          child: Row(
                            children: <Widget>[
-                             Icon(Icons.favorite_border),
+                             Image.network(favImage, width: 20.0),
+                             SizedBox(width:5.0),
                              Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
 
                          ),
-                         onPressed:() {}
+                         onPressed:() {
+                           Navigator.of(context)
+                               .push(MaterialPageRoute(
+                               builder: (BuildContext context) =>
+                                   FavoritePage(
+                                       user: user,
+                                       favorite: favoriteList)))
+                               .catchError((e) => print(e));
+                         }
                      ),
 
                      FlatButton(
                          child: Row(
                            children: <Widget>[
-                             Icon(Icons.local_pizza),
+                             Image.network(roulletImage, width: 20.0),                              SizedBox(width:5.0),
                              Text("못 골라?", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
                            ],
                          ),
-                         onPressed:() {}
+                         onPressed:() {
+                           Navigator.of(context)
+                               .push(MaterialPageRoute(
+                               builder: (BuildContext context) =>
+                                   HistoryPage(
+                                       user: user,
+                                       history: historyList)))
+                               .catchError((e) => print(e));
+                         }
                      ),
                   ],
                 )
                 ),
                 SizedBox(height: 10.0),
                 Container(
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius:
+                    new BorderRadius.all(new Radius.circular(10.0)),
+                  ),
                   height: 165.0,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                           child: Column(
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
-                                  Text("내가 좋아하는 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
-                                  Divider(),
+                                  Text("내가 좋아하는 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
                                 ],
                               ),
                               Divider(),
-                              Container(
+                              favoriteList.length == 0 ? Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 35.0,),
+                                    Text("아직 좋아하는 식당이 없어요!",  textAlign: TextAlign.center,),
+                                    Text("식당을 검색한 후 하트를 눌러보세요~ ",  textAlign: TextAlign.center,)
+                                  ],
+                                )
+                              ) : Container(
+
                                 height: 80.0,
-                                width: 300.0,
+                                width: 400.0,
                                 child: ListView(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   children: favoriteList.map((restaurant){
                                     return Container(
                                       height: 100.0,
-                                      width: 75.0,
+                                      width: 100.0,
                                       child: ListTile(
 
                                           title: Column(
                                             children: <Widget>[
                                               CircleAvatar(
-
+                                                radius: 30.0,
                                                 backgroundImage: Image.network('${restaurant.logo}').image,
                                               ),
                                               Text(
@@ -354,114 +404,153 @@ class HomePageState extends State<HomePage> {
                                   }).toList(),
                                 ),
                               ),
-                              Container(
-                                height: 20.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    FlatButton(
-                                      child: Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
-                                    )
-                                  ],
-                                ),
-                              )
+
 
 
                             ],
                           ),
+                        ),
+                        Container(
 
+                          color: Colors.white,
+                          height: 40.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              FlatButton(
 
-                        )
+                                  child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
 
+                                  onPressed:() {
+                                    if(favoriteList.length != 0)
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              FavoritePage(
+                                                  user: user,
+                                                  favorite: favoriteList)))
+                                          .catchError((e) => print(e));
+                                  }
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  color: Colors.white,
                 ),
 
                 SizedBox(height: 10.0),
                 Container(
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Colors.white,
+                    borderRadius:
+                    new BorderRadius.all(new Radius.circular(10.0)),
+                  ),
                   height: 165.0,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 10.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                           child: Column(
                             children: <Widget>[
                               Row(
                                 children: <Widget>[
                                   Text("내가 이용한 한입만 식당", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15.0, fontWeight: FontWeight.w800)),
+                                  Divider(),
                                 ],
                               ),
                               Divider(),
+                              historyList.length == 0 ? Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 35.0,),
+                                      Text("아직 이용한 식당이 없어요!",  textAlign: TextAlign.center,),
+                                      Text("식당을 검색하고 주문해보세요~",  textAlign: TextAlign.center,)
+                                    ],
+                                  )
+                              ) : Container(
+                                child: Container(
+                                  height: 80.0,
+                                  width: 400.0,
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    children: historyList.map((restaurant){
+                                      return Container(
+                                        height: 100.0,
+                                        width: 100.0,
+                                        child: ListTile(
 
-                              Container(
-                                height: 80.0,
-                                width: 300.0,
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  children: historyList.map((restaurant){
-                                    return Container(
-                                      height: 100.0,
-                                      width: 75.0,
-                                      child: ListTile(
+                                            title: Column(
+                                              children: <Widget>[
+                                                CircleAvatar(
+                                                  radius: 30.0,
+                                                  backgroundImage: Image.network('${restaurant.logo}').image,
+                                                ),
+                                                Text(
+                                                    restaurant.name,
+                                                    maxLines: 2,
+                                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                                ),
 
-                                          title: Column(
-                                            children: <Widget>[
-                                              CircleAvatar(
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                  builder: (BuildContext context) =>
+                                                      DetailPage(
+                                                          user: user,
+                                                          restaurant: restaurant)))
+                                                  .catchError((e) => print(e));
+                                            }
+                                        ),
+                                      );
 
-                                                backgroundImage: Image.network('${restaurant.logo}').image,
-                                              ),
-                                              Text(
-                                                  restaurant.name,
-                                                  maxLines: 2,
-                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
-                                              ),
-
-                                            ],
-                                          ),
-                                          onTap: () {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                builder: (BuildContext context) =>
-                                                    DetailPage(
-                                                        user: user,
-                                                        restaurant: restaurant)))
-                                                .catchError((e) => print(e));
-                                          }
-                                      ),
-                                    );
-
-                                  }).toList(),
+                                    }).toList(),
+                                  ),
                                 ),
                               ),
-                              Container(
-                                height: 20.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    FlatButton(
-                                      child: Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
-                                    )
-                                  ],
-                                ),
-                              )
-
-
                             ],
                           ),
 
 
+                        ),
+                        Container(
+                          color: Colors.white,
+                          height: 40.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              FlatButton(
+                                  child: historyList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+                                  disabledColor: Colors.white,
+
+                                  onPressed:() {
+                                    if(historyList.length != 0)
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            HistoryPage(
+                                                user: user,
+                                                history: historyList)))
+                                        .catchError((e) => print(e));
+                                  }
+                              )
+                            ],
+                          ),
                         )
 
                       ],
                     ),
                   ),
-                  color: Colors.white,
-                )
+
+                ),
+
 
               ],
             )
