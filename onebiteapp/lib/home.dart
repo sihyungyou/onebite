@@ -602,9 +602,9 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 165.0,
+                  height: 175.0,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -627,7 +627,7 @@ class HomePageState extends State<HomePage> {
                               ) : 
                               // 여긴 로그인 했으면 무조건 뭔가 보임 (히스토리나 즐겨찾기가 아니고 전체 유저의 데이터를 축적 해놓은 것이기 때문에)
                               Container(
-                                height: 80.0,
+                                height: 100.0,
                                 width: 400.0,
                                 child: ListView(
                                   shrinkWrap: true,
@@ -635,7 +635,7 @@ class HomePageState extends State<HomePage> {
                                   children: sortedList.map((restaurant){
                                     return Container(
                                       height: 100.0,
-                                      width: 100.0,
+                                      width: 90.0,
                                       child: ListTile(
                                           title: Column(
                                             children: <Widget>[

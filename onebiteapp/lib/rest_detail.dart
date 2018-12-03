@@ -188,14 +188,18 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
               // history 내역도 log in 안하면 setData 부분 막아두기
               // calls++; 
+
+              // first try
               // restaurant.reference.updateData({
               //   'restaurant.calls' : restaurant.calls + 1,
               // });
 
-              Firestore.instance.collection('restaurant').document('${restaurant}').updateData({
-                'calls' : restaurant.calls +1,
-              });
-              // 누르면 calls 더해지도록
+              // second try
+              // Firestore.instance.collection('restaurant').document('${restaurant}').updateData({
+              //   'calls' : restaurant.calls +1,
+              // });
+
+              // third try
               // Firestore.instance.runTransaction((transaction) async {
               //   DocumentSnapshot freshSnap = 
               //     await transaction.get(restaurant.reference);
@@ -203,6 +207,10 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               //       'calls' : freshSnap['calls']
               //     });
               // });
+              Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
+              .setData(({
+                'name' : '${restaurant.name}',
+              }));
               print(restaurant.calls);
               print('history : ${restaurant.name} added!');
               _launchURL();

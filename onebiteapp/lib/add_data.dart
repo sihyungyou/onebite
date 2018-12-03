@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,12 +66,12 @@ class AddPageState extends State<AddPage> {
               Icons.save,
             ),
             onPressed: () {
-              // final wordPair = WordPair.random();
+              final wordPair = WordPair.random();
               // final wordPair2 = WordPair.random();
               // final wordPair3 = WordPair.random();
               final form = formKey.currentState;
               form.save();
-              Firestore.instance.collection('restaurant').document('${this.name}')
+              Firestore.instance.collection('restaurant').document(wordPair.toString())
               .setData(({
                 'name' : '${this.name}',
                 'closed' : '${this.closed}',
@@ -85,12 +84,12 @@ class AddPageState extends State<AddPage> {
                 'logo' : '${this.testimage}',
                 'calls' : this.calls,
                 }));
-              Firestore.instance.collection('restaurant').document('${this.name}').collection('menu').document('${this.menu1}')
+              Firestore.instance.collection('restaurant').document(wordPair.toString()).collection('menu').document('${this.menu1}')
               .setData(({
                 'name' : '${this.menu1}',
                 'price' : '${this.price1}',
                 }));
-                Firestore.instance.collection('restaurant').document('${this.name}').collection('topmenu').document('${this.topmenu1}')
+                Firestore.instance.collection('restaurant').document(wordPair.toString()).collection('topmenu').document('${this.topmenu1}')
               .setData(({
                 'name' : '${this.topmenu1}',
                 'price' : '${this.topprice1}',
