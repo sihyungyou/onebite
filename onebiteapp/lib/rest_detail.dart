@@ -193,8 +193,16 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               .setData(({
                 'name' : '${restaurant.name}',
               }));
-              setState(() {
-                restaurant.calls++;            
+              // 누르면 calls 더해지도록
+              // Firestore.instance.runTransaction((transaction) async {
+              //   DocumentSnapshot freshSnap = 
+              //     await transaction.get(restaurant.reference);
+              //     await transaction.update(freshSnap.reference, {
+              //       'calls' : freshSnap['calls']
+              //     });
+              // });
+              restaurant.reference.updateData({
+                'restaurant.calls' : restaurant.calls + 1,
               });
               print(restaurant.calls);
               print('history : ${restaurant.name} added!');

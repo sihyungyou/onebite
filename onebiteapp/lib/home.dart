@@ -82,7 +82,6 @@ class HomePageState extends State<HomePage> {
     var list1 = favoriteSnapshot.documents;
     for(var i = 0 ; i< list1.length; i ++){
       final Favorite favorite = Favorite.fromSnapshot(list1[i]);
-      // print("hello");
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
           if(allRests[j].name == favorite.name){
@@ -95,8 +94,7 @@ class HomePageState extends State<HomePage> {
     QuerySnapshot historySnapshot =
     await Firestore.instance.collection("users").document(user.uid).collection("history").getDocuments();
     var list2 = historySnapshot.documents;
-    // 여기 i < list1.length 로 되어있어서 history랑 firebase랑 틀리게 떴는데 고쳤음.
-    for(var i = 0 ; i< list2.length; i ++){
+    for(var i = 0 ; i < list2.length; i ++){
       final History history = History.fromSnapshot(list2[i]);
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
@@ -108,33 +106,12 @@ class HomePageState extends State<HomePage> {
       });
     }
 
-  }
-
-  // sort by calls not names
-  void QuickSort(int left, int right, List<Restaurant> data){
-    int pivot = left;
-    int j = pivot;
-    int i = left+1;
-    if (left < right) {
-      for(; i <= right; i++){
-        if (data[i].calls < data[pivot].calls) {
-          j++;
-          Restaurant temp;
-          temp = data[i];
-          data[j] = data[i];
-          data[i] = temp;
-        }
-      }
-      Restaurant temp;
-      temp = data[left];
-      data[left] = data[i];
-      data[i] = temp;
-      pivot = j;
-      QuickSort(left, pivot-1, data);
-      QuickSort(pivot+1, right, data);
+    allRests.sort((a, b) => b.calls.compareTo(a.calls));  // descending order sorting
+    for(var i = 0; i < 3; i++){
+      sortedList.add(allRests[i]);
     }
   }
-
+  
   @override
   void initState() {
     _buildList();
@@ -632,7 +609,7 @@ class HomePageState extends State<HomePage> {
                                 child: ListView(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  children: allRests.map((restaurant){
+                                  children: sortedList.map((restaurant){
                                     return Container(
                                       height: 100.0,
                                       width: 100.0,
