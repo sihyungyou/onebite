@@ -36,6 +36,7 @@ class _RestAllPageState extends State<RestAllPage>
   TabController _controller;
 
 
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +44,8 @@ class _RestAllPageState extends State<RestAllPage>
     _controller = new TabController(length: 5, vsync: this);
     print("init state over");
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +55,8 @@ class _RestAllPageState extends State<RestAllPage>
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
-            // Navigator.pop(context); // detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) =>  HomePage( user: user,)))
-                .catchError((e) => print(e));          },
+            Navigator.pop(context);
+          }// detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
         ),
         title: Text('전체 식당'),
         centerTitle: true,

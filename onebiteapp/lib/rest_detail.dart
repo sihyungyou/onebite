@@ -1,3 +1,4 @@
+import 'package:Shrine/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -142,7 +143,6 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               aspectRatio: 18 / 11,
               child: Image.network(
                 product.image,
-                fit: BoxFit.fitWidth,
               ),
             ),
             SizedBox(height: 8.0),
@@ -205,8 +205,13 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
                     onPressed: () {
-                      Navigator
-                          .pop(context);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              HomePage(
+                                  user: user,
+                                  )))
+                          .catchError((e) => print(e));
                     }),
               ),
               Padding(

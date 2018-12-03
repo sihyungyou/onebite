@@ -51,7 +51,13 @@ class HomePageState extends State<HomePage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  void _initList(){
+    favoriteList.clear();
+    historyList.clear();
+  }
+
   Future _buildList() async {
+    _initList();
     // print("buildlist in");
     QuerySnapshot querySnapshot =
     await Firestore.instance.collection("restaurant").getDocuments();
@@ -94,7 +100,7 @@ class HomePageState extends State<HomePage> {
     QuerySnapshot historySnapshot =
     await Firestore.instance.collection("users").document(user.uid).collection("history").getDocuments();
     var list2 = historySnapshot.documents;
-    for(var i = 0 ; i< list1.length; i ++){
+    for(var i = 0 ; i< list2.length; i ++){
       final History history = History.fromSnapshot(list2[i]);
       setState(() {
         for(var j = 0; j< allRests.length; j ++){
@@ -338,7 +344,7 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 165.0,
+                  height: 175.0,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 0.0),
                     child: Column(
@@ -363,14 +369,14 @@ class HomePageState extends State<HomePage> {
                                 )
                               ) : Container(
 
-                                height: 80.0,
+                                height: 90.0,
                                 width: 400.0,
                                 child: ListView(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   children: favoriteList.map((restaurant){
                                     return Container(
-                                      height: 100.0,
+                                      height: 130.0,
                                       width: 100.0,
                                       child: ListTile(
 
@@ -383,7 +389,8 @@ class HomePageState extends State<HomePage> {
                                               Text(
                                                   restaurant.name,
                                                   maxLines: 2,
-                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                                                  textAlign: TextAlign.center,
                                               ),
 
                                             ],
@@ -447,7 +454,7 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 165.0,
+                  height: 175.0,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
@@ -473,14 +480,14 @@ class HomePageState extends State<HomePage> {
                                   )
                               ) : Container(
                                 child: Container(
-                                  height: 80.0,
+                                  height: 90.0,
                                   width: 400.0,
                                   child: ListView(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
                                     children: historyList.map((restaurant){
                                       return Container(
-                                        height: 100.0,
+                                        height: 130.0,
                                         width: 100.0,
                                         child: ListTile(
 
@@ -493,6 +500,7 @@ class HomePageState extends State<HomePage> {
                                                 Text(
                                                     restaurant.name,
                                                     maxLines: 2,
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
                                                 ),
 
