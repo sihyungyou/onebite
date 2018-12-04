@@ -47,6 +47,14 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
   DetailPageState({Key key, this.user, this.restaurant});
 
+  UpdateCalls() async {
+    print('update calls');
+    Firestore.instance.collection('restaurant').document(restaurant.reference.documentID).updateData(
+      {
+        'calls' : restaurant.calls++,
+      });
+  }
+
   Future<void> _buildList() async {
     QuerySnapshot favSnapshot = await Firestore.instance.collection('users').document('${user.uid}').collection('favorite').getDocuments();
     favList = favSnapshot.documents;
@@ -188,30 +196,11 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
               // history 내역도 log in 안하면 setData 부분 막아두기
               // calls++; 
-
-              // first try
-              // restaurant.reference.updateData({
-              //   'restaurant.calls' : restaurant.calls + 1,
-              // });
-
-              // second try
-              // Firestore.instance.collection('restaurant').document('${restaurant}').updateData({
-              //   'calls' : restaurant.calls +1,
-              // });
-
-              // third try
-              // Firestore.instance.runTransaction((transaction) async {
-              //   DocumentSnapshot freshSnap = 
-              //     await transaction.get(restaurant.reference);
-              //     await transaction.update(freshSnap.reference, {
-              //       'calls' : freshSnap['calls']
-              //     });
-              // });
               Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
               .setData(({
                 'name' : '${restaurant.name}',
               }));
-              print(restaurant.calls);
+              UpdateCalls();
               print('history : ${restaurant.name} added!');
               _launchURL();
             }),

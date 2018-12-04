@@ -375,6 +375,7 @@ class Restaurant {
         assert(map['rate'] != null),
         assert(map['time'] != null),
         assert(map['type'] != null),
+        assert(map['calls'] != null),
         closed = map['closed'],
         deliveryFee = map['delivery fee'],
         minimumOrder = map['minimum order'],
