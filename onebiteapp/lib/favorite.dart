@@ -36,6 +36,7 @@ class _FavoritePageState extends State<FavoritePage> {
         itemBuilder: (context, index) {
           return ListTile(
             leading: CircleAvatar(
+              radius: 25.0,
               backgroundImage: Image.network('${favorite[index].logo}').image,
             ),
               title: Text(favorite[index].name),

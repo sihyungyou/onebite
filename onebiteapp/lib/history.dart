@@ -37,6 +37,7 @@ class _HistoryPageState extends State<HistoryPage> {
         itemBuilder: (context, index) {
           return ListTile(
             leading: CircleAvatar(
+              radius: 25.0,
               backgroundImage: Image.network('${history[index].logo}').image,
             ),
               title: Text(history[index].name),
