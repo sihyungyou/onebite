@@ -6,19 +6,23 @@ import 'package:Shrine/rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:Shrine/write_review.dart';
+import 'history.dart';
+import 'favorite.dart';
 // import 'package:english_words/english_words.dart';
 
 class DetailPage extends StatefulWidget {
   final FirebaseUser user;
   final Restaurant restaurant;
-  DetailPage({Key key, this.user, this.restaurant});
+  final String previous;
+  DetailPage({Key key, this.user, this.restaurant, this.previous});
   DetailPageState createState() =>
-      DetailPageState(user: this.user, restaurant: this.restaurant);
+      DetailPageState(user: this.user, restaurant: this.restaurant, previous: this.previous);
 }
 
 class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
   final FirebaseUser user;
   final Restaurant restaurant;
+  final String previous;
   List<DocumentSnapshot> favList = List<DocumentSnapshot>();
   List<Menu> menu = List<Menu>();
   List<Review> review = List<Review>();
@@ -45,7 +49,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.black87);
   TextStyle _orderButtonStyle = TextStyle(
       fontWeight: FontWeight.w600, fontSize: 20.0, color: Colors.white);
-  DetailPageState({Key key, this.user, this.restaurant});
+  DetailPageState({Key key, this.user, this.restaurant, this.previous});
 
   Future<void> _buildList() async {
     QuerySnapshot favSnapshot = await Firestore.instance.collection('users').document('${user.uid}').collection('favorite').getDocuments();
@@ -152,7 +156,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             ),
             SizedBox(height: 8.0),
             Text(
-              product.price,
+              product.price + "원",
               style: _bodyStyle,
             ),
           ],
@@ -225,6 +229,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
                     onPressed: () {
+                      print(previous);
+                      if(previous == 'home')
                       Navigator.of(context)
                           .push(MaterialPageRoute(
                           builder: (BuildContext context) =>
@@ -232,7 +238,27 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   user: user,
                                   )))
                           .catchError((e) => print(e));
+                      else if(previous == 'restall')
+                        Navigator.of(context)
+                            .pop();
+                      else if(previous == 'history')
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                HistoryPage(
+                                  user: user,
+                                )))
+                            .catchError((e) => print(e));
+                      else if(previous == 'favorite')
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                FavoritePage(
+                                  user: user,
+                                )))
+                            .catchError((e) => print(e));
                     }),
+
               ),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),

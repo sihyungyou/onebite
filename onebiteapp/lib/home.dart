@@ -58,6 +58,8 @@ class HomePageState extends State<HomePage> {
     historyList.clear();
   }
 
+
+
   Future _buildList() async {
     _initList();
     
@@ -317,7 +319,7 @@ class HomePageState extends State<HomePage> {
                                builder: (BuildContext context) =>
                                    FavoritePage(
                                        user: user,
-                                       favorite: favoriteList)))
+                                       )))
                                .catchError((e) => print(e));
                          }
                      ),
@@ -335,7 +337,7 @@ class HomePageState extends State<HomePage> {
                                builder: (BuildContext context) =>
                                    HistoryPage(
                                        user: user,
-                                       history: historyList)))
+                                       )))
                                .catchError((e) => print(e));
                          }
                      ),
@@ -417,7 +419,8 @@ class HomePageState extends State<HomePage> {
                                                 builder: (BuildContext context) =>
                                                     DetailPage(
                                                         user: user,
-                                                        restaurant: restaurant)))
+                                                        restaurant: restaurant,
+                                                        previous: "home")))
                                                 .catchError((e) => print(e));
                                           }
                                       ),
@@ -453,7 +456,7 @@ class HomePageState extends State<HomePage> {
                                           builder: (BuildContext context) =>
                                               FavoritePage(
                                                   user: user,
-                                                  favorite: favoriteList)))
+                                              )))
                                           .catchError((e) => print(e));
                                   }
                               )
@@ -544,7 +547,8 @@ class HomePageState extends State<HomePage> {
                                                   builder: (BuildContext context) =>
                                                       DetailPage(
                                                           user: user,
-                                                          restaurant: restaurant)))
+                                                          restaurant: restaurant,
+                                                          previous: 'home')))
                                                   .catchError((e) => print(e));
                                             }
                                         ),
@@ -579,7 +583,7 @@ class HomePageState extends State<HomePage> {
                                         builder: (BuildContext context) =>
                                             HistoryPage(
                                                 user: user,
-                                                history: historyList)))
+                                                )))
                                         .catchError((e) => print(e));
                                   }
                               )
@@ -657,7 +661,8 @@ class HomePageState extends State<HomePage> {
                                                 builder: (BuildContext context) =>
                                                     DetailPage(
                                                         user: user,
-                                                        restaurant: restaurant)))
+                                                        restaurant: restaurant,
+                                                        previous: "home")))
                                                 .catchError((e) => print(e));
                                           }
                                       ),

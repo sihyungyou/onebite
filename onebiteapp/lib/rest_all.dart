@@ -55,7 +55,13 @@ class _RestAllPageState extends State<RestAllPage>
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    HomePage(
+                      user: user,
+                    )))
+                .catchError((e) => print(e));
           }// detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
         ),
         title: Text('전체 식당'),
@@ -154,7 +160,8 @@ class _RestAllPageState extends State<RestAllPage>
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             user: user,
-                                            restaurant: fastFood[index])))
+                                            restaurant: fastFood[index],
+                                            previous: 'restall')))
                                 .catchError((e) => print(e));
                           });
                     }),
@@ -174,7 +181,8 @@ class _RestAllPageState extends State<RestAllPage>
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             user: user,
-                                            restaurant: korean[index])))
+                                            restaurant: korean[index],
+                                            previous: 'restall')))
                                 .catchError((e) => print(e));
                           });
                     }),
@@ -194,7 +202,8 @@ class _RestAllPageState extends State<RestAllPage>
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             user: user,
-                                            restaurant: chinese[index])))
+                                            restaurant: chinese[index],
+                                            previous: 'restall')))
                                 .catchError((e) => print(e));
                           });
                     }),
@@ -214,7 +223,8 @@ class _RestAllPageState extends State<RestAllPage>
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             user: user,
-                                            restaurant: japanese[index])))
+                                            restaurant: japanese[index],
+                                            previous: 'restall')))
                                 .catchError((e) => print(e));
                           });
                     }),
@@ -234,7 +244,8 @@ class _RestAllPageState extends State<RestAllPage>
                                     builder: (BuildContext context) =>
                                         DetailPage(
                                             user: user,
-                                            restaurant: boonSick[index])))
+                                            restaurant: boonSick[index],
+                                            previous: 'restall')))
                                 .catchError((e) => print(e));
                           });
                     }),
@@ -342,8 +353,10 @@ class DataSearch extends SearchDelegate<String> {
                                 .push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         DetailPage(
-                                            // user: user,
-                                            restaurant: searchedRest)))
+                                            user: user,
+                                            restaurant: searchedRest,
+                                            previous: 'restall',
+                                        )))
                                 .catchError((e) => print(e));
                           }),
             ],
