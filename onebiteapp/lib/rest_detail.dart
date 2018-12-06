@@ -104,7 +104,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       // print(review[i].context);
       rating += double.parse(review[i].rate);
     }
-    rating = rating / reviewList.length;
+    if(reviewList.length != 0)rating = rating / reviewList.length;
 
     QuerySnapshot topMenuSnapshot = await Firestore.instance
         .collection("restaurant")

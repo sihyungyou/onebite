@@ -395,7 +395,7 @@ class HomePageState extends State<HomePage> {
                                   children: favoriteList.map((restaurant){
                                     return Container(
                                       height: 130.0,
-                                      width: 70.0,
+                                      width: 75.0,
                                       child: ListTile(
                                           contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
@@ -522,7 +522,7 @@ class HomePageState extends State<HomePage> {
                                     children: historyList.map((restaurant){
                                       return Container(
                                         height: 130.0,
-                                        width: 70.0,
+                                        width: 75.0,
 
                                         child: ListTile(
                                             contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
