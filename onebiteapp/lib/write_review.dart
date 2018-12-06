@@ -76,8 +76,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             minWidth: 100.0,
             child: IconButton(
               onPressed: (){
-                Navigator.pop(context);
-              },
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
+                    .catchError((e) => print(e));              },
               icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
             ),
           ),
@@ -101,7 +102,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 });
 
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant,)))
+                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
                     .catchError((e) => print(e));
 
               },
