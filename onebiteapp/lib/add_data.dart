@@ -59,7 +59,7 @@ class AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add'),
+        title: Text('업체 등록'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -67,8 +67,6 @@ class AddPageState extends State<AddPage> {
             ),
             onPressed: () {
               final wordPair = WordPair.random();
-              // final wordPair2 = WordPair.random();
-              // final wordPair3 = WordPair.random();
               final form = formKey.currentState;
               form.save();
               Firestore.instance.collection('restaurant').document(wordPair.toString())

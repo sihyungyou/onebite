@@ -72,7 +72,7 @@ class HomePageState extends State<HomePage> {
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
       setState(() {
-        print(restaurant.name);
+        // print(restaurant.name);
         allRests.add(restaurant);
         allNames.add(restaurant.name);
         if (restaurant.type == 'korean')
@@ -333,13 +333,6 @@ class HomePageState extends State<HomePage> {
                            ],
                          ),
                          onPressed:() {
-                           Navigator.of(context)
-                               .push(MaterialPageRoute(
-                               builder: (BuildContext context) =>
-                                   HistoryPage(
-                                       user: user,
-                                       )))
-                               .catchError((e) => print(e));
                          }
                      ),
                   ],
@@ -395,7 +388,7 @@ class HomePageState extends State<HomePage> {
                                   children: favoriteList.map((restaurant){
                                     return Container(
                                       height: 130.0,
-                                      width: 75.0,
+                                      width: 80.0,
                                       child: ListTile(
                                           contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
@@ -523,7 +516,7 @@ class HomePageState extends State<HomePage> {
                                     children: historyList.map((restaurant){
                                       return Container(
                                         height: 130.0,
-                                        width: 75.0,
+                                        width: 80.0,
 
                                         child: ListTile(
                                             contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
@@ -641,12 +634,12 @@ class HomePageState extends State<HomePage> {
                                   scrollDirection: Axis.horizontal,
                                   children: sortedList.map((restaurant){
                                     return Container(
-                                      // alignment: Alignment.center,
                                       height: 100.0,
-                                      width: 75.0,
+                                      width: 80.0,
                                       child: ListTile(
                                         contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget>[
                                               CircleAvatar(
                                                 radius: 30.0,
@@ -655,9 +648,9 @@ class HomePageState extends State<HomePage> {
                                               SizedBox(height: 10.0),
                                               Text(
                                                 restaurant.name,
-                                                maxLines: 2,
-                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
-                                                textAlign: TextAlign.center,
+                                                  maxLines: 2,
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                                                  textAlign: TextAlign.center,
                                               ),
 
                                             ],

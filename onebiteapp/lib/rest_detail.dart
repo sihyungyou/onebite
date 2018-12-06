@@ -52,7 +52,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   DetailPageState({Key key, this.user, this.restaurant, this.previous});
 
   UpdateCalls() async {
-    print('update calls');
+    // print('update calls');
     Firestore.instance.collection('restaurant').document(restaurant.reference.documentID).updateData(
       {
         'calls' : restaurant.calls++,
@@ -205,7 +205,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 'name' : '${restaurant.name}',
               }));
               UpdateCalls();
-              print('history : ${restaurant.name} added!');
+              // print('history : ${restaurant.name} added!');
               _launchURL();
             }),
       ),
@@ -218,7 +218,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
                     onPressed: () {
-                      print(previous);
+                      // print(previous);
                       if(previous == 'home')
                       Navigator.of(context)
                           .push(MaterialPageRoute(
@@ -374,6 +374,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                             width: 100.0,
                             child: Text("최소주문금액", style: _titleStyle),
                           ),
+                          restaurant.minimumOrder == '없음' ? 
+                          Text('없음') :
                           Text(restaurant.minimumOrder + "원",
                               style: _bodyStyle),
                         ],
