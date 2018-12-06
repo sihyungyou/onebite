@@ -150,6 +150,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
+                          radius: 25.0,
                           backgroundImage: Image.network('${fastFood[index].logo}').image,
                         ),
                           title: Text(fastFood[index].name),
@@ -171,6 +172,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
+                          radius: 25.0,
                           backgroundImage: Image.network('${korean[index].logo}').image,
                         ),
                           title: Text(korean[index].name),
@@ -192,6 +194,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
+                          radius: 25.0,
                           backgroundImage: Image.network('${chinese[index].logo}').image,
                         ),
                           title: Text(chinese[index].name),
@@ -213,6 +216,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
+                          radius: 25.0,
                           backgroundImage: Image.network('${japanese[index].logo}').image,
                         ),
                           title: Text(japanese[index].name),
@@ -234,6 +238,7 @@ class _RestAllPageState extends State<RestAllPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: CircleAvatar(
+                          radius: 25.0,
                           backgroundImage: Image.network('${boonSick[index].logo}').image,
                         ),
                           title: Text(boonSick[index].name),
@@ -388,6 +393,7 @@ class Restaurant {
         assert(map['rate'] != null),
         assert(map['time'] != null),
         assert(map['type'] != null),
+        assert(map['calls'] != null),
         closed = map['closed'],
         deliveryFee = map['delivery fee'],
         minimumOrder = map['minimum order'],

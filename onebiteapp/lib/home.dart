@@ -5,6 +5,7 @@ import 'package:Shrine/rest_all.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:Shrine/favorite.dart';
 import 'package:Shrine/history.dart';
+import 'rank.dart';
 
 class HomePage extends StatefulWidget {
   // anonymous login user object를 건네받기 위한 변수 선언
@@ -671,6 +672,36 @@ class HomePageState extends State<HomePage> {
                                   }).toList(),
                                 ),
                               ),
+
+                          Container(
+
+                          color: Colors.white,
+                          height: 20.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              ButtonTheme(
+                                  minWidth: 40.0,
+                                  child: FlatButton(
+                                      padding: EdgeInsets.symmetric(horizontal: 0.0),
+
+                                  child: favoriteList.length == 0 ? Text("더보기", style: TextStyle(color: Colors.white)) : Text("더보기", style: TextStyle(fontSize: 12.0, color: Theme.of(context).primaryColor)),
+
+                                  onPressed:() {
+                                    if(favoriteList.length != 0)
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              RankPage(
+                                                  user: user,
+                                                  sortedlist: sortedList)))
+                                          .catchError((e) => print(e));
+                                  }
+                              )
+                              )
+                            ],
+                          ),
+                        ),
                             ],
                           ),
                       ),
