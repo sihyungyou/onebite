@@ -109,8 +109,14 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   store.collection("restaurant").document(restaurant.reference.documentID).collection("review").document(wordPair.toString()).setData({"author": _name, "rate": rating.toString(), "context": _review, "date": createTime});
                 });
 
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant,)))
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        DetailPage(
+                          user: user,
+                          previous: "restall",
+                          restaurant: restaurant,
+                        )))
                     .catchError((e) => print(e));
 
               },
