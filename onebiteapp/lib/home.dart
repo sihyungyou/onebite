@@ -639,9 +639,11 @@ class HomePageState extends State<HomePage> {
                                   scrollDirection: Axis.horizontal,
                                   children: sortedList.map((restaurant){
                                     return Container(
+                                      // alignment: Alignment.center,
                                       height: 100.0,
-                                      width: 90.0,
+                                      width: 75.0,
                                       child: ListTile(
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
                                             children: <Widget>[
                                               CircleAvatar(
