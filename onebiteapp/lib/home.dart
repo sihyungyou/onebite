@@ -333,13 +333,6 @@ class HomePageState extends State<HomePage> {
                            ],
                          ),
                          onPressed:() {
-                           Navigator.of(context)
-                               .push(MaterialPageRoute(
-                               builder: (BuildContext context) =>
-                                   HistoryPage(
-                                       user: user,
-                                       )))
-                               .catchError((e) => print(e));
                          }
                      ),
                   ],
@@ -395,7 +388,7 @@ class HomePageState extends State<HomePage> {
                                   children: favoriteList.map((restaurant){
                                     return Container(
                                       height: 130.0,
-                                      width: 75.0,
+                                      width: 80.0,
                                       child: ListTile(
                                           contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
@@ -522,7 +515,7 @@ class HomePageState extends State<HomePage> {
                                     children: historyList.map((restaurant){
                                       return Container(
                                         height: 130.0,
-                                        width: 75.0,
+                                        width: 80.0,
 
                                         child: ListTile(
                                             contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
@@ -640,7 +633,7 @@ class HomePageState extends State<HomePage> {
                                   children: sortedList.map((restaurant){
                                     return Container(
                                       height: 100.0,
-                                      width: 75.0,
+                                      width: 80.0,
                                       child: ListTile(
                                         contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
                                           title: Column(
@@ -653,7 +646,8 @@ class HomePageState extends State<HomePage> {
                                               Text(
                                                   restaurant.name,
                                                   maxLines: 2,
-                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                                                  textAlign: TextAlign.center,
                                               ),
 
                                             ],
