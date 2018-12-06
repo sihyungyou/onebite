@@ -246,6 +246,16 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   user: user,
                                 )))
                             .catchError((e) => print(e));
+                      else if(previous == 'review')
+                        Navigator.of(context)
+                            .pop();
+                        Navigator.of(context)
+                          .pop();
+                        Navigator.of(context)
+                            .pop();
+                        Navigator.of(context)
+                            .pop();
+
                     }),
 
               ),

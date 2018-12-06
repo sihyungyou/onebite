@@ -77,16 +77,10 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             minWidth: 100.0,
             child: IconButton(
               onPressed: (){
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        DetailPage(
-                          user: user,
-                          previous: "restall",
-                          restaurant: restaurant,
-                        )))
-                    .catchError((e) => print(e));
-              },
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
+                    .catchError((e) => print(e));              },
               icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
             ),
           ),
@@ -108,15 +102,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 store.runTransaction((transaction) async {
                   store.collection("restaurant").document(restaurant.reference.documentID).collection("review").document(wordPair.toString()).setData({"author": _name, "rate": rating.toString(), "context": _review, "date": createTime});
                 });
-
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        DetailPage(
-                          user: user,
-                          previous: "restall",
-                          restaurant: restaurant,
-                        )))
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
                     .catchError((e) => print(e));
 
               },
