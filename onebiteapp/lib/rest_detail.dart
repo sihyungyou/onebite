@@ -374,6 +374,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                             width: 100.0,
                             child: Text("최소주문금액", style: _titleStyle),
                           ),
+                          restaurant.minimumOrder == '없음' ? 
+                          Text('없음') :
                           Text(restaurant.minimumOrder + "원",
                               style: _bodyStyle),
                         ],
