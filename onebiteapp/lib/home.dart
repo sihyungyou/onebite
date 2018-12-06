@@ -354,7 +354,7 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 175.0,
+                  height: 185.0,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
@@ -436,6 +436,7 @@ class HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                        SizedBox(height:10.0),
                         Container(
 
                           color: Colors.white,
@@ -480,7 +481,7 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 175.0,
+                  height: 185.0,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
@@ -564,6 +565,7 @@ class HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                        SizedBox(height:10.0),
                         Container(
                           color: Colors.white,
                           height: 20.0,
@@ -607,7 +609,7 @@ class HomePageState extends State<HomePage> {
                     borderRadius:
                     new BorderRadius.all(new Radius.circular(10.0)),
                   ),
-                  height: 175.0,
+                  height: 185.0,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(15.0, 10.0, 10.0, 0.0),
                     child: Column(
@@ -650,10 +652,12 @@ class HomePageState extends State<HomePage> {
                                                 radius: 30.0,
                                                 backgroundImage: Image.network('${restaurant.logo}').image,
                                               ),
+                                              SizedBox(height: 10.0),
                                               Text(
-                                                  restaurant.name,
-                                                  maxLines: 2,
-                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0)
+                                                restaurant.name,
+                                                maxLines: 2,
+                                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0),
+                                                textAlign: TextAlign.center,
                                               ),
 
                                             ],
@@ -675,7 +679,9 @@ class HomePageState extends State<HomePage> {
                                 ),
                               ),
 
-                          Container(
+                              SizedBox(height: 10.0,),
+
+                              Container(
 
                           color: Colors.white,
                           height: 20.0,

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1025763243183:android:2578d6c7d45a6e42",
+        "mobilesdk_app_id": "1:1025763243183:android:c9233f5ef928aaec",
         "android_client_info": {
-          "package_name": "com.example.onebite"
+          "package_name": "com.example.mdc100series"
         }
       },
       "oauth_client": [
