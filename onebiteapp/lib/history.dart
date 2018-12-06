@@ -98,6 +98,22 @@ class _HistoryPageState extends State<HistoryPage> {
                     .catchError((e) => print(e));
               });
         }),
+        bottomNavigationBar: new BottomAppBar(
+          color: theme.primaryColor,
+          child : Container(
+            height: 50.0,
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: FlatButton(
+                  child: Text('검색 내역 삭제', textAlign: TextAlign.center, style : TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  print('delete history');
+                },
+              )
+              ),
+              ),
+        ),
     );
   }
 }
