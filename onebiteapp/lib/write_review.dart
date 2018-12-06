@@ -14,6 +14,7 @@
 
 import 'dart:io';
 
+import 'package:Shrine/home.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,7 +77,15 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             minWidth: 100.0,
             child: IconButton(
               onPressed: (){
-                Navigator.pop(context);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        DetailPage(
+                          user: user,
+                          previous: "restall",
+                          restaurant: restaurant,
+                        )))
+                    .catchError((e) => print(e));
               },
               icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
             ),
