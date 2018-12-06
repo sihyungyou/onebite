@@ -27,7 +27,7 @@ class _HistoryPageState extends State<HistoryPage> {
     var list1 = favoriteSnapshot.documents;
     for(var i = 0 ; i< list1.length; i ++){
       final History temp = History.fromSnapshot(list1[i]);
-      print("history" + i.toString() + " " + temp.name);
+      // print("history" + i.toString() + " " + temp.name);
       history.add(temp);
     }
 

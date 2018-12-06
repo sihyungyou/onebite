@@ -72,7 +72,7 @@ class HomePageState extends State<HomePage> {
     for (var i = 0; i < list.length; i++) {
       final Restaurant restaurant = Restaurant.fromSnapshot(list[i]);
       setState(() {
-        print(restaurant.name);
+        // print(restaurant.name);
         allRests.add(restaurant);
         allNames.add(restaurant.name);
         if (restaurant.type == 'korean')
