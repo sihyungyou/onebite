@@ -87,6 +87,7 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
               title: Text(historyList[index].name),
               subtitle: Text("영업시간: " + historyList[index].time),
+              // x 표시 버튼 -> delete from history
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
@@ -108,7 +109,9 @@ class _HistoryPageState extends State<HistoryPage> {
                   child: Text('검색 내역 삭제', textAlign: TextAlign.center, style : TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
+                  // delete user's hisotry list
                   print('delete history');
+                  Firestore.instance.collection('users').document('${user.uid}').collection('history').document().delete();
                 },
               )
               ),
