@@ -376,13 +376,13 @@ class Restaurant {
   final String name;
   final DocumentReference reference;
   final String phone;
-  final String rate;
+  // final String rate;
   final String time;
   final String type;
   final String logo;
   int calls;
   Restaurant(this.closed, this.deliveryFee, this.minimumOrder, this.name,
-      this.reference, this.phone, this.rate, this.time, this.type, this.logo, this.calls);
+      this.reference, this.phone, this.time, this.type, this.logo, this.calls);
 
   Restaurant.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['closed'] != null),
@@ -390,7 +390,7 @@ class Restaurant {
         assert(map['minimum order'] != null),
         assert(map['name'] != null),
         assert(map['phone'] != null),
-        assert(map['rate'] != null),
+        // assert(map['rate'] != null),
         assert(map['time'] != null),
         assert(map['type'] != null),
         assert(map['calls'] != null),
@@ -399,7 +399,7 @@ class Restaurant {
         minimumOrder = map['minimum order'],
         name = map['name'],
         phone = map['phone'],
-        rate = map['rate'],
+        // rate = map['rate'],
         time = map['time'],
         type = map['type'],
         logo = map['logo'],
