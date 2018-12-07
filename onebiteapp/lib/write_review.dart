@@ -76,11 +76,15 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           leading: ButtonTheme(
             minWidth: 100.0,
             child: IconButton(
+              // review close button
+              // navigator pop..
+              // 현재는 리뷰 작성하려다가 x 누르면 아예 메뉴까지 뒤로 가버리는 상황임.
               onPressed: (){
-
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
-                    .catchError((e) => print(e));              },
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
+                //     .catchError((e) => print(e));     
+                Navigator.pop(context);
+              },
               icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
             ),
           ),
