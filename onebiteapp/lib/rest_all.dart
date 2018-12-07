@@ -53,6 +53,7 @@ class _RestAllPageState extends State<RestAllPage>
         Image.network('https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/restallPage%2F%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF%E1%84%87%E1%85%B5%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7.png?alt=media&token=f0c7027a-5e48-4617-bc12-af894e532089',
         height: 15.0,
         width: 30.0,),
+        SizedBox(width: 10.0),
         Text('배달비 없음'),
       ],
       );
@@ -62,6 +63,7 @@ class _RestAllPageState extends State<RestAllPage>
         Image.network('https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/restallPage%2F%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF%E1%84%87%E1%85%B5%E1%84%8B%E1%85%B5%E1%86%BB%E1%84%8B%E1%85%B3%E1%86%B7.png?alt=media&token=96d82728-25b5-47c6-8106-561a4788a453',
         height: 15.0,
         width: 30.0,),
+        SizedBox(width: 10.0),
         Text('배달비 있음'),
       ],
       );
@@ -101,7 +103,7 @@ class _RestAllPageState extends State<RestAllPage>
           ),
         ],
       ),
-      body: ListView(
+      body: Column(
         children: <Widget>[
           new Container(
             child: new TabBar(
@@ -169,23 +171,34 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: fastFood.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                         leading: CircleAvatar(
-                          radius: 25.0,
+                          radius: 35.0,
                           backgroundImage: Image.network('${fastFood[index].logo}').image,
                         ),
-                          title: Text(fastFood[index].name),
-                          subtitle: Text("영업시간: " + fastFood[index].time),
-                          // isThreeLine: true,
-                          // subtitle: Column(
-                          //   children: <Widget>[
-                          //     Row(children: <Widget>[
-                          //     Text("영업시간: " + fastFood[index].time),
-                          //     ],),
-                          //   Row(children: <Widget>[
-                          //       DeliveryIcon(fastFood[index].deliveryFee),
-                          //   ],)
-                          // ],),
-                          // trailing: DeliveryIcon(fastFood[index].deliveryFee),
+                          title: Text(fastFood[index].name, style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w800, fontSize: 18.0)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time, size: 20.0, color: Colors.grey),
+                                  SizedBox(width: 5.0),
+                                  Text("영업시간: " + fastFood[index].time, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  DeliveryIcon(fastFood[index].deliveryFee),
+
+                                ],
+                              ),
+
+                            ],
+                          ),
+
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -202,23 +215,33 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: korean.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: Image.network('${korean[index].logo}').image,
-                        ),
-                          title: Text(korean[index].name),
-                          subtitle: Text("영업시간: " + korean[index].time),
-                          // trailing: DeliveryIcon(korean[index].deliveryFee),
-                          // isThreeLine: true,
-                          // subtitle: Column(
-                          //   children: <Widget>[
-                          //     Row(children: <Widget>[
-                          //     Text("영업시간: " + korean[index].time),
-                          //     ],),
-                          //   Row(children: <Widget>[
-                          //       DeliveryIcon(korean[index].deliveryFee),
-                          //   ],)
-                          // ],),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                          leading: CircleAvatar(
+                            radius: 35.0,
+                            backgroundImage: Image.network('${korean[index].logo}').image,
+                          ),
+                          title: Text(korean[index].name, style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w800, fontSize: 18.0)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time, size: 20.0, color: Colors.grey),
+                                  SizedBox(width: 5.0),
+                                  Text("영업시간: " + korean[index].time, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  DeliveryIcon(korean[index].deliveryFee),
+
+                                ],
+                              ),
+
+                            ],
+                          ),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -235,23 +258,33 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: chinese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: Image.network('${chinese[index].logo}').image,
-                        ),
-                          title: Text(chinese[index].name),
-                          subtitle: Text("영업시간: " + chinese[index].time),
-                          // trailing: DeliveryIcon(chinese[index].deliveryFee),
-                          // isThreeLine: true,
-                          // subtitle: Column(
-                          //   children: <Widget>[
-                          //     Row(children: <Widget>[
-                          //     Text("영업시간: " + chinese[index].time),
-                          //     ],),
-                          //   Row(children: <Widget>[
-                          //       DeliveryIcon(chinese[index].deliveryFee),
-                          //   ],)
-                          // ],),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                          leading: CircleAvatar(
+                            radius: 35.0,
+                            backgroundImage: Image.network('${chinese[index].logo}').image,
+                          ),
+                          title: Text(chinese[index].name, style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w800, fontSize: 18.0)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time, size: 20.0, color: Colors.grey),
+                                  SizedBox(width: 5.0),
+                                  Text("영업시간: " + chinese[index].time, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  DeliveryIcon(chinese[index].deliveryFee),
+
+                                ],
+                              ),
+
+                            ],
+                          ),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -268,23 +301,33 @@ class _RestAllPageState extends State<RestAllPage>
                     itemCount: japanese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        leading: CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: Image.network('${japanese[index].logo}').image,
-                        ),
-                          title: Text(japanese[index].name),
-                          // isThreeLine: true,
-                          // subtitle: Column(
-                          //   children: <Widget>[
-                          //     Row(children: <Widget>[
-                          //     Text("영업시간: " + japanese[index].time),
-                          //     ],),
-                          //   Row(children: <Widget>[
-                          //       DeliveryIcon(japanese[index].deliveryFee),
-                          //   ],)
-                          // ],),
-                          subtitle: Text("영업시간: " + japanese[index].time),
-                          // trailing: DeliveryIcon(japanese[index].deliveryFee),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                          leading: CircleAvatar(
+                            radius: 35.0,
+                            backgroundImage: Image.network('${japanese[index].logo}').image,
+                          ),
+                          title: Text(japanese[index].name, style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w800, fontSize: 18.0)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time, size: 20.0, color: Colors.grey),
+                                  SizedBox(width: 5.0),
+                                  Text("영업시간: " + japanese[index].time, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  DeliveryIcon(japanese[index].deliveryFee),
+
+                                ],
+                              ),
+
+                            ],
+                          ),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -306,23 +349,33 @@ class _RestAllPageState extends State<RestAllPage>
                       // noDeliveryFlag = true : 
                       // noDeliveryFlag = false;
                       return ListTile(
-                        leading: CircleAvatar(
-                          radius: 25.0,
-                          backgroundImage: Image.network('${boonSick[index].logo}').image,
-                        ),
-                          title: Text(boonSick[index].name),
-                          subtitle: Text("영업시간: " + boonSick[index].time),
-                          // trailing: DeliveryIcon(boonSick[index].deliveryFee),
-                          // isThreeLine: true,
-                          // subtitle: Column(
-                          //   children: <Widget>[
-                          //     Row(children: <Widget>[
-                          //     Text("영업시간: " + boonSick[index].time),
-                          //     ],),
-                          //   Row(children: <Widget>[
-                          //       DeliveryIcon(boonSick[index].deliveryFee),
-                          //   ],)
-                          // ],),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+                          leading: CircleAvatar(
+                            radius: 35.0,
+                            backgroundImage: Image.network('${boonSick[index].logo}').image,
+                          ),
+                          title: Text(boonSick[index].name, style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.w800, fontSize: 18.0)),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time, size: 20.0, color: Colors.grey),
+                                  SizedBox(width: 5.0),
+                                  Text("영업시간: " + boonSick[index].time, style: TextStyle(fontWeight: FontWeight.w300, color: Colors.black)),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: <Widget>[
+                                  DeliveryIcon(fastFood[index].deliveryFee),
+
+                                ],
+                              ),
+
+                            ],
+                          ),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
