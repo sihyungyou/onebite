@@ -100,13 +100,13 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   _path = url.toString();
                   print(_path);
                 }
-                // final wordPair = WordPair.random();
+                final wordPair = WordPair.random();
                 var now = DateTime.now();
                 String createTime = now.year.toString() + '.' + now.month.toString() + '.' + now.day.toString();
                 store.runTransaction((transaction) async {
                   // restaurant - review collection 생성 시, user.uid로 하자
                   // user - review 생성해서 자기가만든 리뷰들은 따로 보거나 삭제할수있게 해주자 (v1.5)
-                  store.collection("restaurant").document(restaurant.reference.documentID).collection("review").document(user.uid)
+                  store.collection("restaurant").document(restaurant.reference.documentID).collection("review").document(wordPair.toString())
                   .setData({
                     "author": _name,
                     "rate": rating.toString(),
