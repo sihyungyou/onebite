@@ -223,6 +223,10 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                         // print('go to rest_all');
                         Navigator.of(context).pop();
                       }
+                      else if (previous == 'home') {
+                        // print('go to home);
+                        Navigator.of(context).pop();
+                      }
                       else if(previous == 'restall') {
                         // print('restall');
                         Navigator.of(context).pop(); 
