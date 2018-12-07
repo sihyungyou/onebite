@@ -48,9 +48,23 @@ class _RestAllPageState extends State<RestAllPage>
   Widget DeliveryIcon (String deliveryfee) {
     // print(deliveryfee);
     if (deliveryfee == '없음') 
-      return Text('true');    // true가 배달비 없음
+      return Row(
+        children: <Widget>[
+        Image.network('https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/restallPage%2F%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF%E1%84%87%E1%85%B5%E1%84%8B%E1%85%A5%E1%86%B9%E1%84%8B%E1%85%B3%E1%86%B7.png?alt=media&token=f0c7027a-5e48-4617-bc12-af894e532089',
+        height: 15.0,
+        width: 30.0,),
+        Text('배달비 없음'),
+      ],
+      );
     else 
-      return Text('false');   // false가 배달비 있음
+      return Row(
+        children: <Widget>[
+        Image.network('https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/restallPage%2F%E1%84%87%E1%85%A2%E1%84%83%E1%85%A1%E1%86%AF%E1%84%87%E1%85%B5%E1%84%8B%E1%85%B5%E1%86%BB%E1%84%8B%E1%85%B3%E1%86%B7.png?alt=media&token=96d82728-25b5-47c6-8106-561a4788a453',
+        height: 15.0,
+        width: 30.0,),
+        Text('배달비 있음'),
+      ],
+      );
   }
 
   @override
@@ -161,7 +175,17 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(fastFood[index].name),
                           subtitle: Text("영업시간: " + fastFood[index].time),
-                          trailing: DeliveryIcon(fastFood[index].deliveryFee),
+                          // isThreeLine: true,
+                          // subtitle: Column(
+                          //   children: <Widget>[
+                          //     Row(children: <Widget>[
+                          //     Text("영업시간: " + fastFood[index].time),
+                          //     ],),
+                          //   Row(children: <Widget>[
+                          //       DeliveryIcon(fastFood[index].deliveryFee),
+                          //   ],)
+                          // ],),
+                          // trailing: DeliveryIcon(fastFood[index].deliveryFee),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -184,7 +208,17 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(korean[index].name),
                           subtitle: Text("영업시간: " + korean[index].time),
-                          trailing: DeliveryIcon(korean[index].deliveryFee),
+                          // trailing: DeliveryIcon(korean[index].deliveryFee),
+                          // isThreeLine: true,
+                          // subtitle: Column(
+                          //   children: <Widget>[
+                          //     Row(children: <Widget>[
+                          //     Text("영업시간: " + korean[index].time),
+                          //     ],),
+                          //   Row(children: <Widget>[
+                          //       DeliveryIcon(korean[index].deliveryFee),
+                          //   ],)
+                          // ],),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -207,7 +241,17 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(chinese[index].name),
                           subtitle: Text("영업시간: " + chinese[index].time),
-                          trailing: DeliveryIcon(chinese[index].deliveryFee),
+                          // trailing: DeliveryIcon(chinese[index].deliveryFee),
+                          // isThreeLine: true,
+                          // subtitle: Column(
+                          //   children: <Widget>[
+                          //     Row(children: <Widget>[
+                          //     Text("영업시간: " + chinese[index].time),
+                          //     ],),
+                          //   Row(children: <Widget>[
+                          //       DeliveryIcon(chinese[index].deliveryFee),
+                          //   ],)
+                          // ],),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -223,19 +267,24 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: japanese.length,
                     itemBuilder: (context, index) {
-                      var noDeliveryFlag = false;
-                      japanese[index].deliveryFee == '없음' ? 
-                      // true면 배달비 없음, false면 있음
-                      noDeliveryFlag = true : 
-                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
                           backgroundImage: Image.network('${japanese[index].logo}').image,
                         ),
                           title: Text(japanese[index].name),
+                          // isThreeLine: true,
+                          // subtitle: Column(
+                          //   children: <Widget>[
+                          //     Row(children: <Widget>[
+                          //     Text("영업시간: " + japanese[index].time),
+                          //     ],),
+                          //   Row(children: <Widget>[
+                          //       DeliveryIcon(japanese[index].deliveryFee),
+                          //   ],)
+                          // ],),
                           subtitle: Text("영업시간: " + japanese[index].time),
-                          trailing: DeliveryIcon(japanese[index].deliveryFee),
+                          // trailing: DeliveryIcon(japanese[index].deliveryFee),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -251,11 +300,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: boonSick.length,
                     itemBuilder: (context, index) {
-                      var noDeliveryFlag = false;
-                      boonSick[index].deliveryFee == '없음' ? 
-                      // true면 배달비 없음, false면 있음
-                      noDeliveryFlag = true : 
-                      noDeliveryFlag = false;
+                      // var noDeliveryFlag = false;
+                      // boonSick[index].deliveryFee == '없음' ? 
+                      // // true면 배달비 없음, false면 있음
+                      // noDeliveryFlag = true : 
+                      // noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -263,7 +312,17 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(boonSick[index].name),
                           subtitle: Text("영업시간: " + boonSick[index].time),
-                          trailing: DeliveryIcon(boonSick[index].deliveryFee),
+                          // trailing: DeliveryIcon(boonSick[index].deliveryFee),
+                          // isThreeLine: true,
+                          // subtitle: Column(
+                          //   children: <Widget>[
+                          //     Row(children: <Widget>[
+                          //     Text("영업시간: " + boonSick[index].time),
+                          //     ],),
+                          //   Row(children: <Widget>[
+                          //       DeliveryIcon(boonSick[index].deliveryFee),
+                          //   ],)
+                          // ],),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
