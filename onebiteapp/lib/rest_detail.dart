@@ -218,19 +218,17 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 child: IconButton(
                     icon: Icon(Icons.arrow_back, color: onebiteButton),
                     onPressed: () {
-                      // print(previous);
-                      if(previous == 'home')
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              HomePage(
-                                  user: user,
-                                  )))
-                          .catchError((e) => print(e));
-                      else if(previous == 'restall')
-                        Navigator.of(context)
-                            .pop();
-                      else if(previous == 'history')
+                      print(previous);
+                      if(previous == 'rest_all') {
+                        // print('go to rest_all');
+                        Navigator.of(context).pop();
+                      }
+                      else if(previous == 'restall') {
+                        // print('restall');
+                        Navigator.of(context).pop(); 
+                      }
+                      else if(previous == 'history') {
+                        // print('go to history');
                         Navigator.of(context)
                             .push(MaterialPageRoute(
                             builder: (BuildContext context) =>
@@ -238,7 +236,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   user: user,
                                 )))
                             .catchError((e) => print(e));
-                      else if(previous == 'favorite')
+                      }
+                      else if(previous == 'favorite') {
+                        // print('go to favorite');
                         Navigator.of(context)
                             .push(MaterialPageRoute(
                             builder: (BuildContext context) =>
@@ -246,16 +246,13 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                   user: user,
                                 )))
                             .catchError((e) => print(e));
-                      else if(previous == 'review')
-                        Navigator.of(context)
-                            .pop();
-                        Navigator.of(context)
-                          .pop();
-                        Navigator.of(context)
-                            .pop();
-                        Navigator.of(context)
-                            .pop();
-
+                      }
+                      else if(previous == 'review') {
+                        // print('go to rest_all but consider review');
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      }
                     }),
 
               ),

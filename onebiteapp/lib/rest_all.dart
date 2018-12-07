@@ -40,7 +40,7 @@ class _RestAllPageState extends State<RestAllPage>
   @override
   void initState() {
     super.initState();
-    // print("init state yes");
+    print("rest_all initstate");
     _controller = new TabController(length: 5, vsync: this);
     // print("init state over");
   }

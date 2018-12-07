@@ -543,7 +543,7 @@ class HomePageState extends State<HomePage> {
                                                       DetailPage(
                                                           user: user,
                                                           restaurant: restaurant,
-                                                          previous: 'home')))
+                                                          previous: 'rest_all')))
                                                   .catchError((e) => print(e));
                                             }
                                         ),
