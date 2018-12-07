@@ -22,9 +22,9 @@ class _HistoryPageState extends State<HistoryPage> {
 
   Future _buildList() async {
     // print("buildlist in");
-    QuerySnapshot favoriteSnapshot =
+    QuerySnapshot historySnapshot =
     await Firestore.instance.collection("users").document(user.uid).collection("history").getDocuments();
-    var list1 = favoriteSnapshot.documents;
+    var list1 = historySnapshot.documents;
     for(var i = 0 ; i< list1.length; i ++){
       final History temp = History.fromSnapshot(list1[i]);
       // print("history" + i.toString() + " " + temp.name);
@@ -99,24 +99,24 @@ class _HistoryPageState extends State<HistoryPage> {
                     .catchError((e) => print(e));
               });
         }),
-        bottomNavigationBar: new BottomAppBar(
-          color: theme.primaryColor,
-          child : Container(
-            height: 50.0,
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
-              child: FlatButton(
-                  child: Text('검색 내역 삭제', textAlign: TextAlign.center, style : TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  // delete user's hisotry list
-                  print('delete history');
-                  Firestore.instance.collection('users').document('${user.uid}').collection('history').document().delete();
-                },
-              )
-              ),
-              ),
-        ),
+        // bottomNavigationBar: new BottomAppBar(
+        //   color: theme.primaryColor,
+        //   child : Container(
+        //     height: 50.0,
+        //     child: Padding(
+        //       padding: EdgeInsets.all(15.0),
+        //       child: FlatButton(
+        //           child: Text('검색 내역 삭제', textAlign: TextAlign.center, style : TextStyle(color: Colors.white),
+        //         ),
+        //         onPressed: () {
+        //           // delete user's hisotry list
+        //           print('delete history');
+
+        //         },
+        //       )
+        //       ),
+        //       ),
+        // ),
     );
   }
 }
