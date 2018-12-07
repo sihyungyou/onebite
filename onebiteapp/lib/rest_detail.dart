@@ -199,7 +199,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
             onPressed: () {
               // 현재로써는 결제까지 안가기 떄문에 call 버튼 누르면 history로 추가
               // history 내역도 log in 안하면 setData 부분 막아두기
-              // calls++; 
+              // calls++;
               Firestore.instance.collection('users').document('${user.uid}').collection('history').document('${restaurant.name}')
               .setData(({
                 'name' : '${restaurant.name}',

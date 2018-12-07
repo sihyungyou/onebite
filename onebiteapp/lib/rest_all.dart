@@ -45,7 +45,13 @@ class _RestAllPageState extends State<RestAllPage>
     // print("init state over");
   }
 
-
+  Widget DeliveryIcon (bool noDeliveryFlag) {
+    print(noDeliveryFlag);
+    if (noDeliveryFlag) 
+      return Text('true');
+    else 
+      return Text('false');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +154,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: fastFood.length,
                     itemBuilder: (context, index) {
+                      var noDeliveryFlag = false;
+                      fastFood[index].deliveryFee == '없음' ? 
+                      // true면 배달비 없음, false면 있음
+                      noDeliveryFlag = true : 
+                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -155,6 +166,7 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(fastFood[index].name),
                           subtitle: Text("영업시간: " + fastFood[index].time),
+                          trailing: DeliveryIcon(noDeliveryFlag),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -170,6 +182,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: korean.length,
                     itemBuilder: (context, index) {
+                      var noDeliveryFlag = false;
+                      korean[index].deliveryFee == '없음' ? 
+                      // true면 배달비 없음, false면 있음
+                      noDeliveryFlag = true : 
+                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -177,6 +194,7 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(korean[index].name),
                           subtitle: Text("영업시간: " + korean[index].time),
+                          trailing: DeliveryIcon(noDeliveryFlag),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -192,6 +210,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: chinese.length,
                     itemBuilder: (context, index) {
+                      var noDeliveryFlag = false;
+                      chinese[index].deliveryFee == '없음' ? 
+                      // true면 배달비 없음, false면 있음
+                      noDeliveryFlag = true : 
+                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -199,6 +222,7 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(chinese[index].name),
                           subtitle: Text("영업시간: " + chinese[index].time),
+                          trailing: DeliveryIcon(noDeliveryFlag),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -214,6 +238,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: japanese.length,
                     itemBuilder: (context, index) {
+                      var noDeliveryFlag = false;
+                      japanese[index].deliveryFee == '없음' ? 
+                      // true면 배달비 없음, false면 있음
+                      noDeliveryFlag = true : 
+                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -221,6 +250,7 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(japanese[index].name),
                           subtitle: Text("영업시간: " + japanese[index].time),
+                          trailing: DeliveryIcon(noDeliveryFlag),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
@@ -236,6 +266,11 @@ class _RestAllPageState extends State<RestAllPage>
                 ListView.builder(
                     itemCount: boonSick.length,
                     itemBuilder: (context, index) {
+                      var noDeliveryFlag = false;
+                      boonSick[index].deliveryFee == '없음' ? 
+                      // true면 배달비 없음, false면 있음
+                      noDeliveryFlag = true : 
+                      noDeliveryFlag = false;
                       return ListTile(
                         leading: CircleAvatar(
                           radius: 25.0,
@@ -243,6 +278,7 @@ class _RestAllPageState extends State<RestAllPage>
                         ),
                           title: Text(boonSick[index].name),
                           subtitle: Text("영업시간: " + boonSick[index].time),
+                          trailing: DeliveryIcon(noDeliveryFlag),
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
