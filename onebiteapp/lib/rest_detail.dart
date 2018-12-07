@@ -182,6 +182,44 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
     }
   }
 
+  Widget ReviewDelete(String uid, int index) {
+    if (uid == user.uid) {
+      return IconButton(
+        icon: Icon(Icons.delete, size: 15.0,),
+        onPressed: () {
+          print('deleted!');
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text('리뷰를 삭제하시겠습니까?'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('예'),
+                    onPressed: () {
+                      // delete
+                      Firestore.instance.collection('restaurant').document(restaurant.reference.documentID).collection('review').document('${uid}').delete();
+                      setState(() {
+                        review.removeAt(index);
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('아니오'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            }
+          );
+        },
+      );
+    }
+    else return Text(' ');
+  }
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -537,6 +575,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                             SizedBox(width: 10.0),
                                             Text(review[index].date,
                                                 style: _bodyStyle),
+                                            // user.uid 랑 비교해서 삭제가능하도록
+                                            ReviewDelete(review[index].uid, index),
                                           ],
                                         ),
                                         Row(
@@ -646,19 +686,22 @@ class Review {
   final String date;
   final String rate;
   final String context;
+  final String uid;
   final DocumentReference reference;
 
-  Review(this.author, this.date, this.rate, this.context, this.reference);
+  Review(this.author, this.date, this.rate, this.context, this.uid, this.reference);
 
   Review.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['author'] != null),
         assert(map['date'] != null),
         assert(map['rate'] != null),
         assert(map['context'] != null),
+        assert(map['uid'] !=null),
         author = map['author'],
         date = map['date'],
         rate = map['rate'],
-        context = map['context'];
+        context = map['context'],
+        uid = map['uid'];
 
   Review.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
