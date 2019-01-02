@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -13,18 +12,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'platform_adaptive.dart';
 import 'type_meme.dart';
-
-
-final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: Colors.orange,
-  primaryColor: Colors.grey[100],
-  primaryColorBrightness: Brightness.light,
-);
-
-final ThemeData kDefaultTheme = new ThemeData(
-  primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400],
-);
 
 class SuggestionPage extends StatelessWidget {
   FirebaseUser user;
@@ -64,19 +51,19 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     print('here');
     print('${this.user.displayName}');
     super.initState();
-    _googleSignIn.signInSilently();
-    FirebaseAuth.instance.signInAnonymously().then((user) {
-      fireBaseSubscription =
-          _messagesReference.onChildAdded.listen((Event event) {
-        var val = event.snapshot.value;
-        _addMessage(
-            name: val['sender']['name'],
-            senderImageUrl: val['sender']['imageUrl'],
-            text: val['text'],
-            imageUrl: val['imageUrl'],
-            textOverlay: val['textOverlay']);
-      });
-    });
+    // _googleSignIn.signInSilently();
+    // FirebaseAuth.instance.signInAnonymously().then((user) {
+    //   fireBaseSubscription =
+    //       _messagesReference.onChildAdded.listen((Event event) {
+    //     var val = event.snapshot.value;
+    //     _addMessage(
+    //         name: val['sender']['name'],
+    //         senderImageUrl: val['sender']['imageUrl'],
+    //         text: val['text'],
+    //         imageUrl: val['imageUrl'],
+    //         textOverlay: val['textOverlay']);
+    //   });
+    // });
   }
 
   @override
@@ -98,7 +85,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     _textController.clear();
     _googleSignIn.signIn().then((user) {
       var message = {
-        'sender': {'name': user.displayName, 'imageUrl': user.photoUrl},
+        'sender': {'name': this.user.displayName, 'imageUrl': this.user.photoUrl},
         'text': text,
       };
       _messagesReference.push().set(message);
@@ -108,12 +95,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     });
   }
 
-  void _addMessage(
-      {String name,
-      String text,
-      String imageUrl,
-      String textOverlay,
-      String senderImageUrl}) {
+  void _addMessage({String name, String text, String imageUrl, String textOverlay, String senderImageUrl}) {
     var animationController = AnimationController(
       duration: Duration(milliseconds: 700),
       vsync: this,
@@ -140,22 +122,22 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     }
   }
 
-  Future<Null> _handlePhotoButtonPressed() async {
-    var account = await _googleSignIn.signIn();
-    var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-    var random = Random().nextInt(10000);
-    var ref = FirebaseStorage.instance.ref().child('image_$random.jpg');
-    ref.putFile(imageFile);
-    var textOverlay = await Navigator.push(context, TypeMemeRoute(imageFile));
-    if (textOverlay == null) return;
-    String downloadUrl = await ref.getDownloadURL();
-    var message = {
-      'sender': {'name': account.displayName, 'imageUrl': account.photoUrl},
-      'imageUrl': downloadUrl.toString(),
-      'textOverlay': textOverlay,
-    };
-    _messagesReference.push().set(message);
-  }
+  // Future<Null> _handlePhotoButtonPressed() async {
+  //   var account = await _googleSignIn.signIn();
+  //   var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+  //   var random = Random().nextInt(10000);
+  //   var ref = FirebaseStorage.instance.ref().child('image_$random.jpg');
+  //   ref.putFile(imageFile);
+  //   var textOverlay = await Navigator.push(context, TypeMemeRoute(imageFile));
+  //   if (textOverlay == null) return;
+  //   String downloadUrl = await ref.getDownloadURL();
+  //   var message = {
+  //     'sender': {'name': account.displayName, 'imageUrl': account.photoUrl},
+  //     'imageUrl': downloadUrl.toString(),
+  //     'textOverlay': textOverlay,
+  //   };
+  //   _messagesReference.push().set(message);
+  // }
 
   Widget _buildTextComposer() {
     return IconTheme(
@@ -163,13 +145,13 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         child: PlatformAdaptiveContainer(
             margin: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 4.0),
-                child: IconButton(
-                  icon: Icon(Icons.photo),
-                  onPressed: _handlePhotoButtonPressed,
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: 4.0),
+              //   child: IconButton(
+              //     icon: Icon(Icons.photo),
+              //     onPressed: _handlePhotoButtonPressed,
+              //   ),
+              // ),
               Flexible(
                 child: TextField(
                   controller: _textController,
@@ -303,6 +285,18 @@ class ChatMessageContent extends StatelessWidget {
       return Text(message.text);
   }
 }
+
+// final ThemeData kIOSTheme = new ThemeData(
+//   primarySwatch: Colors.orange,
+//   primaryColor: Colors.grey[100],
+//   primaryColorBrightness: Brightness.light,
+// );
+
+// final ThemeData kDefaultTheme = new ThemeData(
+//   primarySwatch: Colors.purple,
+//   accentColor: Colors.orangeAccent[400],
+// );
+
 // const String _name = "Username";
 
 // class SuggestionPage extends StatelessWidget {
