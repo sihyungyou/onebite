@@ -1,5 +1,8 @@
 // 건의사항
 // 버그신고
+
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -14,7 +17,7 @@ import 'platform_adaptive.dart';
 import 'type_meme.dart';
 
 class SuggestionPage extends StatelessWidget {
-  FirebaseUser user;
+  final FirebaseUser user;
   SuggestionPage({this.user});
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class SuggestionPage extends StatelessWidget {
 }
 
 class ChatScreen extends StatefulWidget {
-  FirebaseUser user;
+  final FirebaseUser user;
   ChatScreen(this.user);
   @override
   ChatScreenState createState() => ChatScreenState(user : this.user);
@@ -52,18 +55,18 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     print('${this.user.displayName}');
     super.initState();
     // _googleSignIn.signInSilently();
-    // FirebaseAuth.instance.signInAnonymously().then((user) {
-    //   fireBaseSubscription =
-    //       _messagesReference.onChildAdded.listen((Event event) {
-    //     var val = event.snapshot.value;
-    //     _addMessage(
-    //         name: val['sender']['name'],
-    //         senderImageUrl: val['sender']['imageUrl'],
-    //         text: val['text'],
-    //         imageUrl: val['imageUrl'],
-    //         textOverlay: val['textOverlay']);
-    //   });
-    // });
+    FirebaseAuth.instance.signInAnonymously().then((user) {
+      fireBaseSubscription =
+          _messagesReference.onChildAdded.listen((Event event) {
+        var val = event.snapshot.value;
+        _addMessage(
+            name: val['sender']['name'],
+            senderImageUrl: val['sender']['imageUrl'],
+            text: val['text'],
+            imageUrl: val['imageUrl'],
+            textOverlay: val['textOverlay']);
+      });
+    });
   }
 
   @override
@@ -122,22 +125,23 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     }
   }
 
-  // Future<Null> _handlePhotoButtonPressed() async {
-  //   var account = await _googleSignIn.signIn();
-  //   var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
-  //   var random = Random().nextInt(10000);
-  //   var ref = FirebaseStorage.instance.ref().child('image_$random.jpg');
-  //   ref.putFile(imageFile);
-  //   var textOverlay = await Navigator.push(context, TypeMemeRoute(imageFile));
-  //   if (textOverlay == null) return;
-  //   String downloadUrl = await ref.getDownloadURL();
-  //   var message = {
-  //     'sender': {'name': account.displayName, 'imageUrl': account.photoUrl},
-  //     'imageUrl': downloadUrl.toString(),
-  //     'textOverlay': textOverlay,
-  //   };
-  //   _messagesReference.push().set(message);
-  // }
+  Future<Null> _handlePhotoButtonPressed() async {
+    // var account = await _googleSignIn.signIn();
+    var account = this.user;
+    var imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var random = Random().nextInt(10000);
+    var ref = FirebaseStorage.instance.ref().child('image_$random.jpg');
+    ref.putFile(imageFile);
+    var textOverlay = await Navigator.push(context, TypeMemeRoute(imageFile));
+    if (textOverlay == null) return;
+    String downloadUrl = await ref.getDownloadURL();
+    var message = {
+      'sender': {'name': account.displayName, 'imageUrl': account.photoUrl},
+      'imageUrl': downloadUrl.toString(),
+      'textOverlay': textOverlay,
+    };
+    _messagesReference.push().set(message);
+  }
 
   Widget _buildTextComposer() {
     return IconTheme(
@@ -145,13 +149,13 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         child: PlatformAdaptiveContainer(
             margin: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(children: [
-              // Container(
-              //   margin: EdgeInsets.symmetric(horizontal: 4.0),
-              //   child: IconButton(
-              //     icon: Icon(Icons.photo),
-              //     onPressed: _handlePhotoButtonPressed,
-              //   ),
-              // ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                child: IconButton(
+                  icon: Icon(Icons.photo),
+                  onPressed: _handlePhotoButtonPressed,
+                ),
+              ),
               Flexible(
                 child: TextField(
                   controller: _textController,
@@ -223,6 +227,8 @@ class ChatMessageListItem extends StatelessWidget {
   final ChatMessage message;
 
   Widget build(BuildContext context) {
+    print('chatmessage');
+    print('${message.text}');
     return SizeTransition(
         sizeFactor: CurvedAnimation(
             parent: message.animationController, curve: Curves.easeOut),
@@ -281,183 +287,185 @@ class ChatMessageContent extends StatelessWidget {
           ],
         );
       }
-    } else
+    } else {
+      print(message.text);
       return Text(message.text);
+    }
   }
 }
 
-// final ThemeData kIOSTheme = new ThemeData(
-//   primarySwatch: Colors.orange,
-//   primaryColor: Colors.grey[100],
-//   primaryColorBrightness: Brightness.light,
-// );
+// // final ThemeData kIOSTheme = new ThemeData(
+// //   primarySwatch: Colors.orange,
+// //   primaryColor: Colors.grey[100],
+// //   primaryColorBrightness: Brightness.light,
+// // );
 
-// final ThemeData kDefaultTheme = new ThemeData(
-//   primarySwatch: Colors.purple,
-//   accentColor: Colors.orangeAccent[400],
-// );
+// // final ThemeData kDefaultTheme = new ThemeData(
+// //   primarySwatch: Colors.purple,
+// //   accentColor: Colors.orangeAccent[400],
+// // );
 
-// const String _name = "Username";
+// // const String _name = "Username";
 
-// class SuggestionPage extends StatelessWidget {
-//   // FirebaseUser user;
-//   // SuggestionPage({Key key, this.user});
-//   @override
-//   Widget build(BuildContext context) {
-//     return new MaterialApp(
-//       title: "Friendlychat",
-//       theme: defaultTargetPlatform == TargetPlatform.iOS
-//           ? kIOSTheme
-//           : kDefaultTheme,
-//       home: new ChatScreen(),
-//     );
-//   }
-// }
+// // class SuggestionPage extends StatelessWidget {
+// //   // FirebaseUser user;
+// //   // SuggestionPage({Key key, this.user});
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return new MaterialApp(
+// //       title: "Friendlychat",
+// //       theme: defaultTargetPlatform == TargetPlatform.iOS
+// //           ? kIOSTheme
+// //           : kDefaultTheme,
+// //       home: new ChatScreen(),
+// //     );
+// //   }
+// // }
 
-// class SuggestionBody extends StatelessWidget {
-//   SuggestionBody({this.text, this.animationController});
-//   final String text;
-//   final AnimationController animationController;
-//   @override
-//   Widget build(BuildContext context) {
-//     return new SizeTransition(
-//         sizeFactor: new CurvedAnimation(
-//             parent: animationController,
-//             curve: Curves.easeOut
-//         ),
-//         axisAlignment: 0.0,
-//         child: new Container(
-//           margin: const EdgeInsets.symmetric(vertical: 10.0),
-//           child: new Row(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: <Widget>[
-//               new Expanded(
-//                 child: new Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: <Widget>[
-//                     new Text(_name, style: Theme.of(context).textTheme.subhead),
-//                     new Container(
-//                       margin: const EdgeInsets.only(top: 5.0),
-//                       child: new Text(text),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               new Container(
-//                 margin: const EdgeInsets.only(right: 16.0),
-//                 child: new CircleAvatar(child: new Text(_name[0])),
-//               ),
-//             ],
-//           ),
-//         )
-//     );
-//   }
-// }
+// // class SuggestionBody extends StatelessWidget {
+// //   SuggestionBody({this.text, this.animationController});
+// //   final String text;
+// //   final AnimationController animationController;
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return new SizeTransition(
+// //         sizeFactor: new CurvedAnimation(
+// //             parent: animationController,
+// //             curve: Curves.easeOut
+// //         ),
+// //         axisAlignment: 0.0,
+// //         child: new Container(
+// //           margin: const EdgeInsets.symmetric(vertical: 10.0),
+// //           child: new Row(
+// //             crossAxisAlignment: CrossAxisAlignment.start,
+// //             children: <Widget>[
+// //               new Expanded(
+// //                 child: new Column(
+// //                   crossAxisAlignment: CrossAxisAlignment.start,
+// //                   children: <Widget>[
+// //                     new Text(_name, style: Theme.of(context).textTheme.subhead),
+// //                     new Container(
+// //                       margin: const EdgeInsets.only(top: 5.0),
+// //                       child: new Text(text),
+// //                     ),
+// //                   ],
+// //                 ),
+// //               ),
+// //               new Container(
+// //                 margin: const EdgeInsets.only(right: 16.0),
+// //                 child: new CircleAvatar(child: new Text(_name[0])),
+// //               ),
+// //             ],
+// //           ),
+// //         )
+// //     );
+// //   }
+// // }
 
-// class ChatScreen extends StatefulWidget {
-//   @override
-//   State createState() => new ChatScreenState();
-// }
+// // class ChatScreen extends StatefulWidget {
+// //   @override
+// //   State createState() => new ChatScreenState();
+// // }
 
-// class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-//   final List<SuggestionBody> _messages = <SuggestionBody>[];
-//   final TextEditingController _textController = new TextEditingController();
-//   bool _isComposing = false;
+// // class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+// //   final List<SuggestionBody> _messages = <SuggestionBody>[];
+// //   final TextEditingController _textController = new TextEditingController();
+// //   bool _isComposing = false;
 
-//   void _handleSubmitted(String text) {
-//     _textController.clear();
-//     setState(() {
-//       _isComposing = false;
-//     });
+// //   void _handleSubmitted(String text) {
+// //     _textController.clear();
+// //     setState(() {
+// //       _isComposing = false;
+// //     });
 
-//     SuggestionBody message = new SuggestionBody(
-//       text: text,
-//       animationController: new AnimationController(
-//         duration: new Duration(milliseconds: 500),
-//         vsync: this,
-//       ),
-//     );
-//     setState(() {
-//       _messages.insert(0, message);
-//     });
-//     message.animationController.forward();
-//   }
+// //     SuggestionBody message = new SuggestionBody(
+// //       text: text,
+// //       animationController: new AnimationController(
+// //         duration: new Duration(milliseconds: 500),
+// //         vsync: this,
+// //       ),
+// //     );
+// //     setState(() {
+// //       _messages.insert(0, message);
+// //     });
+// //     message.animationController.forward();
+// //   }
 
-//   void dispose() {
-//     for (SuggestionBody message in _messages)
-//       message.animationController.dispose();
-//     super.dispose();
-//   }
+// //   void dispose() {
+// //     for (SuggestionBody message in _messages)
+// //       message.animationController.dispose();
+// //     super.dispose();
+// //   }
 
-//   Widget _buildTextComposer() {
-//     return new IconTheme(
-//       data: new IconThemeData(color: Theme.of(context).accentColor),
-//       child: new Container(
-//           margin: const EdgeInsets.symmetric(horizontal: 8.0),
-//           child: new Row(children: <Widget>[
-//             new Flexible(
-//               child: new TextField(
-//                 controller: _textController,
-//                 onChanged: (String text) {
-//                   setState(() {
-//                     _isComposing = text.length > 0;
-//                   });
-//                 },
-//                 onSubmitted: _handleSubmitted,
-//                 decoration:
-//                 new InputDecoration.collapsed(hintText: "Send a message"),
-//               ),
-//             ),
-//             new Container(
-//                 margin: new EdgeInsets.symmetric(horizontal: 4.0),
-//                 child: new IconButton (
-//                   //divide cases into two different cases -> two different icons!
-//                   icon : _isComposing
-//                   ? new Icon(Icons.directions_run)
-//                   : new Icon(Icons.directions_walk),
+// //   Widget _buildTextComposer() {
+// //     return new IconTheme(
+// //       data: new IconThemeData(color: Theme.of(context).accentColor),
+// //       child: new Container(
+// //           margin: const EdgeInsets.symmetric(horizontal: 8.0),
+// //           child: new Row(children: <Widget>[
+// //             new Flexible(
+// //               child: new TextField(
+// //                 controller: _textController,
+// //                 onChanged: (String text) {
+// //                   setState(() {
+// //                     _isComposing = text.length > 0;
+// //                   });
+// //                 },
+// //                 onSubmitted: _handleSubmitted,
+// //                 decoration:
+// //                 new InputDecoration.collapsed(hintText: "Send a message"),
+// //               ),
+// //             ),
+// //             new Container(
+// //                 margin: new EdgeInsets.symmetric(horizontal: 4.0),
+// //                 child: new IconButton (
+// //                   //divide cases into two different cases -> two different icons!
+// //                   icon : _isComposing
+// //                   ? new Icon(Icons.directions_run)
+// //                   : new Icon(Icons.directions_walk),
 
-//                   onPressed: _isComposing
-//                   ? () => _handleSubmitted(_textController.text)
-//                   : null,
-//                   ),
-//                 ),
-//           ]),
-//           decoration: Theme.of(context).platform == TargetPlatform.iOS
-//               ? new BoxDecoration(
-//               border:
-//               new Border(top: new BorderSide(color: Colors.grey[200])))
-//               : null),
-//     );
-//   }
+// //                   onPressed: _isComposing
+// //                   ? () => _handleSubmitted(_textController.text)
+// //                   : null,
+// //                   ),
+// //                 ),
+// //           ]),
+// //           decoration: Theme.of(context).platform == TargetPlatform.iOS
+// //               ? new BoxDecoration(
+// //               border:
+// //               new Border(top: new BorderSide(color: Colors.grey[200])))
+// //               : null),
+// //     );
+// //   }
 
-//   Widget build(BuildContext context) {
-//     return new Scaffold(
-//       appBar: new AppBar(
-//           title: new Text("건의사항"),
-//           elevation:
-//           Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0
-//       ),
-//       body: new Container(
-//           child: new Column(
-//               children: <Widget>[
-//                 new Flexible(
-//                     child: new ListView.builder(
-//                       padding: new EdgeInsets.all(8.0),
-//                       reverse: true,
-//                       itemBuilder: (_, int index) => _messages[index],
-//                       itemCount: _messages.length,
-//                     )
-//                 ),
-//                 new Divider(height: 1.0),
-//                 new Container(
-//                   decoration: new BoxDecoration(
-//                       color: Theme.of(context).cardColor),
-//                   child: _buildTextComposer(),
-//                 ),
-//               ]
-//           ),
-//           decoration: Theme.of(context).platform == TargetPlatform.iOS ? new BoxDecoration(border: new Border(top: new BorderSide(color: Colors.grey[200]))) : null),//new
-//     );
-//   }
-// }
+// //   Widget build(BuildContext context) {
+// //     return new Scaffold(
+// //       appBar: new AppBar(
+// //           title: new Text("건의사항"),
+// //           elevation:
+// //           Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0
+// //       ),
+// //       body: new Container(
+// //           child: new Column(
+// //               children: <Widget>[
+// //                 new Flexible(
+// //                     child: new ListView.builder(
+// //                       padding: new EdgeInsets.all(8.0),
+// //                       reverse: true,
+// //                       itemBuilder: (_, int index) => _messages[index],
+// //                       itemCount: _messages.length,
+// //                     )
+// //                 ),
+// //                 new Divider(height: 1.0),
+// //                 new Container(
+// //                   decoration: new BoxDecoration(
+// //                       color: Theme.of(context).cardColor),
+// //                   child: _buildTextComposer(),
+// //                 ),
+// //               ]
+// //           ),
+// //           decoration: Theme.of(context).platform == TargetPlatform.iOS ? new BoxDecoration(border: new Border(top: new BorderSide(color: Colors.grey[200]))) : null),//new
+// //     );
+// //   }
+// // }
 
