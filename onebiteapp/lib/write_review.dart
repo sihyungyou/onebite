@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import 'dart:io';
-
-import 'package:Shrine/home.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
