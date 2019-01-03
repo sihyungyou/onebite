@@ -25,19 +25,18 @@ class _WriteBugPageState extends State<WriteBugPage> {
 
   // File galleryFile;
   Firestore store = Firestore.instance;
-//save the result of camera file
+  //save the result of camera file
   // File cameraFile;
   final TextEditingController _titleControl = new TextEditingController();
   // final TextEditingController _nameControl = new TextEditingController();
   final TextEditingController _reviewControl = new TextEditingController();
-  var rating = 0.0;
   String _title = '';
-  String _name = '';
+  // String _name = '';
   String _review = '';
   String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
   String addURL = '';
   // String _path = '';
-  final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
+  // final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
   File sampleImage;
 
   Future getImage() async {
@@ -47,32 +46,6 @@ class _WriteBugPageState extends State<WriteBugPage> {
       sampleImage = tempImage;
     });
   }
-
-  // Widget enableUpload() {
-  //   final ThemeData theme = Theme.of(context);
-  //   return Container (
-  //     child: Column (
-  //       children: <Widget>[
-  //         Image.file(sampleImage, height : 250.0, width : 300.0),
-  //         RaisedButton(
-  //           elevation : 7.0,
-  //           child: Text('사진 업로드'),
-  //           textColor: Colors.white,
-  //           color: theme.primaryColor,
-  //           onPressed: () async {
-  //             final imagenames = WordPair.random();
-  //             final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${imagenames}.jpg');
-  //               final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
-  //               addURL = (await firebaseStorageRef.getDownloadURL()).toString();
-  //               print('@@@@@@@@@@@@@@@@URL@@@@@@@@@@@@@@@@@@@');
-  //               print(addURL);
-  //               print(imagenames);
-  //           },
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
   
   @override
   Widget build(BuildContext context) {
@@ -85,9 +58,6 @@ class _WriteBugPageState extends State<WriteBugPage> {
             child: IconButton(
                 // cloase button
               onPressed: (){
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (BuildContext context) => DetailPage(user:user, restaurant: restaurant, previous: "review")))
-                //     .catchError((e) => print(e));     
                 Navigator.pop(context);
               },
               icon: Icon(Icons.close, color: Theme.of(context).primaryColor),
@@ -116,7 +86,7 @@ class _WriteBugPageState extends State<WriteBugPage> {
                   // user - review 생성해서 자기가만든 리뷰들은 따로 보거나 삭제할수있게 해주자 (v1.5)
                   store.collection("bug").document(wordPair.toString())
                   .setData({
-                    this.user.isAnonymous ? { "writer" : _name } : "writer" : this.user.displayName,
+                    "writer" : this.user.displayName,
                     "title" : _title,
                     "content": _review,
                     "date": createTime,
@@ -203,21 +173,6 @@ class _WriteBugPageState extends State<WriteBugPage> {
 
                 )
             ),
-            // Container(
-            //     height: 100.0,
-            //     child: Row(
-            //       children: <Widget>[
-            //         FlatButton(
-            //             color: Color.fromRGBO(230, 230, 230, 1),
-            //             child: Icon(Icons.camera_alt, color: Colors.white),
-            //             onPressed: (){
-            //               getImage();
-            //             }
-            //         )
-            //       ],
-            //     )
-            // ),
-
           ],
         )
     );

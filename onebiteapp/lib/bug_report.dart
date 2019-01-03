@@ -31,7 +31,7 @@ class _BugReportPageState extends State<BugReportPage> {
   }
 
   navigateToDetail(DocumentSnapshot post) {
-    Navigator.push(context,MaterialPageRoute(builder: (context) => BugReportDetailPage(post: post,)));
+    Navigator.push(context,MaterialPageRoute(builder: (context) => BugReportDetailPage(post: post, user : this.user)));
   }
 
   @override
@@ -85,11 +85,17 @@ class _BugReportPageState extends State<BugReportPage> {
                       // date 로 sorting 해야 함.
                       // length - index - 1 부터 display 한다는 것은 date 이 최근일 수록 list의 위로 오도록 sorting 함
                       title: Text(snapshot.data[snapshot.data.length-index-1].data["title"]),
-                      subtitle: Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + snapshot.data[snapshot.data.length-index-1].data["writer"]),
+
+                      subtitle: 
+                      snapshot.data[snapshot.data.length-index-1].data["writer"] == null ?  // null 이면 익명로그인이 쓴 버그라는 뜻
+                      Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + "익명 제보") :
+                      Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + snapshot.data[snapshot.data.length-index-1].data["writer"]),
+
                       trailing: 
                       snapshot.data[snapshot.data.length-index-1].data["image"] == "" ? // image 없으면
                       SizedBox(height: 1.0, width: 1.0,) :     // 아무것도 안 띄우고
                       Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0), // image 있으면 그 사진을 띄움
+                      
                       onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
                     );
                   },
