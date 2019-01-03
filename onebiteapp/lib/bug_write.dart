@@ -1,7 +1,6 @@
 
 import 'dart:io';
 import 'package:Shrine/bug_report.dart';
-import 'package:Shrine/home.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,19 +34,46 @@ class _WriteBugPageState extends State<WriteBugPage> {
   String _title = '';
   String _name = '';
   String _review = '';
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  String addURL = '';
   // String _path = '';
   final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
   File sampleImage;
 
-  // Future getImage() async {
-  //   var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future getImage() async {
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-  //   setState(() {
-  //     sampleImage = tempImage;
-  //   });
+    setState(() {
+      sampleImage = tempImage;
+    });
+  }
+
+  // Widget enableUpload() {
+  //   final ThemeData theme = Theme.of(context);
+  //   return Container (
+  //     child: Column (
+  //       children: <Widget>[
+  //         Image.file(sampleImage, height : 250.0, width : 300.0),
+  //         RaisedButton(
+  //           elevation : 7.0,
+  //           child: Text('사진 업로드'),
+  //           textColor: Colors.white,
+  //           color: theme.primaryColor,
+  //           onPressed: () async {
+  //             final imagenames = WordPair.random();
+  //             final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${imagenames}.jpg');
+  //               final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
+  //               addURL = (await firebaseStorageRef.getDownloadURL()).toString();
+  //               print('@@@@@@@@@@@@@@@@URL@@@@@@@@@@@@@@@@@@@');
+  //               print(addURL);
+  //               print(imagenames);
+  //           },
+  //         )
+  //       ],
+  //     ),
+  //   );
   // }
-
-
+  
   @override
   Widget build(BuildContext context) {
 
@@ -71,15 +97,18 @@ class _WriteBugPageState extends State<WriteBugPage> {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                // if(sampleImage !=  null ){
-                //   final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
-                //   final StorageUploadTask uploadTask = firebaseStorageRef.putFile(sampleImage);
-                //   StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-                //   var url = await storageTaskSnapshot.ref.getDownloadURL();
-                //   _path = url.toString();
-                //   print(_path);
-                // }
                 final wordPair = WordPair.random();
+
+                if(sampleImage !=  null ){
+                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${wordPair}.jpg');
+                  final StorageUploadTask uploadTask = firebaseStorageRef.putFile(sampleImage);
+                  StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+                  var url = await storageTaskSnapshot.ref.getDownloadURL();
+                  addURL = url.toString();
+                  print('@@@@@@@@@@@@@@@@@@@@@@@');
+                  print(addURL);
+                }
+
                 var now = DateTime.now();
                 String createTime = now.year.toString() + '.' + now.month.toString() + '.' + now.day.toString();
                 store.runTransaction((transaction) async {
@@ -91,7 +120,10 @@ class _WriteBugPageState extends State<WriteBugPage> {
                     "title" : _title,
                     "content": _review,
                     "date": createTime,
-                    "uid": user.uid});
+                    "uid": user.uid,
+                    "image" : addURL,
+                    });
+                    this.defaultURL = addURL;
                 });
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -135,32 +167,18 @@ class _WriteBugPageState extends State<WriteBugPage> {
               ],
             ),
             SizedBox(height:10.0),
-            // Row(
-            //   children: <Widget>[
-            //     SizedBox(
-            //         height: 30.0,
-            //         width: 80.0,
-            //         child: Text("닉네임", style: _categoryStyle)
-            //     ),
-            //     // this.user.isAnonymous ?
-            //     SizedBox(
-            //         width: 200.0,
-            //         child: TextField(
-            //           decoration: InputDecoration(
-            //               border: InputBorder.none,
-            //               hintText: '닉네임을 입력하세요.',
-            //           ),
-            //           enabled:true,
-            //           controller: _nameControl,
-            //           onChanged: (String e){
-            //             setState(() {
-            //               _name = e;
-            //             });
-            //           },
-            //         )
-            //     ),
-            //   ],
-            // ),
+            //사진
+            sampleImage == null ? Image.network('${defaultURL}') : Image.file(sampleImage, height : 250.0, width : 300.0),
+            SizedBox(height: 16.0,),
+            IconButton(
+              padding: EdgeInsets.fromLTRB(350, 0, 0, 0),
+              icon: Icon(Icons.photo_camera),
+              onPressed: () {
+                getImage();
+              },
+            ),
+
+            SizedBox(height: 20.0,),
             SizedBox(
                 width: 200.0,
                 height: 140.0,

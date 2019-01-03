@@ -16,9 +16,11 @@ class BugReportPage extends StatefulWidget {
 }
 
 class _BugReportPageState extends State<BugReportPage> {
+
   @override
   Future _data;
   final FirebaseUser user;
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
   _BugReportPageState({this.user});
 
   Future getPosts() async {
@@ -80,9 +82,14 @@ class _BugReportPageState extends State<BugReportPage> {
                   itemCount: snapshot.data.length, // actual length of returned data from future
                   itemBuilder: (_, index) {
                     return ListTile(
+                      // date 로 sorting 해야 함.
                       // length - index - 1 부터 display 한다는 것은 date 이 최근일 수록 list의 위로 오도록 sorting 함
                       title: Text(snapshot.data[snapshot.data.length-index-1].data["title"]),
                       subtitle: Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + snapshot.data[snapshot.data.length-index-1].data["writer"]),
+                      trailing: 
+                      snapshot.data[snapshot.data.length-index-1].data["image"] == "" ? // image 없으면
+                      Image.network('${defaultURL}', height : 50.0, width : 50.0) :
+                      Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0),
                       onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
                     );
                   },
