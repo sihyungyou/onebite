@@ -1,177 +1,95 @@
 // 버그신고
+
+import 'package:Shrine/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'notice_detail.dart';
+import 'bug_write.dart';
 
-final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: Colors.orange,
-  primaryColor: Colors.grey[100],
-  primaryColorBrightness: Brightness.light,
-);
-
-final ThemeData kDefaultTheme = new ThemeData(
-  primarySwatch: Colors.purple,
-  accentColor: Colors.orangeAccent[400],
-);
-
-const String _name = "Username";
-
-class BugReportPage extends StatelessWidget {
+class BugReportPage extends StatefulWidget {
+  final FirebaseUser user;
+  BugReportPage({this.user});
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "Friendlychat",
-      theme: defaultTargetPlatform == TargetPlatform.iOS
-          ? kIOSTheme
-          : kDefaultTheme,
-      home: new ChatScreen(),
-    );
-  }
+  _BugReportPageState createState() => _BugReportPageState(user: this.user);
 }
 
-class BugReportBody extends StatelessWidget {
-  BugReportBody({this.text, this.animationController});
-  final String text;
-  final AnimationController animationController;
+class _BugReportPageState extends State<BugReportPage> {
+  @override
+  Future _data;
+  final FirebaseUser user;
+  _BugReportPageState({this.user});
+
+  Future getPosts() async {
+    // instantiate my cloud firestore first
+    var firestore = Firestore.instance;
+    QuerySnapshot qn = await firestore.collection("bug").getDocuments();
+    return qn.documents;
+  }
+
+  navigateToDetail(DocumentSnapshot post) {
+    Navigator.push(context,MaterialPageRoute(builder: (context) => NoticeDetailPage(post: post,)));
+  }
+
+  @override
+  void initState() {
+    // future: getPosts() 로 하면 매번 notice detail 에서 돌아올 때에도 계속 execute함. 그걸 해결하기 위해서
+    super.initState();
+    _data = getPosts(); // now, instead of call getpost every time, the future can simply use _data! no more re-render
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new SizeTransition(
-        sizeFactor: new CurvedAnimation(
-            parent: animationController,
-            curve: Curves.easeOut
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage(user:user)))
+                    .catchError((e) => print(e)); 
+          },
         ),
-        axisAlignment: 0.0,
-        child: new Container(
-          margin: const EdgeInsets.symmetric(vertical: 10.0),
-          child: new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Expanded(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text(_name, style: Theme.of(context).textTheme.subhead),
-                    new Container(
-                      margin: const EdgeInsets.only(top: 5.0),
-                      child: new Text(text),
-                    ),
-                  ],
-                ),
-              ),
-              new Container(
-                margin: const EdgeInsets.only(right: 16.0),
-                child: new CircleAvatar(child: new Text(_name[0])),
-              ),
-            ],
-          ),
-        )
-    );
-  }
-}
-
-class ChatScreen extends StatefulWidget {
-  @override
-  State createState() => new ChatScreenState();
-}
-
-class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-  final List<BugReportBody> _messages = <BugReportBody>[];
-  final TextEditingController _textController = new TextEditingController();
-  bool _isComposing = false;
-
-  void _handleSubmitted(String text) {
-    _textController.clear();
-    setState(() {
-      _isComposing = false;
-    });
-
-    BugReportBody message = new BugReportBody(
-      text: text,
-      animationController: new AnimationController(
-        duration: new Duration(milliseconds: 500),
-        vsync: this,
+        title: Text("버그신고"),
+        // +버튼 -> bug add 페이지 하나 만들기
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              // go to write bug report page
+              print('go to write bug report page');
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => WriteBugPage( user: user,))).catchError((e) => print(e));
+            }
+          )
+        ],
       ),
-    );
-    setState(() {
-      _messages.insert(0, message);
-    });
-    message.animationController.forward();
-  }
-
-  void dispose() {
-    for (BugReportBody message in _messages)
-      message.animationController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildTextComposer() {
-    return new IconTheme(
-      data: new IconThemeData(color: Theme.of(context).accentColor),
-      child: new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: new Row(children: <Widget>[
-            new Flexible(
-              child: new TextField(
-                controller: _textController,
-                onChanged: (String text) {
-                  setState(() {
-                    _isComposing = text.length > 0;
-                  });
-                },
-                onSubmitted: _handleSubmitted,
-                decoration:
-                new InputDecoration.collapsed(hintText: "Send a message"),
-              ),
-            ),
-            new Container(
-                margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                child: new IconButton (
-                  //divide cases into two different cases -> two different icons!
-                  icon : _isComposing
-                  ? new Icon(Icons.directions_run)
-                  : new Icon(Icons.directions_walk),
-
-                  onPressed: _isComposing
-                  ? () => _handleSubmitted(_textController.text)
-                  : null,
-                  ),
-                ),
-          ]),
-          decoration: Theme.of(context).platform == TargetPlatform.iOS
-              ? new BoxDecoration(
-              border:
-              new Border(top: new BorderSide(color: Colors.grey[200])))
-              : null),
-    );
-  }
-
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          title: new Text("버그 신고"),
-          elevation:
-          Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0
+      body: Container(
+        child: FutureBuilder(
+            //  future: getPosts(), 에서 future : _data로!
+            future: _data,
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Text("Loading..."),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data.length, // actual length of returned data from future
+                  itemBuilder: (_, index) {
+                    return ListTile(
+                      // length - index - 1 부터 display 한다는 것은 date 이 최근일 수록 list의 위로 오도록 sorting 함
+                      title: Text(snapshot.data[snapshot.data.length-index-1].data["title"]),
+                      subtitle: Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + snapshot.data[snapshot.data.length-index-1].data["writer"]),
+                      onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
+                    );
+                  },
+                );
+              }
+            }),
       ),
-      body: new Container(
-          child: new Column(
-              children: <Widget>[
-                new Flexible(
-                    child: new ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemBuilder: (_, int index) => _messages[index],
-                      itemCount: _messages.length,
-                    )
-                ),
-                new Divider(height: 1.0),
-                new Container(
-                  decoration: new BoxDecoration(
-                      color: Theme.of(context).cardColor),
-                  child: _buildTextComposer(),
-                ),
-              ]
-          ),
-          decoration: Theme.of(context).platform == TargetPlatform.iOS ? new BoxDecoration(border: new Border(top: new BorderSide(color: Colors.grey[200]))) : null),//new
     );
   }
 }

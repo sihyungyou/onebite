@@ -17,6 +17,7 @@ dependencies:
   smooth_star_rating: 1.0.1
   firebase_storage: ^1.0.4
   image_picker: ^0.4.10
+  firebase_database: 
 
 
 

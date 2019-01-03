@@ -1,4 +1,6 @@
+import 'package:Shrine/bug_report.dart';
 import 'package:Shrine/rest_detail.dart';
+import 'package:Shrine/suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Shrine/rest_all.dart';
@@ -224,6 +226,9 @@ class HomePageState extends State<HomePage> {
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (BuildContext context) => SuggestionPage( user: user)))
                 //                .catchError((e) => print(e));
+                Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  SuggestionPage( user: user,)))
+            .catchError((e) => print(e));
               },
             ),
             ListTile(
@@ -234,6 +239,9 @@ class HomePageState extends State<HomePage> {
               title: Text('버그신고'),
               onTap: () {
                 // Navigator.pushNamed(context, '/bug_report');
+                                Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>  BugReportPage( user: user,)))
+            .catchError((e) => print(e));
               },
             ),
             ListTile(
