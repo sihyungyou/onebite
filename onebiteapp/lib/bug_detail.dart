@@ -26,9 +26,12 @@ class _BugReportDetailPageState extends State<BugReportDetailPage> {
               children: <Widget>[
                 ListTile(
                   title: Text(widget.post.data["title"]),
-                  // subtitle: Text(widget.post.data["date"]),
+                  subtitle: Text(widget.post.data["date"]),
                 ),
                 Divider(),
+                widget.post.data["image"] == "" ? //image 없으면
+                SizedBox(height: 1.0,) :
+                Image.network('${widget.post.data["image"]}', height: 250.0, width: 300.0,),
                 ListTile(
                   title: Text(widget.post.data["content"]),
                 )

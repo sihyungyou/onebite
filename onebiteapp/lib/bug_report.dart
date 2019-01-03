@@ -1,11 +1,11 @@
 // 버그신고
 
+import 'package:Shrine/bug_detail.dart';
 import 'package:Shrine/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'notice_detail.dart';
 import 'bug_write.dart';
 
 class BugReportPage extends StatefulWidget {
@@ -31,7 +31,7 @@ class _BugReportPageState extends State<BugReportPage> {
   }
 
   navigateToDetail(DocumentSnapshot post) {
-    Navigator.push(context,MaterialPageRoute(builder: (context) => NoticeDetailPage(post: post,)));
+    Navigator.push(context,MaterialPageRoute(builder: (context) => BugReportDetailPage(post: post,)));
   }
 
   @override
@@ -88,8 +88,8 @@ class _BugReportPageState extends State<BugReportPage> {
                       subtitle: Text(snapshot.data[snapshot.data.length-index-1].data["date"] + " " + snapshot.data[snapshot.data.length-index-1].data["writer"]),
                       trailing: 
                       snapshot.data[snapshot.data.length-index-1].data["image"] == "" ? // image 없으면
-                      Image.network('${defaultURL}', height : 50.0, width : 50.0) :
-                      Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0),
+                      SizedBox(height: 1.0, width: 1.0,) :     // 아무것도 안 띄우고
+                      Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0), // image 있으면 그 사진을 띄움
                       onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
                     );
                   },
