@@ -317,6 +317,7 @@ class HomePageState extends State<HomePage> {
                                .catchError((e) => print(e));
                          }
                      ),
+                     VerticalDivider(),
                      FlatButton(
                          child: Row(
                            children: <Widget>[
@@ -335,7 +336,7 @@ class HomePageState extends State<HomePage> {
                                .catchError((e) => print(e));
                          }
                      ),
-
+                     VerticalDivider(),
                      FlatButton(
                          child: Row(
                            children: <Widget>[
@@ -734,3 +735,15 @@ class HomePageState extends State<HomePage> {
   }
 }
 
+
+class VerticalDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      height: 30.0,
+      width: 1.0,
+      color: Colors.black38,
+      margin: const EdgeInsets.only(left: 5.0, right: 5.0),
+    );
+  }
+}

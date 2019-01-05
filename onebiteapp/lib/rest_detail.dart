@@ -319,7 +319,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                             borderColor: Colors.orange,
                           ),
                           SizedBox(width: 5.0),
-                          Text(rating.toString(),
+                          Text(rating.toStringAsFixed(1),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.w500)),

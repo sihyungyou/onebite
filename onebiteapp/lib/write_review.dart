@@ -138,7 +138,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 SmoothStarRating(
                   allowHalfRating: true,
                   onRatingChanged: (v) {
-                    rating = v;
+                    rating = v - v%.5;
                     setState(() {});
                   },
                   starCount: 5,

@@ -123,7 +123,7 @@ class _RestAllPageState extends State<RestAllPage>
                   ),
                 ),
                 SizedBox(
-                  width: 41.0,
+                  width: 30.0,
                     child: new Tab(
                     child: Text('한식',
                         style: TextStyle(
@@ -132,7 +132,7 @@ class _RestAllPageState extends State<RestAllPage>
                   ),
                 ),
                 SizedBox(
-                  width: 41.0,
+                  width: 30.0,
                     child: new Tab(
                     child: Text('중식',
                         style: TextStyle(
@@ -141,7 +141,7 @@ class _RestAllPageState extends State<RestAllPage>
                   ),
                 ),
                 SizedBox(
-                  width: 41.0,
+                  width: 30.0,
                     child: new Tab(
                     child: Text('일식',
                         style: TextStyle(
@@ -150,7 +150,7 @@ class _RestAllPageState extends State<RestAllPage>
                   ),
                 ),
                 SizedBox(
-                  width: 41.0,
+                  width: 30.0,
                     child: new Tab(
                     child: Text('분식',
                         style: TextStyle(
@@ -162,15 +162,19 @@ class _RestAllPageState extends State<RestAllPage>
             ),
           ),
           new Container(
-            height: 300.0,
+            height: 540.0,
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[
                 // fastfood
-                ListView.builder(
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
                     itemCount: fastFood.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+
                         contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                         leading: CircleAvatar(
                           radius: 35.0,
@@ -211,7 +215,10 @@ class _RestAllPageState extends State<RestAllPage>
                           });
                     }),
                 // korean
-                ListView.builder(
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
                     itemCount: korean.length,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -254,7 +261,10 @@ class _RestAllPageState extends State<RestAllPage>
                           });
                     }),
                 // chinese
-                ListView.builder(
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
                     itemCount: chinese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -297,7 +307,10 @@ class _RestAllPageState extends State<RestAllPage>
                           });
                     }),
                 // japanese
-                ListView.builder(
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
                     itemCount: japanese.length,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -340,14 +353,12 @@ class _RestAllPageState extends State<RestAllPage>
                           });
                     }),
                 // boonsick
-                ListView.builder(
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
                     itemCount: boonSick.length,
                     itemBuilder: (context, index) {
-                      // var noDeliveryFlag = false;
-                      // boonSick[index].deliveryFee == '없음' ? 
-                      // // true면 배달비 없음, false면 있음
-                      // noDeliveryFlag = true : 
-                      // noDeliveryFlag = false;
                       return ListTile(
                           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                           leading: CircleAvatar(
