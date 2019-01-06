@@ -94,7 +94,10 @@ class _BugReportPageState extends State<BugReportPage> {
                       trailing: 
                       snapshot.data[snapshot.data.length-index-1].data["image"] == "" ? // image 없으면
                       SizedBox(height: 1.0, width: 1.0,) :     // 아무것도 안 띄우고
-                      Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0), // image 있으면 그 사진을 띄움
+                      // Image.network('${snapshot.data[snapshot.data.length-index-1].data["image"]}', height: 50.0, width: 50.0), // image 있으면 그 사진을 띄움
+                      Icon(
+                        Icons.image
+                      ),
                       
                       onTap: () => navigateToDetail(snapshot.data[snapshot.data.length-index-1]),
                     );
