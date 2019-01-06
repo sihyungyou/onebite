@@ -2,6 +2,7 @@
 import 'package:Shrine/bug_report.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class BugReportDetailPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class BugReportDetailPage extends StatefulWidget {
 }
 
 class _BugReportDetailPageState extends State<BugReportDetailPage> {
+
+
   @override
   Widget build(BuildContext conte4xt) {
     return Scaffold(
@@ -24,7 +27,10 @@ class _BugReportDetailPageState extends State<BugReportDetailPage> {
           widget.user.uid == widget.post.data["uid"] ? // 들어온 사람의 uid와 버그가 쓰여진 uid가 같으면 삭제 가능토록.
           IconButton(
             icon: Icon(Icons.delete),
-            onPressed: () {
+            onPressed: () async {
+              FirebaseStorage.instance.ref().child('bug_report').child('bug-${widget.post.documentID}.jpg').delete();
+              print('delete 됐나?');
+              print(widget.post.documentID);
               // 이 버그내용 삭제
               Firestore.instance.runTransaction((transaction) async {
                 DocumentSnapshot snapshot = await transaction.get(widget.post.reference);
