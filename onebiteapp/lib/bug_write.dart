@@ -70,7 +70,8 @@ class _WriteBugPageState extends State<WriteBugPage> {
                 final wordPair = WordPair.random();
 
                 if(sampleImage !=  null ){
-                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${wordPair}.jpg');
+                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug_report').child('bug-${wordPair}.jpg');
+                  // final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${wordPair}.jpg');
                   final StorageUploadTask uploadTask = firebaseStorageRef.putFile(sampleImage);
                   StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
                   var url = await storageTaskSnapshot.ref.getDownloadURL();
