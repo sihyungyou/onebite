@@ -76,8 +76,8 @@ class _WriteBugPageState extends State<WriteBugPage> {
                   StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
                   var url = await storageTaskSnapshot.ref.getDownloadURL();
                   addURL = url.toString();
-                  print('@@@@@@@@@@@@@@@@@@@@@@@');
-                  print(addURL);
+                  // print('@@@@@@@@@@@@@@@@@@@@@@@');
+                  // print(addURL);
                 }
 
                 var now = DateTime.now();

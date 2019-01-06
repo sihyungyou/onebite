@@ -61,7 +61,7 @@ class _BugReportPageState extends State<BugReportPage> {
             icon: Icon(Icons.edit),
             onPressed: () {
               // go to write bug report page
-              print('go to write bug report page');
+              // print('go to write bug report page');
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => WriteBugPage( user: user,))).catchError((e) => print(e));
             }

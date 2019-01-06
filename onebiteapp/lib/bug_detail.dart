@@ -29,7 +29,7 @@ class _BugReportDetailPageState extends State<BugReportDetailPage> {
               Firestore.instance.runTransaction((transaction) async {
                 DocumentSnapshot snapshot = await transaction.get(widget.post.reference);
                 await transaction.delete(snapshot.reference);
-                print('deleted');
+                // print('deleted');
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
