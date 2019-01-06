@@ -222,13 +222,9 @@ class HomePageState extends State<HomePage> {
               ),
               title: Text('건의사항'),
               onTap: () {
-                // Navigator.pushNamed(context, '/suggestion');
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (BuildContext context) => SuggestionPage( user: user)))
-                //                .catchError((e) => print(e));
-                Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) =>  SuggestionPage( user: user,)))
-            .catchError((e) => print(e));
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (BuildContext context) =>  SuggestionPage( user: user,)))
+            // .catchError((e) => print(e));
               },
             ),
             ListTile(

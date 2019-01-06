@@ -55,7 +55,7 @@ class OnebiteAppState extends State<OnebiteApp> {
         '/notice_list' : (context) => NoticeListPage(),
         '/rest_all' : (context) => RestAllPage(),
         // '/rest_detail' : (context) =>
-        '/suggestion' : (context) => SuggestionPage(),
+        // '/suggestion' : (context) => SuggestionPage(),
         // '/sign_inup' : (context) =>
         // '/sign_up' : (context) =>
         '/add': (context) => AddPage(),
