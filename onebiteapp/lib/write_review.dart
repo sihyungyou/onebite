@@ -1,17 +1,3 @@
-// Copyright 2018-present the Flutter authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import 'dart:io';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +26,6 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   _WriteReviewPageState({Key key, this.user, this.restaurant});
 
-  // TODO: Add a variable for Category (104)
   File galleryFile;
   Firestore store = Firestore.instance;
 //save the result of camera file
@@ -54,6 +39,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
   final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
   File sampleImage;
 
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  String addURL = '';
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -65,8 +52,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Return an AsymmetricView (104)
-    // TODO: Pass Category variable to AsymmetricView (104)
+
 
     return Scaffold(
         appBar: AppBar(
@@ -90,15 +76,20 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
+                final wordPair = WordPair.random();
                 if(sampleImage !=  null ){
-                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
+                  // final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
+                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('review').child('review-${wordPair}.jpg');
                   final StorageUploadTask uploadTask = firebaseStorageRef.putFile(sampleImage);
                   StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
                   var url = await storageTaskSnapshot.ref.getDownloadURL();
-                  _path = url.toString();
-                  print(_path);
+                  addURL = url.toString();
+                  print('@@@@@@@@@@@@@@@@@@@@@@@');
+                  print(addURL);
+                  // _path = url.toString();
+                  // print(_path);
                 }
-                final wordPair = WordPair.random();
+                // final wordPair = WordPair.random();
                 var now = DateTime.now();
                 String createTime = now.year.toString() + '.' + now.month.toString() + '.' + now.day.toString();
                 store.runTransaction((transaction) async {
@@ -110,7 +101,10 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     "rate": rating.toString(),
                     "context": _review,
                     "date": createTime,
-                    "uid": user.uid});
+                    "uid": user.uid,
+                    "image" : addURL,
+                    });
+                    this.defaultURL = addURL;
                 });
                 Navigator.of(context).push(
                   MaterialPageRoute(

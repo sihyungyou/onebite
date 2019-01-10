@@ -35,6 +35,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       "https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/detailPage%2Ficon_write.png?alt=media&token=770d2c62-362e-4ec4-af72-51b1e318dade";
   final String onebiteIcon =
       'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
+  // 테스트사진 띄워보기
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
   bool isExpanded1 = false;
   bool isExpanded2 = false;
   bool isExpanded3 = false;
@@ -558,6 +560,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                         SizedBox(height: 15.0),
                       ],
                     ),
+
+                    //리뷰
                     Padding(
                         padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
                         child: Stack(
@@ -595,7 +599,17 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                                                 style: _bodyStyle),
                                           ],
                                         ),
-                                        SizedBox(height: 20.0)
+                                        SizedBox(height: 10.0),
+                                        // 사진 있으면 사진 띄워 주기
+                                        Row(
+                                          children: <Widget> [
+                                            // 리뷰에 사진 있으면 그 사진 띄워주고 없으면 기본 테스트사진
+                                            review[index].image == "" ?
+                                            SizedBox(height: 1.0, width: 1.0,) :
+                                            Image.network('${review[index].image}', height: 150.0, width: 300.0,),
+                                          ]
+                                        ),
+                                        SizedBox(height: 20.0),
                                       ],
                                     ),
                                     subtitle: SizedBox(
@@ -687,9 +701,10 @@ class Review {
   final String rate;
   final String context;
   final String uid;
+  final String image;
   final DocumentReference reference;
 
-  Review(this.author, this.date, this.rate, this.context, this.uid, this.reference);
+  Review(this.author, this.date, this.rate, this.context, this.uid, this.reference, this.image);
 
   Review.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['author'] != null),
@@ -697,11 +712,13 @@ class Review {
         assert(map['rate'] != null),
         assert(map['context'] != null),
         assert(map['uid'] !=null),
+        assert(map['image'] != null),
         author = map['author'],
         date = map['date'],
         rate = map['rate'],
         context = map['context'],
-        uid = map['uid'];
+        uid = map['uid'],
+        image = map['image'];
 
   Review.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
