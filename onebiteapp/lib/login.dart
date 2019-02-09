@@ -157,35 +157,35 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               // 로그아웃
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: ButtonTheme(
-                  height: 40.0,
-                  child: FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 25.0,
-                            height: 25.0,
-                          ),
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            child: Text("로그아웃", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
-                          )
-                        ],
-                      ),
-                      color: Colors.transparent,
-
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      onPressed: () {
-                        print('signed out!');
-                      }
-                  ),
-                ),
-              ),
+//              Padding(
+//                padding: EdgeInsets.symmetric(horizontal: 50.0),
+//                child: ButtonTheme(
+//                  height: 40.0,
+//                  child: FlatButton(
+//                      child: Row(
+//                        children: <Widget>[
+//                          Container(
+//                            width: 25.0,
+//                            height: 25.0,
+//                          ),
+//                          Container(
+//                            width: 200.0,
+//                            alignment: Alignment.center,
+//                            child: Text("로그아웃", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
+//                          )
+//                        ],
+//                      ),
+//                      color: Colors.transparent,
+//
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(20.0)
+//                      ),
+//                      onPressed: () {
+//                        print('signed out!');
+//                      }
+//                  ),
+//                ),
+//              ),
             ],
           ),
         ],

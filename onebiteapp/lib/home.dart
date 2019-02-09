@@ -326,6 +326,32 @@ class HomePageState extends State<HomePage> {
                            ],
                          ),
                          onPressed:() {
+                           //로그인 후 이용 가능
+                           user.isAnonymous ? 
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog (
+                                    // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                    content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('로그인'),
+                                        onPressed: () {
+                                          // 그 자리에서 바로 로그인 유도하기! go to login page
+                                          Navigator.pushNamed(context, '/login');
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text('닫기'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                              }
+                            ) :
                            Navigator.of(context)
                                .push(MaterialPageRoute(
                                builder: (BuildContext context) =>
@@ -344,6 +370,22 @@ class HomePageState extends State<HomePage> {
                            ],
                          ),
                          onPressed:() {
+                             showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog (
+                                    content: Text('준비중인 기능입니다'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('닫기'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                              }
+                            );
                          }
                      ),
                   ],
@@ -501,14 +543,14 @@ class HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Divider(),
-                              user.isAnonymous ? Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 35.0,),
-                                    Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
-                                  ],
-                                ),
-                              ) :
+                              // user.isAnonymous ? Container(
+                              //   child: Column(
+                              //     children: <Widget>[
+                              //       SizedBox(height: 35.0,),
+                              //       Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
+                              //     ],
+                              //   ),
+                              // ) :
                               historyList.length == 0 ? Container(
                                   child: Column(
                                     children: <Widget>[
@@ -628,14 +670,14 @@ class HomePageState extends State<HomePage> {
                                 ],
                               ),
                               Divider(),
-                              user.isAnonymous ? Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    SizedBox(height: 35.0,),
-                                    Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
-                                  ],
-                                ),
-                              ) : 
+                              // user.isAnonymous ? Container(
+                              //   child: Column(
+                              //     children: <Widget>[
+                              //       SizedBox(height: 35.0,),
+                              //       Text("로그인 후 이용 가능합니다", textAlign: TextAlign.center,)
+                              //     ],
+                              //   ),
+                              // ) : 
                               // 여긴 로그인 했으면 무조건 뭔가 보임 (히스토리나 즐겨찾기가 아니고 전체 유저의 데이터를 축적 해놓은 것이기 때문에)
                               Container(
                                 height: 100.0,
