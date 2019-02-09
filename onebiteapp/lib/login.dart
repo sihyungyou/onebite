@@ -85,36 +85,36 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image.network(onebiteLogo),
               ),
               SizedBox(height: 100.0),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: ButtonTheme(
-                  height: 40.0,
-                  child: FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 25.0,
-                            height: 25.0,
-                            child: Image.network(facebookIcon),
-                          ),
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            child: Text("Facebook 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
-                          )
-                        ],
-                      ),
-                      color: facebookButton,
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 50.0),
+              //   child: ButtonTheme(
+              //     height: 40.0,
+              //     child: FlatButton(
+              //         child: Row(
+              //           children: <Widget>[
+              //             Container(
+              //               width: 25.0,
+              //               height: 25.0,
+              //               child: Image.network(facebookIcon),
+              //             ),
+              //             Container(
+              //               width: 200.0,
+              //               alignment: Alignment.center,
+              //               child: Text("Facebook 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
+              //             )
+              //           ],
+              //         ),
+              //         color: facebookButton,
 
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      onPressed: () {
+              //         shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(20.0)
+              //         ),
+              //         onPressed: () {
 
-                      }
-                  ),
-                ),
-              ),
+              //         }
+              //     ),
+              //   ),
+              // ),
               // anonymous
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -150,36 +150,36 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: ButtonTheme(
-                  height: 40.0,
-                  child: FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 25.0,
-                            height: 25.0,
-                            child: Image.network(onebiteIcon),
-                          ),
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            child: Text("한입만 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
-                          )
-                        ],
-                      ),
-                      color: onebiteButton,
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 50.0),
+              //   child: ButtonTheme(
+              //     height: 40.0,
+              //     child: FlatButton(
+              //         child: Row(
+              //           children: <Widget>[
+              //             Container(
+              //               width: 25.0,
+              //               height: 25.0,
+              //               child: Image.network(onebiteIcon),
+              //             ),
+              //             Container(
+              //               width: 200.0,
+              //               alignment: Alignment.center,
+              //               child: Text("한입만 계정으로 로그인", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
+              //             )
+              //           ],
+              //         ),
+              //         color: onebiteButton,
 
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      onPressed: () {
+              //         shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(20.0)
+              //         ),
+              //         onPressed: () {
 
-                      }
-                  ),
-                ),
-              ),
+              //         }
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50.0),
                 child: ButtonTheme(
