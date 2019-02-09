@@ -1,4 +1,4 @@
-import 'package:Shrine/home.dart';
+// import 'package:Shrine/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +35,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       "https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/detailPage%2Ficon_write.png?alt=media&token=770d2c62-362e-4ec4-af72-51b1e318dade";
   final String onebiteIcon =
       'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
-  // 테스트사진 띄워보기
-  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  final String logoImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/homePage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%204.png?alt=media&token=fbeb4805-eea5-418d-a63a-f92fc76cb270';
   bool isExpanded1 = false;
   bool isExpanded2 = false;
   bool isExpanded3 = false;
@@ -226,6 +225,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Image.network(logoImage, scale: 3.0,),
+      ),
       bottomNavigationBar: BottomAppBar(
         color: onebiteButton,
         child: FlatButton(
@@ -253,53 +255,54 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate([
-              Container(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: onebiteButton),
-                    onPressed: () {
-                      print(previous);
-                      if(previous == 'rest_all') {
-                        // print('go to rest_all');
-                        Navigator.of(context).pop();
-                      }
-                      else if (previous == 'home') {
-                        // print('go to home);
-                        Navigator.of(context).pop();
-                      }
-                      else if(previous == 'restall') {
-                        // print('restall');
-                        Navigator.of(context).pop(); 
-                      }
-                      else if(previous == 'history') {
-                        // print('go to history');
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                HistoryPage(
-                                  user: user,
-                                )))
-                            .catchError((e) => print(e));
-                      }
-                      else if(previous == 'favorite') {
-                        // print('go to favorite');
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                FavoritePage(
-                                  user: user,
-                                )))
-                            .catchError((e) => print(e));
-                      }
-                      else if(previous == 'review') {
-                        // print('go to rest_all but consider review');
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      }
-                    }),
+              // Container(
+              //   alignment: Alignment.topLeft,
+              //   child: IconButton(
+              //       icon: Icon(Icons.arrow_back, color: onebiteButton),
+              //       onPressed: () {
+              //         print('arrow_back! 눌러도 아무일도일어나지 않넹');
+              //         print(previous);
+              //         if(previous == 'rest_all') {
+              //           // print('go to rest_all');
+              //           Navigator.of(context).pop();
+              //         }
+              //         else if (previous == 'home') {
+              //           // print('go to home);
+              //           Navigator.of(context).pop();
+              //         }
+              //         else if(previous == 'restall') {
+              //           // print('restall');
+              //           Navigator.of(context).pop(); 
+              //         }
+              //         else if(previous == 'history') {
+              //           // print('go to history');
+              //           Navigator.of(context)
+              //               .push(MaterialPageRoute(
+              //               builder: (BuildContext context) =>
+              //                   HistoryPage(
+              //                     user: user,
+              //                   )))
+              //               .catchError((e) => print(e));
+              //         }
+              //         else if(previous == 'favorite') {
+              //           // print('go to favorite');
+              //           Navigator.of(context)
+              //               .push(MaterialPageRoute(
+              //               builder: (BuildContext context) =>
+              //                   FavoritePage(
+              //                     user: user,
+              //                   )))
+              //               .catchError((e) => print(e));
+              //         }
+              //         else if(previous == 'review') {
+              //           // print('go to rest_all but consider review');
+              //           Navigator.of(context).pop();
+              //           Navigator.of(context).pop();
+              //           Navigator.of(context).pop();
+              //         }
+              //       }),
 
-              ),
+              // ),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(

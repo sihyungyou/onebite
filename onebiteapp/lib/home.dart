@@ -1,6 +1,6 @@
 import 'package:Shrine/bug_report.dart';
 import 'package:Shrine/rest_detail.dart';
-import 'package:Shrine/suggestion.dart';
+// import 'package:Shrine/suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:Shrine/rest_all.dart';
@@ -133,7 +133,10 @@ class HomePageState extends State<HomePage> {
   void signOut() async{
     // currentuser로 진짜 signout 되는지 testing 더 필요..
     // signout 이 됐으면 다시 구글로그인 눌렀을 때 다시 구글 이메일 및 비밀번호 요구해야 하지 않나?
+    print(user.displayName);
     FirebaseAuth.instance.signOut();
+    print('signed out!');
+    print(user.displayName);
     // print('${FirebaseAuth.instance.currentUser()} Signed Out!');
   }
 

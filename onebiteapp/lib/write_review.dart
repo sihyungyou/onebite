@@ -39,7 +39,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
   final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
   File sampleImage;
 
-  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202019-02-09%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%208.36.33.png?alt=media&token=7d53ad80-5d86-4911-a5fc-72f8e014f67c';
   String addURL = '';
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -172,6 +172,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 )
               ],
             ),
+
+            // 리뷰 작성 박스
             SizedBox(
                 width: 200.0,
                 height: 140.0,
@@ -193,9 +195,15 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       _review = e;
                     });
                   },
-
                 )
             ),
+            
+            SizedBox(height: 20.0,),
+
+            // 사진 업로드하면 그 사진 보여주는 칸
+            sampleImage == null ? Image.network('${defaultURL}', height: 0.0, width: 0.0,) : Image.file(sampleImage, height : 250.0, width : 300.0),
+
+            // 카메라 버튼
             Container(
                 height: 100.0,
                 child: Row(

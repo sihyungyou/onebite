@@ -33,7 +33,8 @@ class _WriteBugPageState extends State<WriteBugPage> {
   String _title = '';
   // String _name = '';
   String _review = '';
-  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  // String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/logo%2Flogotest.png?alt=media&token=3f01fd53-fbfe-4017-a8a6-98b6278e43c4';
+  String defaultURL = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202019-02-09%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%208.36.33.png?alt=media&token=7d53ad80-5d86-4911-a5fc-72f8e014f67c';
   String addURL = '';
   // String _path = '';
   // final FirebaseStorage storage = FirebaseStorage(storageBucket: 'gs://onebite-cdaee.appspot.com');
@@ -139,7 +140,7 @@ class _WriteBugPageState extends State<WriteBugPage> {
             ),
             SizedBox(height:10.0),
             //사진
-            sampleImage == null ? Image.network('${defaultURL}') : Image.file(sampleImage, height : 250.0, width : 300.0),
+            sampleImage == null ? Image.network('${defaultURL}', height: 0.0, width: 0.0,) : Image.file(sampleImage, height : 250.0, width : 300.0),
             SizedBox(height: 16.0,),
             IconButton(
               padding: EdgeInsets.fromLTRB(350, 0, 0, 0),
