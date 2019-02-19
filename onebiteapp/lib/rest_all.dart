@@ -3,7 +3,7 @@ import 'package:Shrine/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'rest_detail.dart';
+import 'package:Shrine/rest_detail.dart';
 // import 'favorite.dart';
 // import 'history.dart';
 

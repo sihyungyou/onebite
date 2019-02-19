@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:Shrine/rest_all.dart';
+import 'rest_all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:Shrine/write_review.dart';
@@ -458,7 +458,7 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                 ),
               ),
               new Container(
-                height: 300.0,
+                height: 350.0,
                 child: new TabBarView(
                   controller: _controller,
                   children: <Widget>[
