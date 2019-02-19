@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final String googleIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon2_signin.png?alt=media&token=7cc540c8-d211-44f0-af8a-7f2a87930f56';
   // final String facebookIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Flogo1_signin.png?alt=media&token=3c408e37-3120-47e6-8c5d-6fc8bee59fd3';
-  // final String onebiteIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
+  final String onebiteIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
   final String onebiteLogo = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Flogo_login.png?alt=media&token=d347f594-d651-4395-9c9b-ea786e227314';
   final String backgroundImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%202.png?alt=media&token=bc6f5970-8b98-48cd-93d8-fd5b3a5de0dc';
   // final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 Expanded(
-                  flex: 200,
+                  flex: 180,
                   child: Container(
                       width:30.0,
                       height:30.0,
@@ -126,11 +126,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Expanded(
-                  flex: 240,
+                  flex: 280,
                   child: Image.network(onebiteLogo),
                 ),
                 Expanded(
-                  flex: 200,
+                  flex: 180,
                   child: Container(width:0.0, height:0.0),
                 ),
                 Expanded(
@@ -140,29 +140,28 @@ class _LoginPageState extends State<LoginPage> {
                     child: ButtonTheme(
                       height: 40.0,
                       child: FlatButton(
-                          child: Row(
+                          child: Stack(
                             children: <Widget>[
 
-                              Container(
-                                width:  width* 0.58,
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      width: logoSize,
-                                      height: logoSize,
-                                      child: Image.network(googleIcon),
-                                    ),
-                                    Container(
-                                      width: width / 32,
-                                    ),
-                                    Text("Google 계정으로 로그인", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: googleText)),
-    ],
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: logoSize,
+                                    height: logoSize,
+                                    child: Image.network(googleIcon),
+                                  )
+                                ],
 
-                                )
-                              )
+                              ),
+                              Center(
+                                  child: Text("Google 계정으로 로그인", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: googleText)),
+
+                              ),
+
                             ],
                           ),
+
                           color: googleButton,
 
                           shape: RoundedRectangleBorder(
@@ -192,16 +191,30 @@ class _LoginPageState extends State<LoginPage> {
                     child: ButtonTheme(
                       height: 40.0,
                       child: FlatButton(
-                          child: Row(
+
+                          child: Stack(
                             children: <Widget>[
 
-                              Container(
-                                width: width - 100.0,
-                                alignment: Alignment.center,
-                                child: Text("로그인 없이 주문하기", style: TextStyle(fontWeight: FontWeight.w800, fontSize: fontSize, color: Colors.white)),
-                              )
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: logoSize*1.2,
+                                    height: logoSize*1.2,
+                                    child: Image.network(onebiteIcon),
+                                  )
+                                ],
+
+                              ),
+                              Center(
+                                child: Text("로그인 없이 주문하기", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: Colors.white))
+
+                              ),
+
                             ],
                           ),
+
+
                           color: Colors.transparent,
 
                           shape: RoundedRectangleBorder(
