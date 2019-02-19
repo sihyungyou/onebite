@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   // final Color facebookButton = Color.fromRGBO(63, 83, 139, 1);
   final Color googleButton = Colors.white;
   final Color googleText = Color.fromRGBO(241, 67, 54, 1);
+
   Future<FirebaseUser> _signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -56,13 +57,49 @@ class _LoginPageState extends State<LoginPage> {
     print("User uid :  ${user.uid}");
     return user;
   }
+
   void signOut() {
     firebaseAuth.signOut();
     print("Signed Out!");
   }
 
+  Size _goldenRatio(BoxConstraints constraints) {
+
+
+    double ratio = 13.0 / 8.0;
+    if (constraints.maxHeight / constraints.maxWidth > ratio) {
+      double height = constraints.maxWidth * ratio;
+      return Size(constraints.maxWidth, height);
+    } else {
+      double width = constraints.maxHeight / ratio;
+      return Size(width, constraints.maxHeight);
+    }
+  }
+
+
+
+  Widget _centeredLayout({Widget child}) {
+    return LayoutBuilder(builder: (content, constraints) {
+     Size size = _goldenRatio(constraints);
+      return Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: size.width,
+            maxHeight: size.height,
+          ),
+          child: child,
+        ),
+      );
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double fontSize = width/22.0;
+    double logoSize = width/18.0;
     return Scaffold(
 
       body: Stack(
@@ -76,118 +113,120 @@ class _LoginPageState extends State<LoginPage> {
                 )
             ),
           ),
-          ListView(
-            children: <Widget>[
-              SizedBox(height: 100.0),
-              SizedBox(
-                height: 170.0,
-                child: Image.network(onebiteLogo),
-              ),
-              SizedBox(height: 100.0),
+          _centeredLayout(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 200,
+                  child: Container(
+                      width:30.0,
+                      height:30.0,
+                      child: Container(width:0.0, height:0.0),
 
-              // google 계정으로 로그인
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: ButtonTheme(
-                  height: 40.0,
-                  child: FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 25.0,
-                            height: 25.0,
-                            child: Image.network(googleIcon),
-                          ),
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            child: Text("Google 계정으로 로그인", style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w800, color: googleText)),
-                          )
-                        ],
-                      ),
-                      color: googleButton,
-
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      onPressed: () {
-                        _signInWithGoogle().then((FirebaseUser user){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(user:user)))
-                              .catchError((e) => print(e));
-                        });
-                      }
                   ),
                 ),
-              ),
-              
-              // 로그인 없이 주문하기
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: ButtonTheme(
-                  height: 40.0,
-                  child: FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width: 25.0,
-                            height: 25.0,
-                          ),
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            child: Text("로그인 없이 주문하기", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
-                          )
-                        ],
-                      ),
-                      color: Colors.transparent,
+                Expanded(
+                  flex: 240,
+                  child: Image.network(onebiteLogo),
+                ),
+                Expanded(
+                  flex: 200,
+                  child: Container(width:0.0, height:0.0),
+                ),
+                Expanded(
+                  flex: 60,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: ButtonTheme(
+                      height: 40.0,
+                      child: FlatButton(
+                          child: Row(
+                            children: <Widget>[
 
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)
+                              Container(
+                                width:  width* 0.58,
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      width: logoSize,
+                                      height: logoSize,
+                                      child: Image.network(googleIcon),
+                                    ),
+                                    Container(
+                                      width: width / 32,
+                                    ),
+                                    Text("Google 계정으로 로그인", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: googleText)),
+    ],
+
+                                )
+                              )
+                            ],
+                          ),
+                          color: googleButton,
+
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)
+                          ),
+                          onPressed: () {
+                            _signInWithGoogle().then((FirebaseUser user){
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) => HomePage(user:user)))
+                                  .catchError((e) => print(e));
+                            });
+                          }
                       ),
-                      onPressed: () {
-                        signinAnon().then((FirebaseUser user){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(user:user)))
-                              .catchError((e) => print(e));
-                        });
-                      }
+                    ),
+                  ),
+
+                ),
+                Expanded(
+                  flex: 16,
+                  child: Container(width:0.0, height:0.0),
+                ),
+                Expanded(
+                  flex: 60,
+                  child: // 로그인 없이 주문하기
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: ButtonTheme(
+                      height: 40.0,
+                      child: FlatButton(
+                          child: Row(
+                            children: <Widget>[
+
+                              Container(
+                                width: width - 100.0,
+                                alignment: Alignment.center,
+                                child: Text("로그인 없이 주문하기", style: TextStyle(fontWeight: FontWeight.w800, fontSize: fontSize, color: Colors.white)),
+                              )
+                            ],
+                          ),
+                          color: Colors.transparent,
+
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.white, width: 2.0)
+                          ),
+                          onPressed: () {
+                            signinAnon().then((FirebaseUser user){
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) => HomePage(user:user)))
+                                  .catchError((e) => print(e));
+                            });
+                          }
+                      ),
+                    ),
                   ),
                 ),
-              ),
-
-              // 로그아웃
-//              Padding(
-//                padding: EdgeInsets.symmetric(horizontal: 50.0),
-//                child: ButtonTheme(
-//                  height: 40.0,
-//                  child: FlatButton(
-//                      child: Row(
-//                        children: <Widget>[
-//                          Container(
-//                            width: 25.0,
-//                            height: 25.0,
-//                          ),
-//                          Container(
-//                            width: 200.0,
-//                            alignment: Alignment.center,
-//                            child: Text("로그아웃", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.0, color: Colors.white)),
-//                          )
-//                        ],
-//                      ),
-//                      color: Colors.transparent,
-//
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(20.0)
-//                      ),
-//                      onPressed: () {
-//                        print('signed out!');
-//                      }
-//                  ),
-//                ),
-//              ),
-            ],
+                Expanded(
+                  flex: 110,
+                  child: Container(width:0.0, height:0.0),
+                ),
+              ],
+            )
           ),
+
         ],
       ),
 
