@@ -97,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     double fontSize = width/22.0;
     double logoSize = width/18.0;
     return Scaffold(

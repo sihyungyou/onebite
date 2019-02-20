@@ -142,6 +142,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    print(width);
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Color.fromRGBO(227, 220, 212, 1),
@@ -299,95 +301,117 @@ class HomePageState extends State<HomePage> {
                   child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                     FlatButton(
+                    Container(
+                      width: width/4.57,
+                      child: FlatButton(
+                          padding: EdgeInsets.symmetric(vertical: 0.0),
+
                           child: Row(
                             children: <Widget>[
-                              Image.network(allImage, width: 20.0),
-                              SizedBox(width:5.0),
+                              Image.network(allImage, width: width/18.75),
+                              SizedBox(width: width/75),
 
-                              Text("전체식당", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
+                              Text("전체식당", style: TextStyle(fontWeight: FontWeight.w300, fontSize: width/25),)
                             ],
                           ),
-                         onPressed: () {
-                           Navigator.of(context)
-                               .push(MaterialPageRoute(
-                               builder: (BuildContext context) =>
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
                                     RestAllPage(korean: korean, chinese : chinese, japanese: japanese, boonSick: boonSick, fastFood : fastFood, allRests : allRests, allNames : allNames, user: user)))
-                               .catchError((e) => print(e));
-                         }
+                                .catchError((e) => print(e));
+                          }
+                      ),
+                    ),
+
+
+                     VerticalDivider(
+
                      ),
-                     VerticalDivider(),
-                     FlatButton(
-                         child: Row(
-                           children: <Widget>[
-                             Image.network(favImage, width: 20.0),
-                             SizedBox(width:5.0),
-                             Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
-                           ],
-                         ),
-                         onPressed:() {
-                           //로그인 후 이용 가능
-                           user.isAnonymous ? 
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog (
-                                    // title: Text('로그인 후에 이용 가능한 기능입니다'),
-                                    content: Text('로그인 후에 이용 가능한 기능입니다'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text('로그인'),
-                                        onPressed: () {
-                                          // 그 자리에서 바로 로그인 유도하기! go to login page
-                                          Navigator.pushNamed(context, '/login');
-                                        },
-                                      ),
-                                      FlatButton(
-                                        child: Text('닫기'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                              }
-                            ) :
-                           Navigator.of(context)
-                               .push(MaterialPageRoute(
-                               builder: (BuildContext context) =>
-                                   FavoritePage(
-                                       user: user,
-                                       )))
-                               .catchError((e) => print(e));
-                         }
-                     ),
-                     VerticalDivider(),
-                     FlatButton(
-                         child: Row(
-                           children: <Widget>[
-                             Image.network(roulletImage, width: 20.0),                              SizedBox(width:5.0),
-                             Text("못 골라?", style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15.0),)
-                           ],
-                         ),
-                         onPressed:() {
+                     Container(
+                       width: width/4.57,
+                       child: FlatButton(
+                           padding: EdgeInsets.symmetric(vertical: 0.0),
+                           child: Row(
+                             children: <Widget>[
+                               Image.network(favImage, width: width/18.75),
+                               SizedBox(width: width/75),
+
+                               Text("즐겨찾기", style: TextStyle(fontWeight: FontWeight.w300, fontSize: width/25),)
+                             ],
+                           ),
+                           onPressed:() {
+                             //로그인 후 이용 가능
+                             user.isAnonymous ?
                              showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog (
-                                    content: Text('준비중인 기능입니다'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text('닫기'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                              }
-                            );
-                         }
+                                 context: context,
+                                 builder: (BuildContext context) {
+                                   return AlertDialog (
+                                     // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                     content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                     actions: <Widget>[
+                                       FlatButton(
+                                         child: Text('로그인'),
+                                         onPressed: () {
+                                           // 그 자리에서 바로 로그인 유도하기! go to login page
+                                           Navigator.pushNamed(context, '/login');
+                                         },
+                                       ),
+                                       FlatButton(
+                                         child: Text('닫기'),
+                                         onPressed: () {
+                                           Navigator.of(context).pop();
+                                         },
+                                       )
+                                     ],
+                                   );
+                                 }
+                             ) :
+                             Navigator.of(context)
+                                 .push(MaterialPageRoute(
+                                 builder: (BuildContext context) =>
+                                     FavoritePage(
+                                       user: user,
+                                     )))
+                                 .catchError((e) => print(e));
+                           }
+                       ),
                      ),
+
+                     VerticalDivider(),
+                     Container(
+                       width: width/4.57,
+                       child: FlatButton(
+                           padding: EdgeInsets.symmetric(vertical: 0.0),
+                           child: Row(
+                             children: <Widget>[
+                               Image.network(roulletImage, width: width/18.75),
+                               SizedBox(width: width/75),
+
+                               Text("못 골라?", style: TextStyle(fontWeight: FontWeight.w300, fontSize: width/25),)
+                             ],
+                           ),
+                           onPressed:() {
+                             showDialog(
+                                 context: context,
+                                 builder: (BuildContext context) {
+                                   return AlertDialog (
+                                     content: Text('준비중인 기능입니다'),
+                                     actions: <Widget>[
+                                       FlatButton(
+                                         child: Text('닫기'),
+                                         onPressed: () {
+                                           Navigator.of(context).pop();
+                                         },
+                                       )
+                                     ],
+                                   );
+                                 }
+                             );
+                           }
+                       ),
+                     ),
+
                   ],
                 )
                 ),
@@ -780,11 +804,12 @@ class HomePageState extends State<HomePage> {
 class VerticalDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return new Container(
       height: 30.0,
       width: 1.0,
       color: Colors.black38,
-      margin: const EdgeInsets.only(left: 5.0, right: 5.0),
+      margin: EdgeInsets.only(left: width/25, right: width/25),
     );
   }
 }

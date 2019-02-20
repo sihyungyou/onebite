@@ -72,6 +72,9 @@ class _RestAllPageState extends State<RestAllPage>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    double height = MediaQuery.of(context).size.height;
+    print(height);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -161,8 +164,8 @@ class _RestAllPageState extends State<RestAllPage>
               ],
             ),
           ),
-          new Container(
-            height: 540.0,
+          new Expanded(
+            flex: 1,
             child: new TabBarView(
               controller: _controller,
               children: <Widget>[

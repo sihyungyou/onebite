@@ -333,8 +333,9 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                       Container(
                         height: 35.0,
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            SizedBox(width: 280.0),
+                            SizedBox(width: 10.0),
                             IconButton(
                                 iconSize: 20.0,
                                 // db 들어가서 현재 rest name을 가진 favorite document가 있으면 color fill
