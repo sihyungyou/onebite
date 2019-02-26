@@ -201,7 +201,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
             SizedBox(height: 20.0,),
 
             // 사진 업로드하면 그 사진 보여주는 칸
-            sampleImage == null ? Image.network('${defaultURL}', height: 0.0, width: 0.0,) : Image.file(sampleImage, height : 250.0, width : 300.0),
+            sampleImage == null ? Image.network('${defaultURL}', height: 0.0, width: 0.0,) : Image.file(sampleImage, height : 200.0, width : 200.0),
 
             // 카메라 버튼
             Container(
