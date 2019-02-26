@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPage extends StatefulWidget {
 
@@ -22,38 +26,51 @@ class AddPageState extends State<AddPage> {
   String rate;
   String time;
   String type;
+
   //menu prices
   String price1;
-  String price2;
-  String price3;
-  String price4;
-  String price5;
-  String price6;
+  // String price2;
+  // String price3;
+  // String price4;
+  // String price5;
+  // String price6;
+
   //menu names
   String menu1;
-  String menu2;
-  String menu3;
-  String menu4;
-  String menu5;
-  String menu6;
+  // String menu2;
+  // String menu3;
+  // String menu4;
+  // String menu5;
+  // String menu6;
+
   //top menu names
   String topmenu1;
-  String topmenu2;
-  String topmenu3;
-  String topmenu4;
-  String topmenu5;
-  String topmenu6;
+  // String topmenu2;
+  // String topmenu3;
+  // String topmenu4;
+  // String topmenu5;
+  // String topmenu6;
+
   //top menu price
   String topprice1;
-  String topprice2;
-  String topprice3;
-  String topprice4;
-  String topprice5;
-  String topprice6;
+  // String topprice2;
+  // String topprice3;
+  // String topprice4;
+  // String topprice5;
+  // String topprice6;
 
-
-  String menu;
+  // String menu;
   final formKey = GlobalKey<FormState>();
+  
+  File sampleImage;
+  String addURL = '';
+  Future getImage() async {
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      sampleImage = tempImage;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +82,20 @@ class AddPageState extends State<AddPage> {
             icon: Icon(
               Icons.save,
             ),
-            onPressed: () {
+            onPressed: () async {
               final wordPair = WordPair.random();
               final form = formKey.currentState;
               form.save();
+              if(sampleImage !=  null ){
+                  final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('${name}').child('${name}_${wordPair}.jpg');
+                  // final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('bug-${wordPair}.jpg');
+                  final StorageUploadTask uploadTask = firebaseStorageRef.putFile(sampleImage);
+                  StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+                  var url = await storageTaskSnapshot.ref.getDownloadURL();
+                  addURL = url.toString();
+                  print('@@@@@@@@@@@@@@@@@@@@@@@');
+                  print(addURL);
+                }
               Firestore.instance.collection('restaurant').document(wordPair.toString())
               .setData(({
                 'name' : '${this.name}',
@@ -91,8 +118,26 @@ class AddPageState extends State<AddPage> {
               .setData(({
                 'name' : '${this.topmenu1}',
                 'price' : '${this.topprice1}',
-                'image' : '${this.testimage}'
+                'image' : addURL,
                 }));
+                this.testimage = addURL;
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog (
+                        content: Text('등록되었습니다!'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('확인'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                  }
+                );
+              Navigator.of(context).pop();
             },
           )
         ],
@@ -168,18 +213,27 @@ class AddPageState extends State<AddPage> {
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top menu1 : 허브순살치킨',
+                              labelText: 'TOP menu1 : 허브순살치킨',
                             ),
                             onSaved: (String str) {
                               this.topmenu1 = str;
                             }),
                             TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'top price1 : 15,000',
+                              labelText: 'TOP price1 : 15,000',
                             ),
                             onSaved: (String str) {
                               this.topprice1 = str;
                             }),
+                            sampleImage == null ? Image.network('${testimage}', height: 0.0, width: 0.0,) : Image.file(sampleImage, height : 250.0, width : 300.0),
+                            SizedBox(height: 16.0,),
+                            IconButton(
+                              padding: EdgeInsets.fromLTRB(350, 0, 0, 0),
+                              icon: Icon(Icons.photo_camera),
+                              onPressed: () {
+                                getImage();
+                               },
+                            ),
                             TextFormField(
                             decoration: InputDecoration(
                               labelText: 'menu1 : 양념 치킨',
