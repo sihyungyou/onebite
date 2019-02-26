@@ -19,7 +19,10 @@ class DetailPage extends StatefulWidget {
       DetailPageState(user: this.user, restaurant: this.restaurant, previous: this.previous);
 }
 
-class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
+class DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
+  TabController _tabController;
+  ScrollController _scrollViewController;
+
   final FirebaseUser user;
   final Restaurant restaurant;
   final String previous;
@@ -133,6 +136,8 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
       _buildList();
     });
     _controller = new TabController(length: 3, vsync: this);
+    _tabController = TabController(vsync: this, length: 3);
+    _scrollViewController = ScrollController(initialScrollOffset: 0.0);
 
     super.initState();
   }
@@ -225,9 +230,20 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Image.network(logoImage, scale: 3.0,),
-      ),
+//      appBar: AppBar(
+//        title: Image.network(logoImage, scale: 3.0,),
+//      ),
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.of(context)
+                    .pop();
+              }// detail 에서 돌아올 때 pop을 안해주기 떄문에 stack에 detail page가 남아있음. 그래서 여기서 pop하면 login page가 아니라 detail로 감..
+          ),
+          title: Text(restaurant.name),
+          centerTitle: true,
+        ),
       bottomNavigationBar: BottomAppBar(
         color: onebiteButton,
         child: FlatButton(
@@ -251,196 +267,161 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
               _launchURL();
             }),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate([
-              // Container(
-              //   alignment: Alignment.topLeft,
-              //   child: IconButton(
-              //       icon: Icon(Icons.arrow_back, color: onebiteButton),
-              //       onPressed: () {
-              //         print('arrow_back! 눌러도 아무일도일어나지 않넹');
-              //         print(previous);
-              //         if(previous == 'rest_all') {
-              //           // print('go to rest_all');
-              //           Navigator.of(context).pop();
-              //         }
-              //         else if (previous == 'home') {
-              //           // print('go to home);
-              //           Navigator.of(context).pop();
-              //         }
-              //         else if(previous == 'restall') {
-              //           // print('restall');
-              //           Navigator.of(context).pop(); 
-              //         }
-              //         else if(previous == 'history') {
-              //           // print('go to history');
-              //           Navigator.of(context)
-              //               .push(MaterialPageRoute(
-              //               builder: (BuildContext context) =>
-              //                   HistoryPage(
-              //                     user: user,
-              //                   )))
-              //               .catchError((e) => print(e));
-              //         }
-              //         else if(previous == 'favorite') {
-              //           // print('go to favorite');
-              //           Navigator.of(context)
-              //               .push(MaterialPageRoute(
-              //               builder: (BuildContext context) =>
-              //                   FavoritePage(
-              //                     user: user,
-              //                   )))
-              //               .catchError((e) => print(e));
-              //         }
-              //         else if(previous == 'review') {
-              //           // print('go to rest_all but consider review');
-              //           Navigator.of(context).pop();
-              //           Navigator.of(context).pop();
-              //           Navigator.of(context).pop();
-              //         }
-              //       }),
+      body: SafeArea(
+        child: NestedScrollView(
+          controller: _scrollViewController,
+          headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: Colors.white,
+                pinned: true,
+                floating: true,
 
-              // ),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 20.0),
-                      Text(restaurant.name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 30.0, fontWeight: FontWeight.w800)),
-                      SizedBox(height: 5.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SmoothStarRating(
-                            rating: rating,
-                            size: 25,
-                            starCount: 5,
-                            color: Colors.orange,
-                            borderColor: Colors.orange,
-                          ),
-                          SizedBox(width: 5.0),
-                          Text(rating.toStringAsFixed(1),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                      Container(
-                        height: 35.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            SizedBox(width: 10.0),
-                            IconButton(
-                                iconSize: 20.0,
-                                // db 들어가서 현재 rest name을 가진 favorite document가 있으면 color fill
-                                // 아니면 border
-                                icon: favorited
-                                    ? Icon(Icons.favorite, color: Colors.red)
-                                    : Icon(Icons.favorite_border,
-                                        color: Colors.red),
-                                onPressed: () {
-                                  // favorited => db에 user collection -> user.uid document생성 -> favorite collection -> random generate document -> name field : this restaurant's name
-                                  // anonymous 는 favorite 막는 기능 추가하기
-                                  if (user.isAnonymous) {
-                                    // 익명 로그인일 경우 팝업 창 띄워주기
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog (
-                                            // title: Text('로그인 후에 이용 가능한 기능입니다'),
-                                            content: Text('로그인 후에 이용 가능한 기능입니다'),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('로그인'),
-                                                onPressed: () {
-                                                  // 그 자리에서 바로 로그인 유도하기! go to login page
-                                                  Navigator.pushNamed(context, '/login');
-                                                },
-                                              ),
-                                              FlatButton(
-                                                child: Text('닫기'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
-                                          );
-                                      }
-                                    );
-                                  }
-                                  else {
-                                    // 익명 로그인이 아닐 경우
-                                    if (!favorited) {
-                                    // if it wasn't favorite, add to firebase 
-                                    Firestore.instance
-                                        .collection('users')
-                                        .document('${user.uid}')
-                                        .collection('favorite')
-                                        .document('${restaurant.name}')
-                                        .setData(({
-                                          'name': '${restaurant.name}',
-                                        }));
-                                        print('favorite : ${restaurant.name} added!');
-                                  }
-                                  if (favorited) {
-                                    Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
-                                  }
-                                  setState(() {
-                                    favorited = !favorited;
-                                  });
-                                  }
-                                }),
-                          ],
-                        ),
-                      ),
-                      Divider(),
-                      SizedBox(height: 5.0),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 100.0,
-                            child: Text("배달시간", style: _titleStyle),
-                          ),
-                          Text(restaurant.time, style: _bodyStyle),
-                        ],
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 100.0,
-                            child: Text("배달비", style: _titleStyle),
-                          ),
-                          restaurant.deliveryFee == '없음' ? 
-                          Text('없음') :
-                          Text(restaurant.deliveryFee + "원", style: _bodyStyle),
-                        ],
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 100.0,
-                            child: Text("최소주문금액", style: _titleStyle),
-                          ),
-                          restaurant.minimumOrder == '없음' ? 
-                          Text('없음') :
-                          Text(restaurant.minimumOrder + "원",
-                              style: _bodyStyle),
-                        ],
-                      ),
-                      SizedBox(height: 15.0),
-                    ],
-                  )),
-              Container(height: 15.0, color: onebiteButton),
-              new Container(
-                child: new TabBar(
+                expandedHeight: 300.0,
+                flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(height: 20.0),
+                                Text(restaurant.name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 30.0, fontWeight: FontWeight.w800)),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    SmoothStarRating(
+                                      rating: rating,
+                                      size: 25,
+                                      starCount: 5,
+                                      color: Colors.orange,
+                                      borderColor: Colors.orange,
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text(rating.toStringAsFixed(1),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 20.0, fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
+                                Container(
+                                  height: 35.0,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      SizedBox(width: 10.0),
+                                      IconButton(
+                                          iconSize: 20.0,
+                                          // db 들어가서 현재 rest name을 가진 favorite document가 있으면 color fill
+                                          // 아니면 border
+                                          icon: favorited
+                                              ? Icon(Icons.favorite, color: Colors.red)
+                                              : Icon(Icons.favorite_border,
+                                              color: Colors.red),
+                                          onPressed: () {
+                                            // favorited => db에 user collection -> user.uid document생성 -> favorite collection -> random generate document -> name field : this restaurant's name
+                                            // anonymous 는 favorite 막는 기능 추가하기
+                                            if (user.isAnonymous) {
+                                              // 익명 로그인일 경우 팝업 창 띄워주기
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog (
+                                                      // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                                      content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text('로그인'),
+                                                          onPressed: () {
+                                                            // 그 자리에서 바로 로그인 유도하기! go to login page
+                                                            Navigator.pushNamed(context, '/login');
+                                                          },
+                                                        ),
+                                                        FlatButton(
+                                                          child: Text('닫기'),
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                        )
+                                                      ],
+                                                    );
+                                                  }
+                                              );
+                                            }
+                                            else {
+                                              // 익명 로그인이 아닐 경우
+                                              if (!favorited) {
+                                                // if it wasn't favorite, add to firebase
+                                                Firestore.instance
+                                                    .collection('users')
+                                                    .document('${user.uid}')
+                                                    .collection('favorite')
+                                                    .document('${restaurant.name}')
+                                                    .setData(({
+                                                  'name': '${restaurant.name}',
+                                                }));
+                                                print('favorite : ${restaurant.name} added!');
+                                              }
+                                              if (favorited) {
+                                                Firestore.instance.collection('users').document('${user.uid}').collection('favorite').document('${restaurant.name}').delete();
+                                              }
+                                              setState(() {
+                                                favorited = !favorited;
+                                              });
+                                            }
+                                          }),
+                                    ],
+                                  ),
+                                ),
+                                Divider(),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 100.0,
+                                      child: Text("배달시간", style: _titleStyle),
+                                    ),
+                                    Text(restaurant.time, style: _bodyStyle),
+                                  ],
+                                ),
+                                SizedBox(height: 10.0),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 100.0,
+                                      child: Text("배달비", style: _titleStyle),
+                                    ),
+                                    restaurant.deliveryFee == '없음' ?
+                                    Text('없음') :
+                                    Text(restaurant.deliveryFee + "원", style: _bodyStyle),
+                                  ],
+                                ),
+                                SizedBox(height: 10.0),
+                                Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 100.0,
+                                      child: Text("최소주문금액", style: _titleStyle),
+                                    ),
+                                    restaurant.minimumOrder == '없음' ?
+                                    Text('없음') :
+                                    Text(restaurant.minimumOrder + "원",
+                                        style: _bodyStyle),
+                                  ],
+                                ),
+                                SizedBox(height: 15.0),
+                              ],
+                            )),
+                        Container(height: 15.0, color: onebiteButton),
+
+                      ],
+                    )
+                ),
+                bottom: new TabBar(
                   indicator: UnderlineTabIndicator(
                     borderSide: BorderSide(width: 2.0, color: theme.primaryColor),
                   ),
@@ -458,226 +439,224 @@ class DetailPageState extends State<DetailPage> with SingleTickerProviderStateMi
                   ],
                 ),
               ),
-              new Container(
-                height: 350.0,
-                child: new TabBarView(
-                  controller: _controller,
-                  children: <Widget>[
-                    CustomScrollView(
-                      slivers: <Widget>[
-                        SliverGrid(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10.0,
-                            crossAxisSpacing: 10.0,
-                            childAspectRatio: 8.0 / 9.0,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
+            ];
+          },
+
+          body: new TabBarView(
+              controller: _controller,
+              children: <Widget>[
+                CustomScrollView(
+                  slivers: <Widget>[
+                    SliverGrid(
+                      gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                        childAspectRatio: 8.0 / 9.0,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                             return topMenuCard[index];
                           }, childCount: topMenu.length),
-                        ),
-                        SliverList(
-                          delegate: SliverChildListDelegate([
-                            ExpansionPanelList(
-                              expansionCallback: (int a, bool b) {
-                                setState(() {
-                                  if (a == 0)
-                                    isExpanded1 = !isExpanded1;
-                                  else if (a == 1)
-                                    isExpanded2 = !isExpanded2;
-                                  else if (a == 2) isExpanded3 = !isExpanded3;
-                                });
+                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        ExpansionPanelList(
+                          expansionCallback: (int a, bool b) {
+                            setState(() {
+                              if (a == 0)
+                                isExpanded1 = !isExpanded1;
+                              else if (a == 1)
+                                isExpanded2 = !isExpanded2;
+                              else if (a == 2) isExpanded3 = !isExpanded3;
+                            });
+                          },
+                          children: [
+                            ExpansionPanel(
+                              headerBuilder:
+                                  (BuildContext context, bool isExpanded) {
+                                return Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 20.0),
+                                    Text(
+                                      "메뉴소개",
+                                      style: _tabTitleStyle,
+                                    ),
+                                  ],
+                                );
                               },
-                              children: [
-                                ExpansionPanel(
-                                  headerBuilder:
-                                      (BuildContext context, bool isExpanded) {
-                                    return Row(
-                                      children: <Widget>[
-                                        SizedBox(width: 20.0),
-                                        Text(
-                                          "메뉴소개",
-                                          style: _tabTitleStyle,
-                                        ),
-                                      ],
+                              isExpanded: isExpanded1,
+                              body: ColumnBuilder(
+                                  itemCount: menu.length,
+                                  itemBuilder: (context, index) {
+                                    // print("메뉴 : " + index.toString());
+
+                                    return ListTile(
+                                      title: Text(menu[index].name),
+                                      subtitle:
+                                      Text(menu[index].price + "원"),
                                     );
-                                  },
-                                  isExpanded: isExpanded1,
-                                  body: ColumnBuilder(
-                                      itemCount: menu.length,
-                                      itemBuilder: (context, index) {
-                                        // print("메뉴 : " + index.toString());
-
-                                        return ListTile(
-                                          title: Text(menu[index].name),
-                                          subtitle:
-                                              Text(menu[index].price + "원"),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ]),
-                        )
-                      ],
-                    ),
-
-                    // 영업 정보
-                    ListView(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      children: <Widget>[
-                        SizedBox(height: 30.0),
-                        Text("영업정보", style: _tabTitleStyle),
-                        SizedBox(height: 10.0),
-                        SizedBox(height: 5.0),
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 100.0,
-                              child: Text("배달시간", style: _titleStyle),
-                            ),
-                            Text(restaurant.time, style: _bodyStyle),
-                          ],
-                        ),
-                        SizedBox(height: 10.0),
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 100.0,
-                              child: Text("휴무일", style: _titleStyle),
-                            ),
-                            Text(restaurant.closed, style: _bodyStyle),
-                          ],
-                        ),
-                        SizedBox(height: 10.0),
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 100.0,
-                              child: Text("전화번호", style: _titleStyle),
-                            ),
-                            Text(restaurant.phone, style: _bodyStyle),
-                          ],
-                        ),
-                        SizedBox(height: 15.0),
-                      ],
-                    ),
-
-                    //리뷰
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
-                        child: Stack(
-                          children: <Widget>[
-                            ListView.builder(
-                                itemCount: review.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Text(review[index].author,
-                                                style: _tabTitleStyle),
-                                            SizedBox(width: 10.0),
-                                            Text(review[index].date,
-                                                style: _bodyStyle),
-                                            // user.uid 랑 비교해서 삭제가능하도록
-                                            ReviewDelete(review[index].uid, index),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            SmoothStarRating(
-                                              rating: double.parse(
-                                                  review[index].rate),
-                                              size: 25,
-                                              starCount: 5,
-                                              color: Colors.orange,
-                                              borderColor: Colors.orange,
-                                              allowHalfRating: true,
-                                            ),
-                                            SizedBox(width: 5.0),
-                                            Text(review[index].rate,
-                                                style: _bodyStyle),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        // 사진 있으면 사진 띄워 주기
-                                        Row(
-                                          children: <Widget> [
-                                            // 리뷰에 사진 있으면 그 사진 띄워주고 없으면 기본 테스트사진
-                                            review[index].image == "" ?
-                                            SizedBox(height: 1.0, width: 1.0,) :
-                                            Image.network('${review[index].image}', height: 150.0, width: 300.0,),
-                                          ]
-                                        ),
-                                        SizedBox(height: 20.0),
-                                      ],
-                                    ),
-                                    subtitle: SizedBox(
-                                      height: 60.0,
-                                      child: Text(review[index].context,
-                                          style: _bodyStyle),
-                                    ),
-                                  );
-                                }),
-                            Positioned(
-                              right: 10.0,
-                              bottom: 50.0,
-                              child: FloatingActionButton(
-                                  child: Image.network(iconWrite),
-                                  backgroundColor: writeFloatingButton,
-                                  onPressed: () {
-                                    if(user.isAnonymous){
-                                      // 익명 로그인일 경우 팝업 창 띄워주기
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog (
-                                            // title: Text('로그인 후에 이용 가능한 기능입니다'),
-                                            content: Text('로그인 후에 이용 가능한 기능입니다'),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('로그인'),
-                                                onPressed: () {
-                                                  // 그 자리에서 바로 로그인 유도하기! go to login page
-                                                  Navigator.pushNamed(context, '/login');
-                                                },
-                                              ),
-                                              FlatButton(
-                                                child: Text('닫기'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        }
-                                      );                                      
-                                    }
-                                    else {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  WriteReviewPage(
-                                                    user: user,
-                                                    restaurant: restaurant,
-                                                  )))
-                                          .catchError((e) => print(e));
-                                    }
                                   }),
                             )
                           ],
-                        ))
+                        ),
+                      ]),
+                    )
                   ],
                 ),
-              ),
-            ]),
-          )
-        ],
-      ),
+
+                // 영업 정보
+                ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  children: <Widget>[
+                    SizedBox(height: 30.0),
+                    Text("영업정보", style: _tabTitleStyle),
+                    SizedBox(height: 10.0),
+                    SizedBox(height: 5.0),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 100.0,
+                          child: Text("배달시간", style: _titleStyle),
+                        ),
+                        Text(restaurant.time, style: _bodyStyle),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 100.0,
+                          child: Text("휴무일", style: _titleStyle),
+                        ),
+                        Text(restaurant.closed, style: _bodyStyle),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 100.0,
+                          child: Text("전화번호", style: _titleStyle),
+                        ),
+                        Text(restaurant.phone, style: _bodyStyle),
+                      ],
+                    ),
+                    SizedBox(height: 15.0),
+                  ],
+                ),
+
+                //리뷰
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
+                    child: Stack(
+                      children: <Widget>[
+                        ListView.builder(
+                            itemCount: review.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(review[index].author,
+                                            style: _tabTitleStyle),
+                                        SizedBox(width: 10.0),
+                                        Text(review[index].date,
+                                            style: _bodyStyle),
+                                        // user.uid 랑 비교해서 삭제가능하도록
+                                        ReviewDelete(review[index].uid, index),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        SmoothStarRating(
+                                          rating: double.parse(
+                                              review[index].rate),
+                                          size: 25,
+                                          starCount: 5,
+                                          color: Colors.orange,
+                                          borderColor: Colors.orange,
+                                          allowHalfRating: true,
+                                        ),
+                                        SizedBox(width: 5.0),
+                                        Text(review[index].rate,
+                                            style: _bodyStyle),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10.0),
+                                    // 사진 있으면 사진 띄워 주기
+                                    Row(
+                                        children: <Widget> [
+                                          // 리뷰에 사진 있으면 그 사진 띄워주고 없으면 기본 테스트사진
+                                          review[index].image == "" ?
+                                          SizedBox(height: 1.0, width: 1.0,) :
+                                          Image.network('${review[index].image}', height: 150.0, width: 300.0,),
+                                        ]
+                                    ),
+                                    SizedBox(height: 20.0),
+                                  ],
+                                ),
+                                subtitle: SizedBox(
+                                  height: 60.0,
+                                  child: Text(review[index].context,
+                                      style: _bodyStyle),
+                                ),
+                              );
+                            }),
+                        Positioned(
+                          right: 10.0,
+                          bottom: 50.0,
+                          child: FloatingActionButton(
+                              child: Image.network(iconWrite),
+                              backgroundColor: writeFloatingButton,
+                              onPressed: () {
+                                if(user.isAnonymous){
+                                  // 익명 로그인일 경우 팝업 창 띄워주기
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog (
+                                          // title: Text('로그인 후에 이용 가능한 기능입니다'),
+                                          content: Text('로그인 후에 이용 가능한 기능입니다'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('로그인'),
+                                              onPressed: () {
+                                                // 그 자리에서 바로 로그인 유도하기! go to login page
+                                                Navigator.pushNamed(context, '/login');
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text('닫기'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      }
+                                  );
+                                }
+                                else {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          WriteReviewPage(
+                                            user: user,
+                                            restaurant: restaurant,
+                                          )))
+                                      .catchError((e) => print(e));
+                                }
+                              }),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+        ),
+      )
     );
   }
 }

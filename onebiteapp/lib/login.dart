@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
 
                               ),
                               Center(
-                                child: Text("로그인 없이 주문하기", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: Colors.white))
+                                child: Text("로그인 없이 이용하기", style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w800, color: Colors.white))
 
                               ),
 
