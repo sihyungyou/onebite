@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final String onebiteIcon = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Ficon3_signin.png?alt=media&token=92b545c9-7b84-44a2-9adb-d352bb887c28';
   final String onebiteLogo = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2Flogo_login.png?alt=media&token=d347f594-d651-4395-9c9b-ea786e227314';
   final String backgroundImage = 'https://firebasestorage.googleapis.com/v0/b/onebite-cdaee.appspot.com/o/loginPage%2F%E1%84%8C%E1%85%A1%E1%84%89%E1%85%A1%E1%86%AB%202.png?alt=media&token=bc6f5970-8b98-48cd-93d8-fd5b3a5de0dc';
-  // final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
+  final Color onebiteButton = Color.fromRGBO(255, 112, 74, 1);
   // final Color facebookButton = Color.fromRGBO(63, 83, 139, 1);
   final Color googleButton = Colors.white;
   final Color googleText = Color.fromRGBO(241, 67, 54, 1);
@@ -213,11 +213,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
 
 
-                          color: Colors.transparent,
+                          color: onebiteButton,
 
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.white, width: 2.0)
+//                              side: BorderSide(color: Colors.white, width: 2.0)
                           ),
                           onPressed: () {
                             signinAnon().then((FirebaseUser user){

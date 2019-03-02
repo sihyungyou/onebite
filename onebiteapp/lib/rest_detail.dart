@@ -421,23 +421,25 @@ class DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                       ],
                     )
                 ),
-                bottom: new TabBar(
-                  indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 2.0, color: theme.primaryColor),
+                bottom: ColoredTabBar(Colors.white, new TabBar(
+                    indicator: UnderlineTabIndicator(
+
+                      borderSide: BorderSide(width: 2.0, color: theme.primaryColor),
+                    ),
+                    controller: _controller,
+                    tabs: [
+                      new Tab(
+                        child: Text("메뉴", style: _tabTitleStyle),
+                      ),
+                      new Tab(
+                        child: Text("정보", style: _tabTitleStyle),
+                      ),
+                      new Tab(
+                        child: Text("리뷰", style: _tabTitleStyle),
+                      ),
+                    ],
                   ),
-                  controller: _controller,
-                  tabs: [
-                    new Tab(
-                      child: Text("메뉴", style: _tabTitleStyle),
-                    ),
-                    new Tab(
-                      child: Text("정보", style: _tabTitleStyle),
-                    ),
-                    new Tab(
-                      child: Text("리뷰", style: _tabTitleStyle),
-                    ),
-                  ],
-                ),
+                )
               ),
             ];
           },
@@ -754,4 +756,21 @@ class ColumnBuilder extends StatelessWidget {
           this.itemCount, (index) => this.itemBuilder(context, index)).toList(),
     );
   }
+}
+
+class ColoredTabBar extends Container implements PreferredSizeWidget {
+  ColoredTabBar(this.color, this.tabBar);
+
+  final Color color;
+  final TabBar tabBar;
+
+  @override
+  Size get preferredSize => tabBar.preferredSize;
+
+  @override
+  Widget build(BuildContext context) =>
+      Container(
+        color: color,
+        child: tabBar,
+      );
 }
